@@ -41,20 +41,29 @@ const LoginScreen = ({navigation}) => {
     let dataToSend = {user_email: userEmail, user_password: userPassword};
     let formBody = [];
     for (let key in dataToSend) {
-      let encodedKey = encodeURIComponent(key);
-      let encodedValue = encodeURIComponent(dataToSend[key]);
+     let encodedKey = encodeURIComponent(key);
+	 let encodedValue = encodeURIComponent(dataToSend[key]);
       formBody.push(encodedKey + '=' + encodedValue);
     }
-    formBody = formBody.join('&');
-
-    fetch('https://localhost:8080/api/user/login', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        //Header Defination
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-    })
+   // formBody = formBody.join('&');
+   // fetch('http://localhost:8080/api/user/login', {
+     // method: 'POST',
+     // body: formBody,
+     // headers: {
+     //   Header Defination
+     //   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+     // },
+   // })
+	fetch('http://localhost:8080/api/user/login', {
+		method: 'POST',
+		body: JSON.stringify({
+			mem_email : userEmail,
+			mem_password : userPassword
+			}),
+		headers: { // header에 로그인 후 서버로 부터 받은 토큰 저장(생략가능)
+			'Content-Type': 'application/json',
+		},
+	})
       .then((response) => response.json())
       .then((responseJson) => {
         //Hide Loader
@@ -62,8 +71,8 @@ const LoginScreen = ({navigation}) => {
         console.log(responseJson);
         // If server response message same as Data Matched
         if (responseJson.status == 1) {
-          AsyncStorage.setItem('user_id', responseJson.data[0].user_id);
-          console.log(responseJson.data[0].user_id);
+          AsyncStorage.setItem('user_id', responseJson.data.user_id);
+          console.log(responseJson.data.user_id);
           navigation.replace('DrawerNavigationRoutes');
         } else {
           setErrortext('Please check your email id or password');
