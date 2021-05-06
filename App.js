@@ -14,6 +14,7 @@ import SplashScreen from './Screen/SplashScreen';
 import LoginScreen from './Screen/LoginScreen';
 import RegisterScreen from './Screen/RegisterScreen';
 import DrawerNavigationRoutes from './Screen/DrawerNavigationRoutes';
+import TabNavigation from './Screen/Tab';
 
 const Stack = createStackNavigator();
 
@@ -49,7 +50,7 @@ const Auth = () => {
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SplashScreen">
+      <Stack.Navigator initialRouteName="TabNavigation">
         
         {/* SplashScreen which will come once for 5 Seconds*/ }
         <Stack.Screen
@@ -64,7 +65,7 @@ const App = () => {
           component={Auth}
           options={{headerShown: false}}
         />
-        
+        <Stack.Screen name="TabNavigation" component={TabNavigation} />
         {/* Navigation Drawer as a landing page */}
         <Stack.Screen
           name="DrawerNavigationRoutes"
