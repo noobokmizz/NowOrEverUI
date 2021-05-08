@@ -54,7 +54,8 @@ const LoginScreen = ({navigation}) => {
      //   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
      // },
    // })
-	fetch('http://localhost:8080/api/user/login', {
+	//fetch('http://localhost:8080/api/user/login', {
+	fetch('http://192.168.0.4:8080/api/user/login', {
 		method: 'POST',
 		body: JSON.stringify({
 			mem_email : userEmail,

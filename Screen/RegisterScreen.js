@@ -63,16 +63,29 @@ const RegisterScreen = (props) => {
       var encodedValue = encodeURIComponent(dataToSend[key]);
       formBody.push(encodedKey + '=' + encodedValue);
     }
-    formBody = formBody.join('&');
-
-    fetch('https://localhost:8080/api/user/register', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        //Header Defination
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-    })
+    // formBody = formBody.join('&');
+    // fetch('https://localhost:8080/api/user/register', {
+      // method: 'POST',
+      // body: formBody,
+      // headers: {
+        // //Header Defination
+        // 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      // },
+    // })
+    // fetch('http://localhost:8080/api/user/register', {
+	fetch('http://192.168.0.4:8080/api/user/register', {
+		method: 'POST',
+		body: JSON.stringify({
+			mem_name : userName,
+			mem_email : userEmail,
+			mem_age : userAge,
+			mem_password : userAddress
+			}),
+		headers: {
+			//Header Defination
+			'Content-Type': 'application/json',
+		},
+	})
       .then((response) => response.json())
       .then((responseJson) => {
         //Hide Loader
@@ -177,7 +190,7 @@ const RegisterScreen = (props) => {
               ref={ageInputRef}
               returnKeyType="next"
               onSubmitEditing={() =>
-                addressInputRef.current && addressInputRef.current.focus()
+                passwordInputRef.current && psswordInputRef.current.focus()
               }
               blurOnSubmit={false}
             />
@@ -187,7 +200,7 @@ const RegisterScreen = (props) => {
               style={styles.inputStyle}
               onChangeText={(UserAddress) => setUserAddress(UserAddress)}
               underlineColorAndroid="#f000"
-              placeholder="Enter Address"
+              placeholder="Enter Password"
               placeholderTextColor="#8b9cb5"
               autoCapitalize="sentences"
               ref={addressInputRef}
