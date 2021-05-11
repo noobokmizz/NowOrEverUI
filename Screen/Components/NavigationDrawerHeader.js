@@ -4,7 +4,6 @@
 // Import React and Component
 import React from 'react';
 import {View, Image, TouchableOpacity} from 'react-native';
-import {SearchBar} from 'react-native-elements';
 const NavigationDrawerHeader = (props) => {
   const toggleDrawer = () => {
     props.navigationProps.toggleDrawer();

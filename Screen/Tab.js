@@ -2,6 +2,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { Meet, Settings} from './TabScreens';
 import {FriendList} from './FriendList';
+import {BucketList} from './BucketList';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 //import { MaterialCommunityIcons } from '@expo/vector-icons';
 //import Icon from "react-native-vector-icons/FontAwesome";
@@ -28,10 +29,10 @@ const TabNavigation=()=>{
              }}
              />
             <Tab.Screen
-             name="Meet"
-             component={Meet}
+             name="BucketList"
+             component={BucketList}
              options={{
-                tabBarLabel: 'Meet',
+                tabBarLabel: 'BucketList',
                 tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="video" color={color} size={size} />
                   ),

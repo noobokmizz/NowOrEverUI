@@ -54,7 +54,7 @@ const LoginScreen = ({navigation}) => {
      //   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
      // },
    // })
-	fetch('http://localhost:8080/api/user/login', {
+	fetch('http://172.22.208.1:8080/api/user/login', {
 		method: 'POST',
 		body: JSON.stringify({
 			mem_email : userEmail,
@@ -73,7 +73,7 @@ const LoginScreen = ({navigation}) => {
         if (responseJson.status == 1) {
           AsyncStorage.setItem('user_id', responseJson.data.user_id);
           console.log(responseJson.data.user_id);
-          navigation.replace('DrawerNavigationRoutes');
+          navigation.replace('TabNavigation');
         } else {
           setErrortext('Please check your email id or password');
           console.log('Please check your email id or password');
