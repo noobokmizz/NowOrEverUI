@@ -50,7 +50,7 @@ const Auth = () => {
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SplashScreen">
+      <Stack.Navigator initialRouteName="TabNavigation">
         
         {/* SplashScreen which will come once for 5 Seconds*/ }
         <Stack.Screen
@@ -65,7 +65,10 @@ const App = () => {
           component={Auth}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="TabNavigation" component={TabNavigation} />
+        <Stack.Screen
+         name="TabNavigation"
+         options={{headerShown: false}}
+         component={TabNavigation} />
         {/* Navigation Drawer as a landing page */}
         <Stack.Screen
           name="DrawerNavigationRoutes"

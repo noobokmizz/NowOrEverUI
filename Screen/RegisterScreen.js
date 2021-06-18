@@ -21,7 +21,7 @@ const RegisterScreen = (props) => {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userAge, setUserAge] = useState('');
-  const [userAddress, setUserAddress] = useState('');
+  const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
   const [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
@@ -29,7 +29,7 @@ const RegisterScreen = (props) => {
   const nameInputRef = createRef();
   const emailInputRef = createRef();
   const ageInputRef = createRef();
-  const addressInputRef = createRef();
+  const passwordInputRef = createRef();
 
   const handleSubmitButton = () => {
     setErrortext('');
@@ -45,8 +45,8 @@ const RegisterScreen = (props) => {
       alert('Please fill Age');
       return;
     }
-    if (!userAddress) {
-      alert('Please fill Address');
+    if (!userPassword) {
+      alert('Please fill Password');
       return;
     }
     //Show Loader
@@ -55,7 +55,7 @@ const RegisterScreen = (props) => {
       user_name: userName,
       user_email: userEmail,
       user_age: userAge,
-      user_address: userAddress,
+      user_password: userPassword,
     };
     var formBody = [];
     for (var key in dataToSend) {
@@ -65,14 +65,19 @@ const RegisterScreen = (props) => {
     }
     formBody = formBody.join('&');
 
-    fetch('https://localhost:8080/api/user/register', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        //Header Defination
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-    })
+    fetch('http://172.20.32.1:8080/api/user/register', {
+		method: 'POST',
+		body: JSON.stringify({
+			mem_name : userName,
+			mem_email : userEmail,
+			mem_age : userAge,
+			mem_password : userPassword
+			}),
+		headers: {
+			//Header Defination
+			'Content-Type': 'application/json',
+		},
+	})
       .then((response) => response.json())
       .then((responseJson) => {
         //Hide Loader
@@ -97,10 +102,10 @@ const RegisterScreen = (props) => {
       <View
         style={{
           flex: 1,
-          backgroundColor: '#307ecc',
+          backgroundColor: '#lightsteelblue',
           justifyContent: 'center',
         }}>
-        <Image
+        <Image 
           source={require('../Image/success.png')}
           style={{height: 150, resizeMode: 'contain', alignSelf: 'center'}}
         />
@@ -177,7 +182,7 @@ const RegisterScreen = (props) => {
               ref={ageInputRef}
               returnKeyType="next"
               onSubmitEditing={() =>
-                addressInputRef.current && addressInputRef.current.focus()
+                passwordInputRef.current && passwordInputRef.current.focus()
               }
               blurOnSubmit={false}
             />
@@ -185,12 +190,12 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserAddress) => setUserAddress(UserAddress)}
+              onChangeText={(UserPassword) => setUserPassword(UserPassword)}
               underlineColorAndroid="#f000"
-              placeholder="Enter Address"
+              placeholder="Enter Password"
               placeholderTextColor="#8b9cb5"
               autoCapitalize="sentences"
-              ref={addressInputRef}
+              ref={passwordInputRef}
               returnKeyType="next"
               onSubmitEditing={Keyboard.dismiss}
               blurOnSubmit={false}
