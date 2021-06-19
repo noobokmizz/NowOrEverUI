@@ -5,6 +5,9 @@ import Input from './src/components/Input';
 import {Button, View, Text, StyleSheet,TouchableOpacity} from 'react-native';
 import {StatusBar,Dimensions} from 'react-native';
 import Task from './Components/Task';
+import User from './src/components/User';
+import UserContext from './src/context/User';
+import {UserProvider} from './src/context/User';
 /*
 const Container=styled.SafeAreaView `
     flex:1;
@@ -30,95 +33,25 @@ const List = styled.ScrollView`
 
 export const BucketList=({navigation})=>{
     const width=Dimensions.get('window').width;
-    const [newTask,setNewTask]=useState('');
-    const _addTask=()=>{
-        alert(`Add:${newTask}`);
-        setNewTask('');
-    };
+    const [newList,setNewList]=useState('');
+
+    const _addList=()=>{
+      const ID=Date.now().toString();
+      const newListObject={
+        [ID]: {id: ID, text:newList},
+      };
+      setNewList('');
+      setLists({ ...lists, ...newListObject})
+    }
+    const [lists, setLists]=useState({
+      '1':{id:'1',text:'hmm'},
+      '2':{id:'2',text:'very'},
+      '3':{id:'3',text:'tired'},
+    });
     const _handleTextChange=text=>{
-        setNewTask(text);
+        setNewList(text);
     };
-/***********************************************
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userAge, setUserAge] = useState('');
-  const [userPassword, setUserPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState('');
-  const [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
 
-  const nameInputRef = createRef();
-  const emailInputRef = createRef();
-  const ageInputRef = createRef();
-  const passwordInputRef = createRef();
-
-  const handleSubmitButton = () => {
-    setErrortext('');
-    if (!userName) {
-      alert('Please fill Name');
-      return;
-    }
-    if (!userEmail) {
-      alert('Please fill Email');
-      return;
-    }
-    if (!userAge) {
-      alert('Please fill Age');
-      return;
-    }
-    if (!userPassword) {
-      alert('Please fill Password');
-      return;
-    }
-    //Show Loader
-    setLoading(true);
-    var dataToSend = {
-      user_name: userName,
-      user_email: userEmail,
-      user_age: userAge,
-      user_password: userPassword,
-    };
-    var formBody = [];
-    for (var key in dataToSend) {
-      var encodedKey = encodeURIComponent(key);
-      var encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
-
-    fetch('http://172.22.208.1:8080/api/user/register', {
-		method: 'POST',
-		body: JSON.stringify({
-			mem_name : userName,
-			mem_email : userEmail,
-			mem_age : userAge,
-			mem_password : userPassword
-			}),
-		headers: {
-			//Header Defination
-			'Content-Type': 'application/json',
-		},
-	})
-      .then((response) => response.json())
-      .then((responseJson) => {
-        //Hide Loader
-        setLoading(false);
-        console.log(responseJson);
-        // If server response message same as Data Matched
-        if (responseJson.status == 1) {
-          setIsRegistraionSuccess(true);
-          console.log('Registration Successful. Please Login to proceed');
-        } else {
-          setErrortext('Registration Unsuccessful');
-        }
-      })
-      .catch((error) => {
-        //Hide Loader
-        setLoading(false);
-        console.error(error);
-      });
-  };
-***********************************************/
     return(
         <ThemeProvider theme={theme}>
           <Container>
@@ -130,6 +63,14 @@ export const BucketList=({navigation})=>{
                   </Text>
                   </View>
                   <Text style={StyleList.profileHeaderText}>admin</Text>
+              </View>
+              <View>
+                <Input
+                 placeholder="+ Add a List"
+                 value={newList}
+                 onChangeText={_handleTextChange}
+                 onSubmitEditing={_addList}
+                 />
               </View>
               <View style={{flexDirection:'row'}}>
                   <Text style={{margin:10, fontWeight: 'bold', fontSize:25}}>Bucket List</Text>
@@ -143,16 +84,19 @@ export const BucketList=({navigation})=>{
               
               <View style={{height:400, margin:10}}>
                 <List width={width}>
-                  <Task text="hmm" />
-                  <Task text="very" />
-                  <Task text="tired" />
-                  <Task text="hmm" />
-                  <Task text="very" />
-                  <Task text="tired" />
-                  <Task text="hmm" />
-                  <Task text="very" />
-                  <Task text="tired" />
+                  {Object.values(lists)
+                  .reverse()
+                  .map(item=>(
+                    <Task key={item.id} text={item.text}/>
+                  ))}
                 </List>
+              </View>
+              <View>
+                <UserProvider>
+                  <View>
+                    <User />
+                  </View>
+                </UserProvider>
               </View>
           </View>
           </Container>

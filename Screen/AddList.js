@@ -16,9 +16,10 @@ import React, {useState, createRef} from 'react';
    View,
    Image,
    Text,
+   TouchableOpacity,
  } from 'react-native';
 
- const AddList = () => {
+ const AddList = ({navigation}) => {
     const [userName, setUserName] = useState('');
     const nameInputRef = createRef();
     var dataToSend = {
@@ -73,6 +74,14 @@ import React, {useState, createRef} from 'react';
             ]}
             
         />
+      </View>
+      <View>
+          <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate('BucketList')} // Details로 화면 이동    
+          >
+            <Text style={styles.ButtonText}>Add to BucketList</Text>
+          </TouchableOpacity>
       </View>
       </View>
   );
@@ -148,6 +157,18 @@ import React, {useState, createRef} from 'react';
       fontSize:20,
       fontWeight: 'bold',
     },
+    button:{
+      alignItems:"center",
+      justifyContent:'center',
+      backgroundColor:"#DDDDDD",
+      margin:15,
+      //padding:10,
+      width:150,
+      height:25,
+    },
+    ButtonText:{
+      fontSize:15
+    }
 });
 
  export default AddList;
