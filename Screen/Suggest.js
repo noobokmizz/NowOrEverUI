@@ -7,10 +7,9 @@
  * @flow strict-local
  */
  import React, {useState, createRef, useEffect} from 'react';
- import {Platform} from 'react-native';
-//import Geolocation from 'react-native-geolocation-service';
-import Geolocation from '@react-native-community/geolocation';
+ import Geolocation from '@react-native-community/geolocation';
   import styled, {ThemeProvider} from 'styled-components/native';
+  import {Dimensions} from 'react-native';
   import {theme} from './src/theme';
   import {
     StyleSheet,
@@ -22,39 +21,50 @@ import Geolocation from '@react-native-community/geolocation';
     Modal,
   } from 'react-native';
  import AsyncStorage from '@react-native-community/async-storage';
+import { renderNode } from 'react-native-elements/dist/helpers';
  
  
  const List = styled.ScrollView`
    flex:1;
-   width: ${({width})=>width-40}px;
+   background-color:#b0c4de;
  `;
  
  
  const Container=styled.SafeAreaView`
  flex:1;
- background-color:${({theme})=>theme.background};
- align-items:center;
+ width:100%;
+ background-color:#b0c4de;
  justify-content:flex-start;
 `;
  
  const Suggest = ({navigation}) => {
    const [mem_idnum,setMem_idnum]=useState('');
-   const [cur_x,setCur_x]=useState(null);
-   const [cur_y,setCur_y]=useState(null);
+   const [cur_x,setCur_x]=useState('');
+   const [cur_y,setCur_y]=useState('');
    const [location_list,setLocation_list]=useState([]);
+   const [count,setCount]=useState(0);
+   //let mem_idnum;
+   //let cur_x;
+   //let cur_y;
+   //let location_list=[];
+   //const [location_list,setLocation_list]=useState([{name:'1', cs_name:'1',call_num:'1',addr:'1'}]);
+   const width=Dimensions.get('window').width;
+   let location_array=[];
    const geoLocation = () => {
         Geolocation.getCurrentPosition(
             position => {
                 const latitude = JSON.stringify(position.coords.latitude);
                 const longitude = JSON.stringify(position.coords.longitude);
-
-                setCur_x(latitude);
-                setCur_y(longitude);
+                //cur_y=latitude;
+                //cur_x=longitude;
+                setCur_y(latitude);
+                setCur_x(longitude);
             },
             error => { console.log(error.code, error.message); },
             {enableHighAccuracy:true, timeout: 15000, maximumAge: 10000 },
         )
     }
+    
    useEffect(()=>{
      AsyncStorage.getItem('mem_idnum',(err,result)=>{
        setMem_idnum(result);
@@ -73,77 +83,107 @@ import Geolocation from '@react-native-community/geolocation';
      })
      .then((response) => response.json())
      .then((responseJson)=>{
-       const location=responseJson.location;
-       setLocation_list(location);
-       
-       let location_array=[];
-       let i;
-       console.log('length:',location.length);
-       for(i=0; i<location.length; i++){
-        location_array.push({cs_name:location[i].cs_activity, addr:location[i].lc_addr, name:location[i].lc_name,
-            call_number:locationt[i].lc_call_number, lc_id:location[i].lc_id
-          });
-       }
-       seLocation_list(location_array);
+       if(count<=1){
+         setCount(count+1);
+        const location=responseJson.location;
+        //setLocation_list(location);
+        console.log('id:',mem_idnum,'cur_x:',cur_x);
+        let i;
+        console.log('length:',location.length);
+        for(i=0; i<location.length; i++){
+          console.log('before i:',i);
+          location_array.push({cs_name:location[i].cs_activity, addr:location[i].lc_addr, name:location[i].lc_name,
+              call_num:location[i].lc_call_number, key:location[i].lc_id
+            });
+            console.log('after i:',i);
+        }
+        console.log(location_array);
+        setLocation_list(location_array);
+        console.log('list:',location_list);
+      }
      })
      .catch((error) => {
      });
-   },[]);
+   },[mem_idnum,cur_x,cur_y,location_list]);
    
-   
+   if(location_list.length!=0)
+   {
    return(
-    <ThemeProvider theme={theme}>
-      <Container>
-      <View style={styles.Container}>
-          <View style={styles.profileHeader}>
-              <View style={styles.profileHeaderPicCircle}>
-              <Text style={{fontSize: 25, color: 'aquamarine'}}>
-                  {'About React'.charAt(0)}   
-              </Text>
-              </View>
-              <Text style={StyleList.profileHeaderText}>admin</Text>
-          </View>
-          <List>
-                {Object.values(location_list)
-                      .map(item=>(
-                        <View style={{height:30, flexDirection:'row'}}>
-                            <View>
-                              <Text>
-                                {item.name}
-                              </Text>
-                              <Text>
-                              {item.cs_name}
-                              </Text>
-                            </View>
-                            <View>
-                              <View>
-                              <Text>
-                              {item.addr}
-                              </Text>
-                              </View>
-                              <View>
-                              <Text>
-                              {item.call_num}
-                              </Text>
-                              </View>
-                              <View>
-                              <TouchableOpacity
-                                  style={StyleFriendlist.button} 
-                              >
-                                <Text style={StyleFriendlist.ButtonText}>Choose</Text>
-                              </TouchableOpacity>
-                              </View>
-                            </View> 
+         <ThemeProvider theme={theme}>
+                <Container>
+                <View style={styles.Container}>
+                    <View style={styles.profileHeader}>
+                        <View style={styles.profileHeaderPicCircle}>
+                        <Text style={{fontSize: 25, color: 'aquamarine'}}>
+                            {'About React'.charAt(0)}   
+                        </Text>
                         </View>
-                      ))}
-             </List>
-          
-      </View>
-      </Container>
-    </ThemeProvider>
-);
-  };
-  
+                        <Text style={StyleList.profileHeaderText}>admin</Text>
+                    </View>
+                    
+                    <View style={{height:400}}>
+                    <List>
+                          {
+                          //Object.values(location_list)
+                              location_list  
+                              .map((item,index)=>(
+                                  <View key={item.key} style={{height:40, flexDirection:'row'}}>
+                                      <View style={{width:150}}>
+                                        <Text>
+                                            {item.name}
+                                        </Text>
+                                        <Text style={{fontSize:10}}>
+                                          {item.cs_name}
+                                        </Text>
+                                      </View>
+                                      <View style={{marginLeft:2}}>
+                                        
+                                          <Text style={{fontSize:10, marginTop:5}}>
+                                            {item.addr}
+                                          </Text>
+                                        
+                                          
+                                  
+                                      </View> 
+                                      <View>
+                                        <TouchableOpacity
+                                            style={StyleList.button} 
+                                        >
+                                          <Text style={StyleList.ButtonText}>Choose</Text>
+                                        </TouchableOpacity>
+                                        </View>
+                                  </View>
+                                ))
+                              }
+                      </List>
+                    </View>
+                </View>
+                </Container>
+                </ThemeProvider>
+);}
+else
+return(
+  <ThemeProvider theme={theme}>
+                <Container>
+                <View style={styles.Container}>
+                    <View style={styles.profileHeader}>
+                        <View style={styles.profileHeaderPicCircle}>
+                        <Text style={{fontSize: 25, color: 'aquamarine'}}>
+                            {'About React'.charAt(0)}   
+                        </Text>
+                        </View>
+                        <Text style={StyleList.profileHeaderText}>admin</Text>
+                    </View>
+                    <View>
+                      <Text style={{fontSize:20, fontWeight:'bold'}}>
+                        No recommend activity..
+                      </Text>
+                    </View>
+                </View>
+                </Container>
+                </ThemeProvider>
+)
+                };
   const styles = StyleSheet.create({  //이 부분 형식은 고정
     /* 원하는 스타일 포맷을 만듦 */
     Container:{     //Format 1
@@ -227,7 +267,7 @@ const StyleList= StyleSheet.create({
       alignItems:"center",
       justifyContent:'center',
       backgroundColor:"#DDDDDD",
-      margin:15,
+      marginLeft:10,
       //padding:10,
       width:80,
       height:25,
