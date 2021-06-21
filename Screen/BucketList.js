@@ -117,7 +117,13 @@ export const BucketList=({navigation})=>{
                       style={StyleList.button}
                       onPress={() => navigation.navigate('AddList')} // Details로 화면 이동    
                   >
-                    <Text style={StyleList.ButtonText}>Add to BucketList</Text>
+                    <Text style={StyleList.ButtonText}>Add</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                      style={StyleList.button}
+                      onPress={() => navigation.navigate('Suggest')} // Details로 화면 이동    
+                  >
+                    <Text style={StyleList.ButtonText}>Suggest</Text>
                   </TouchableOpacity>
               </View>
               
@@ -207,7 +213,7 @@ const StyleList= StyleSheet.create({
         backgroundColor:"#DDDDDD",
         margin:15,
         //padding:10,
-        width:150,
+        width:80,
         height:25,
       },
       ButtonText:{

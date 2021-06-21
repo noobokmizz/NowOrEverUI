@@ -30,7 +30,12 @@ import Geolocation from '@react-native-community/geolocation';
  `;
  
  
-
+ const Container=styled.SafeAreaView`
+ flex:1;
+ background-color:${({theme})=>theme.background};
+ align-items:center;
+ justify-content:flex-start;
+`;
  
  const Suggest = ({navigation}) => {
    const [mem_idnum,setMem_idnum]=useState('');
@@ -89,9 +94,9 @@ import Geolocation from '@react-native-community/geolocation';
    return(
     <ThemeProvider theme={theme}>
       <Container>
-      <View style={StyleList.Container}>
-          <View style={StyleList.profileHeader}>
-              <View style={StyleList.profileHeaderPicCircle}>
+      <View style={styles.Container}>
+          <View style={styles.profileHeader}>
+              <View style={styles.profileHeaderPicCircle}>
               <Text style={{fontSize: 25, color: 'aquamarine'}}>
                   {'About React'.charAt(0)}   
               </Text>
@@ -99,7 +104,7 @@ import Geolocation from '@react-native-community/geolocation';
               <Text style={StyleList.profileHeaderText}>admin</Text>
           </View>
           <List>
-                {Object.values(recommend_location)
+                {Object.values(location_list)
                       .map(item=>(
                         <View style={{height:30, flexDirection:'row'}}>
                             <View>
@@ -141,7 +146,7 @@ import Geolocation from '@react-native-community/geolocation';
   
   const styles = StyleSheet.create({  //이 부분 형식은 고정
     /* 원하는 스타일 포맷을 만듦 */
-    container:{     //Format 1
+    Container:{     //Format 1
       marginTop:10,   //위에서 거리
       marginLeft:20, 
       //backgroundColor: "blue",
@@ -171,7 +176,66 @@ import Geolocation from '@react-native-community/geolocation';
         fontWeight: 'bold',
       },
 });
- 
+const StyleList= StyleSheet.create({
+  Container: {
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'lightsteelblue',
+      color: 'black',
+    },
+    profileHeader: {      //프로필 있는 부분 박스 
+      flexDirection: 'row',
+      backgroundColor: 'skyblue',
+      padding: 20,
+      textAlign: 'center',
+      height:100,
+      borderBottomColor:'black',
+      borderBottomWidth:1
+    },
+    profileHeaderPicCircle: {
+      width: 60,
+      height: 60,
+      borderRadius: 60 / 2,
+      color: 'white',
+      backgroundColor: '#ffffff',
+      textAlign: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    profileHeaderText: {
+      color: 'black',
+      alignSelf: 'center',
+      paddingHorizontal: 10,
+      fontWeight: 'bold',
+    },
+   
+    inputStyle: {
+      flex: 1,
+      color: 'black',
+      margin:10,
+      paddingLeft: 15,
+      paddingRight: 15,
+      borderWidth: 10,
+      borderRadius: 30,
+      borderColor: '#dadae8',
+    },
+    TitleStyle:{
+      fontSize:20,
+      fontWeight: 'bold',
+    },
+    button:{
+      alignItems:"center",
+      justifyContent:'center',
+      backgroundColor:"#DDDDDD",
+      margin:15,
+      //padding:10,
+      width:80,
+      height:25,
+    },
+    ButtonText:{
+      fontSize:15
+    }
+});
  
  
   export default Suggest;

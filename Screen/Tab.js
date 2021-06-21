@@ -5,6 +5,7 @@ import { Meet, Settings} from './TabScreens';
 import {FriendList} from './FriendList';
 import {BucketList} from './BucketList';
 import AddList from './AddList';
+import Suggest from './Suggest';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 //import { MaterialCommunityIcons } from '@expo/vector-icons';
 //import Icon from "react-native-vector-icons/FontAwesome";
@@ -33,6 +34,20 @@ const Bucket = () => {
           component={AddList}
           options={{
             title: 'Add to Bucket List', //Set Header Title
+            headerStyle: {
+              backgroundColor: 'aqua', //Set Header color
+            },
+            headerTintColor: 'blue', //Set Header text color
+            headerTitleStyle: {
+              fontWeight: 'bold', //Set Header text style
+            },
+          }}
+        />
+         <Stack.Screen
+          name="Suggest"
+          component={Suggest}
+          options={{
+            title: 'Suggest List', //Set Header Title
             headerStyle: {
               backgroundColor: 'aqua', //Set Header color
             },
