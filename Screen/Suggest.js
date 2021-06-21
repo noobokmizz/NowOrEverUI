@@ -148,6 +148,10 @@ import { renderNode } from 'react-native-elements/dist/helpers';
                                       <View>
                                         <TouchableOpacity
                                             style={StyleList.button} 
+                                            onPress={()=>{
+                                              AsyncStorage.setItem('dest_id', item.key);
+                                              navigation.navigate('PrintPath')
+                                            }}
                                         >
                                           <Text style={StyleList.ButtonText}>Choose</Text>
                                         </TouchableOpacity>
