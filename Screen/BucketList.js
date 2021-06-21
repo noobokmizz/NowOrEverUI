@@ -36,15 +36,19 @@ export const BucketList=({navigation})=>{
     const [lists, setLists]=useState([]);
     const [mem_idnum,setMem_idnum]=useState('');
     const [category_list,setCategory_list]=useState([]);
-    const [tasks,setTasks]=useState([]);
+    const [location_list,setLocation_list]=useState([]);
+    const [tasks,setTasks]=useState([{text:'',id:''}]);
     const _deleteTask = id => {
-      const currentTasks=Object.assign({},tasks);
+      const currentTasks=Object.assign({},category_list);
       delete currentTasks[id];
       setTasks(currentTasks);
     };
     useEffect(async ()=>{
+      if(tasks==[])
+        return;
       AsyncStorage.getItem('mem_idnum',(err,result)=>{
-        setMem_idnum(result);
+        if(result!=mem_idnum)
+          setMem_idnum(result);
         console.log('result:',result);
       });
       await fetch('http://3.35.217.247:8080/api/bucketlist/list',{
@@ -61,7 +65,8 @@ export const BucketList=({navigation})=>{
         console.log('idnum:',mem_idnum);
         console.log('wht not fetch?');
         const category= responseJson.only_category;
-        setCategory_list(category);
+        const location=responseJson.location;
+        //setCategory_list(category);
         console.log('responseJson:',responseJson);
         console.log('response:',responseJson.only_category);
         
@@ -70,18 +75,22 @@ export const BucketList=({navigation})=>{
           console.log('category:',category);
           console.log('send list:',category_list);
           let category_array=[];
+          let location_array=[];
           let i;
-          for(i=0; i<category_list.length; i++){
-            category_array.push({text:category_list[i].cs_activity, id:category_list[i].cs_id});
+          for(i=0; i<category.length; i++){
+            category_array.push({text:category[i].cs_activity, id:category[i].cs_id});
           }
-          setTasks(category_array);
-          
-          console.log('show task list:',tasks);
+          for(i=0; i<location.length; i++){
+            location_array.push({text:location[i].lc_name, id:location[i].lc_id});
+          }
+          setCategory_list(category_array);
+          setLocation_list(location_array);
+          console.log('show task list:',category_list);
         })
         .catch((error) => {
         //console.error(error);
       });
-    },[mem_idnum,category_list]);
+    },[mem_idnum]);
     const _handleTextChange=text=>{
         setNewList(text);
     };
@@ -114,7 +123,17 @@ export const BucketList=({navigation})=>{
               
               <View style={{height:200, marginLeft:20}}>
                 <List width={width}>
-                  {Object.values(tasks)
+                  {Object.values(category_list)
+                  .reverse()
+                  .map(item=>(
+                    <Task key={item.id} item={item} deleteTask={_deleteTask} />
+                  ))}
+                </List>
+              </View>
+              <View style={{height:50}}/>
+              <View style={{height:200, marginLeft:20}}>
+                <List width={width}>
+                  {Object.values(location_list)
                   .reverse()
                   .map(item=>(
                     <Task key={item.id} item={item} deleteTask={_deleteTask} />

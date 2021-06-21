@@ -19,18 +19,19 @@ const Contents=styled.Text`
     color: ${({theme})=>theme.text};
     `;
 
-const Task=({text})=>{
+const Task=({item,deleteTask})=>{
     return(
         <Container>
-            <Contents style={{marginLeft:10}}>{text}</Contents>
+            <Contents style={{marginLeft:10}}>{item.text}</Contents>
             <IconButton type={images.search}/>
-            <IconButton type={images.delete}/>
+            <IconButton type={images.delete} id={item.id} onPressOut={deleteTask}/>
         </Container>
     );
 };
 
 Task.propTypes={
     text:PropTypes.string.isRequired,
+    deleteTask:PropTypes.func.isRequired,
 };
 
 export default Task;

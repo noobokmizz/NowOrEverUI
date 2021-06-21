@@ -65,7 +65,7 @@ const RegisterScreen = (props) => {
     }
     formBody = formBody.join('&');
 
-    fetch('http://172.20.32.1:8080/api/user/register', {
+    fetch('http://3.35.217.247:8080/api/user/register', {
 		method: 'POST',
 		body: JSON.stringify({
 			mem_name : userName,

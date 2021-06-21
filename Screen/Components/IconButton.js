@@ -12,8 +12,11 @@ const Icon=styled.Image`
 `;
 
 const IconButton = ({type, onPressOut})=>{
+    const _onPressOut=()=>{
+        onPressOut(id);
+    };
     return(
-        <TouchableOpacity onPressOut={onPressOut}>
+        <TouchableOpacity onPressOut={_onPressOut}>
             <Icon source={type}/>
         </TouchableOpacity>
     );
@@ -22,6 +25,7 @@ const IconButton = ({type, onPressOut})=>{
 IconButton.propTypes={
     type:PropTypes.oneOf(Object.values(images)).isRequired,
     onPressOut:PropTypes.func,
+    id:PropTypes.string,
 };
 
 export default IconButton;

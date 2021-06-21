@@ -29,7 +29,8 @@
     "react-native-screens": "3.1.1",
     "react-native-search-bar": "3.5.1",
     "react-native-vector-icons": "8.1.0",
-    "styled-components": "5.2.3"
+    "styled-components": "5.2.3",
+    "use-state-with-callback": "2.0.3"
   },
   "devDependencies": {
     "@babel/core": "7.13.15",

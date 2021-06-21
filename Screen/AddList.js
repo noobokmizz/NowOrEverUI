@@ -49,7 +49,7 @@ const ITEM=[
     value:'value',
   }
 ]
-const levenshtein=require('js-levenshtein');
+//const levenshtein=require('js-levenshtein');
 
 const AddList = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
