@@ -1,13 +1,12 @@
-import React, {useState, createRef} from 'react';
+import React, {useState, createRef,useEffect} from 'react';
 import styled, {ThemeProvider} from 'styled-components/native';
 import {theme} from './src/theme';
-import Input from './src/components/Input';
+import {Input,ContextInput} from './src/components/Input';
+//import ContextInput from './src/components/Input';
 import {Button, View, Text, StyleSheet,TouchableOpacity} from 'react-native';
 import {StatusBar,Dimensions} from 'react-native';
 import Task from './Components/Task';
-import User from './src/components/User';
-import UserContext from './src/context/User';
-import {UserProvider} from './src/context/User';
+import AsyncStorage from '@react-native-community/async-storage';
 /*
 const Container=styled.SafeAreaView `
     flex:1;
@@ -34,20 +33,55 @@ const List = styled.ScrollView`
 export const BucketList=({navigation})=>{
     const width=Dimensions.get('window').width;
     const [newList,setNewList]=useState('');
-
-    const _addList=()=>{
-      const ID=Date.now().toString();
-      const newListObject={
-        [ID]: {id: ID, text:newList},
-      };
-      setNewList('');
-      setLists({ ...lists, ...newListObject})
-    }
-    const [lists, setLists]=useState({
-      '1':{id:'1',text:'hmm'},
-      '2':{id:'2',text:'very'},
-      '3':{id:'3',text:'tired'},
-    });
+    const [lists, setLists]=useState([]);
+    const [mem_idnum,setMem_idnum]=useState('');
+    const [category_list,setCategory_list]=useState([]);
+    const [tasks,setTasks]=useState([]);
+    const _deleteTask = id => {
+      const currentTasks=Object.assign({},tasks);
+      delete currentTasks[id];
+      setTasks(currentTasks);
+    };
+    useEffect(async ()=>{
+      AsyncStorage.getItem('mem_idnum',(err,result)=>{
+        setMem_idnum(result);
+        console.log('result:',result);
+      });
+      await fetch('http://3.35.217.247:8080/api/bucketlist/list',{
+      method:'POST',
+      headers: { // header에 로그인 후 서버로 부터 받은 토큰 저장(생략가능)
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        mem_idnum : mem_idnum
+        }),
+      })
+      .then((response) => response.json())
+      .then((responseJson)=>{
+        console.log('idnum:',mem_idnum);
+        console.log('wht not fetch?');
+        const category= responseJson.only_category;
+        setCategory_list(category);
+        console.log('responseJson:',responseJson);
+        console.log('response:',responseJson.only_category);
+        
+      
+          //console.log('response:',responseJson.only_category);
+          console.log('category:',category);
+          console.log('send list:',category_list);
+          let category_array=[];
+          let i;
+          for(i=0; i<category_list.length; i++){
+            category_array.push({text:category_list[i].cs_activity, id:category_list[i].cs_id});
+          }
+          setTasks(category_array);
+          
+          console.log('show task list:',tasks);
+        })
+        .catch((error) => {
+        //console.error(error);
+      });
+    },[mem_idnum,category_list]);
     const _handleTextChange=text=>{
         setNewList(text);
     };
@@ -65,14 +99,10 @@ export const BucketList=({navigation})=>{
                   <Text style={StyleList.profileHeaderText}>admin</Text>
               </View>
               <View>
-                <Input
-                 placeholder="+ Add a List"
-                 value={newList}
-                 onChangeText={_handleTextChange}
-                 onSubmitEditing={_addList}
-                 />
+                
               </View>
-              <View style={{flexDirection:'row'}}>
+              <View style={{flexDirection:'row', borderBottomColor:'gray',borderBottomWidth: 1, borderBottomLeftRadius:12,
+            borderBottomRightRadius:12}}>
                   <Text style={{margin:10, fontWeight: 'bold', fontSize:25}}>Bucket List</Text>
                   <TouchableOpacity
                       style={StyleList.button}
@@ -82,22 +112,16 @@ export const BucketList=({navigation})=>{
                   </TouchableOpacity>
               </View>
               
-              <View style={{height:400, margin:10}}>
+              <View style={{height:200, marginLeft:20}}>
                 <List width={width}>
-                  {Object.values(lists)
+                  {Object.values(tasks)
                   .reverse()
                   .map(item=>(
-                    <Task key={item.id} text={item.text}/>
+                    <Task key={item.id} item={item} deleteTask={_deleteTask} />
                   ))}
                 </List>
               </View>
-              <View>
-                <UserProvider>
-                  <View>
-                    <User />
-                  </View>
-                </UserProvider>
-              </View>
+              
           </View>
           </Container>
         </ThemeProvider>

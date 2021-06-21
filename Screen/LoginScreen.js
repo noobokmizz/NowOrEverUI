@@ -45,24 +45,18 @@ const LoginScreen = ({navigation}) => {
 	 let encodedValue = encodeURIComponent(dataToSend[key]);
       formBody.push(encodedKey + '=' + encodedValue);
     }
-   // formBody = formBody.join('&');
-   // fetch('http://localhost:8080/api/user/login', {
-     // method: 'POST',
-     // body: formBody,
-     // headers: {
-     //   Header Defination
-     //   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-     // },
-   // })
-	fetch('http://172.20.32.1:8080/api/user/login', {
+
+	fetch('http://3.35.217.247:8080/api/user/login', {
 		method: 'POST',
 		body: JSON.stringify({
-			mem_email : userEmail,
+			mem_userid : userEmail,
 			mem_password : userPassword
 			}),
-		headers: { // header에 로그인 후 서버로 부터 받은 토큰 저장(생략가능)
+		
+    headers: { // header에 로그인 후 서버로 부터 받은 토큰 저장(생략가능)
 			'Content-Type': 'application/json',
 		},
+    
 	})
       .then((response) => response.json())
       .then((responseJson) => {
@@ -71,7 +65,12 @@ const LoginScreen = ({navigation}) => {
         console.log(responseJson);
         // If server response message same as Data Matched
         if (responseJson.status == 1) {
-          AsyncStorage.setItem('user_id', responseJson.data.user_id);
+          //AsyncStorage.setItem('user_id', responseJson.data.user_id);
+          AsyncStorage.setItem('mem_idnum', responseJson.data.mem_idnum);
+          AsyncStorage.setItem('name', responseJson.data.name);
+          AsyncStorage.setItem('age', responseJson.data.age);
+          AsyncStorage.setItem('email', responseJson.data.email);
+          AsyncStorage.setItem('password', responseJson.data.password);
           console.log(responseJson.data.user_id);
           navigation.replace('TabNavigation');
         } else {
