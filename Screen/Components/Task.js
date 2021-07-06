@@ -20,17 +20,21 @@ const Contents=styled.Text`
     `;
 
 const Task=({item,deleteTask})=>{
+    if(item.length!=0)
     return(
         <Container>
-            <Contents style={{marginLeft:10}}>{item.text}</Contents>
+            <Contents style={{marginLeft:10}}>{
+            item.text
+            }</Contents>
             <IconButton type={images.search}/>
             <IconButton type={images.delete} id={item.id} onPressOut={deleteTask}/>
         </Container>
     );
+    return(<View/>);
 };
 
 Task.propTypes={
-    text:PropTypes.string.isRequired,
+    item:PropTypes.object.isRequired,
     deleteTask:PropTypes.func.isRequired,
 };
 

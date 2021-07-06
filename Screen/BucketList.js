@@ -1,4 +1,5 @@
-import React, {useState, createRef,useEffect} from 'react';
+/* eslint-disable prettier/prettier */
+import React, {useState, createRef, useEffect} from 'react';
 import styled, {ThemeProvider} from 'styled-components/native';
 import {theme} from './src/theme';
 import {Input,ContextInput} from './src/components/Input';
@@ -37,15 +38,15 @@ export const BucketList=({navigation})=>{
     const [mem_idnum,setMem_idnum]=useState('');
     const [once,setOnce]=useState(0);
     const [category_list,setCategory_list]=useState([]);
-    //let category_list=[];
     const [location_list,setLocation_list]=useState([]);
-    //let location_list=[];
     const [tasks,setTasks]=useState([{text:'',id:''}]);
     const _deleteTask = id => {
       const currentTasks=Object.assign({},category_list);
       delete currentTasks[id];
       setTasks(currentTasks);
     };
+    /* 원본 */
+    /*
     useEffect(async ()=>{
       if(tasks==[])
         return;
@@ -99,7 +100,67 @@ export const BucketList=({navigation})=>{
         .catch((error) => {
         //console.error(error);
       });
+    },[]);
+    */
+   /*  */
+   useEffect(async ()=>{
+    try{
+      //if(tasks==[]) return;
+      /*await AsyncStorage.getItem('mem_idnum',async (err,result)=>{
+        await setMem_idnum(result);
+        console.log('result:',result);
+      });*/
+      const async_mem_idnum=await AsyncStorage.getItem('mem_idnum');
+      console.log('async_mem_idnum:',async_mem_idnum);
+      setMem_idnum(() =>async_mem_idnum);
+    }catch(error){
+        console.error(error);
+        }
+    },[]);
+
+    useEffect(async()=>{
+      try{
+      if(mem_idnum=='')
+      return;
+      console.log('mem_idnum:',mem_idnum);
+      const response=await fetch('http://3.35.217.247:8080/api/bucketlist/list',{
+      method:'POST',
+      headers: { // header에 로그인 후 서버로 부터 받은 토큰 저장(생략가능)
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        mem_idnum : mem_idnum
+        }),
+      });
+      const responseJson=await response.json();
+        //console.log('idnum:',mem_idnum);
+        const category= responseJson.only_category;
+        const location=responseJson.location;
+        console.log('responseJson:',responseJson);
+          console.log('category:',category);
+          let category_array=[];
+          let location_array=[];
+          let i;
+          //console.log('category.length:',category.length);
+          for(i=0; i<category.length; i++){
+            category_array.push({text:category[i].cs_activity, id:category[i].cs_id});
+          }
+          //console.log('location.length:',location.length);
+          for(i=0; i<location.length; i++){
+            location_array.push({text:location[i].lc_name, id:location[i].lc_id});
+          }
+          console.log('location_array:',location_array);
+          await setCategory_list(category_array);
+          await setLocation_list(location_array);
+          /* await를 해도 비동기적으로 작동 x*/
+          //console.log('category_list:',category_list);
+          //console.log('location_list:',location_list);
+
+      } catch(error){
+      console.error(error);
+      }
     },[mem_idnum]);
+
     const _handleTextChange=text=>{
         setNewList(text);
     };
