@@ -20,8 +20,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Loader from './Components/Loader';
 
 const LoginScreen = ({navigation}) => {
-  const [userEmail, setUserEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
+  const [mem_userid, setMem_userid] = useState('');
+  const [mem_password, setMem_password] = useState('');
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
 
@@ -29,28 +29,21 @@ const LoginScreen = ({navigation}) => {
 
   const handleSubmitPress = () => {
     setErrortext('');
-    if (!userEmail) {
-      alert('Please fill Email');
+    if (!mem_userid) {
+      alert('Please fill ID');
       return;
     }
-    if (!userPassword) {
+    if (!mem_password) {
       alert('Please fill Password');
       return;
     }
     setLoading(true);
-    let dataToSend = {user_email: userEmail, user_password: userPassword};
-    let formBody = [];
-    for (let key in dataToSend) {
-     let encodedKey = encodeURIComponent(key);
-	 let encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
 
-	fetch('http://3.35.217.247:8080/api/user/login', {
+	fetch('http://192.168.35.57:8080/user/login', {
 		method: 'POST',
 		body: JSON.stringify({
-			mem_userid : userEmail,
-			mem_password : userPassword
+			mem_userid : mem_userid,
+			mem_password : mem_password
 			}),
 		
     headers: { // header에 로그인 후 서버로 부터 받은 토큰 저장(생략가능)
@@ -71,6 +64,7 @@ const LoginScreen = ({navigation}) => {
           AsyncStorage.setItem('age', responseJson.data.age);
           AsyncStorage.setItem('email', responseJson.data.email);
           AsyncStorage.setItem('password', responseJson.data.password);
+          AsyncStorage.setItem('bucketList',responseJson.data.bucketlist);
           console.log(responseJson.data.user_id);
           navigation.replace('TabNavigation');
         } else {
@@ -111,11 +105,11 @@ const LoginScreen = ({navigation}) => {
             <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}
-                onChangeText={(UserEmail) => setUserEmail(UserEmail)}
-                placeholder="Enter Email" //dummy@abc.com
+                onChangeText={(mem_userid) => setMem_userid(mem_userid)}
+                placeholder="Enter ID" //dummy@abc.com
                 placeholderTextColor="#8b9cb5"
                 autoCapitalize="none"
-                keyboardType="email-address"
+                //keyboardType="email-address"
                 returnKeyType="next"
                 onSubmitEditing={() =>
                   passwordInputRef.current && passwordInputRef.current.focus()
@@ -127,7 +121,7 @@ const LoginScreen = ({navigation}) => {
             <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}
-                onChangeText={(UserPassword) => setUserPassword(UserPassword)}
+                onChangeText={(UserPassword) => setMem_password(UserPassword)}
                 placeholder="Enter Password" //12345
                 placeholderTextColor="#8b9cb5"
                 keyboardType="default"
