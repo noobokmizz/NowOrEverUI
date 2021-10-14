@@ -18,10 +18,16 @@ import {
 import Loader from './Components/Loader';
 
 const RegisterScreen = (props) => {
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userAge, setUserAge] = useState('');
-  const [userPassword, setUserPassword] = useState('');
+  const [mem_userid, setMem_userid] = useState('');
+  const [mem_email, setMem_email] = useState('');
+  const [mem_nickname, setMem_nickname] = useState('');
+  const [mem_sex, setMem_sex] = useState(0);
+  const [mem_birthday, setMem_birthday] = useState('');
+  const [mem_password, setMem_password] = useState('');
+  const [mem_username, setMem_username] = useState('');
+  const [mem_autologin, setMem_autologin] = useState(0);
+  const [mem_phone, setMem_phone] = useState('');
+
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
   const [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
@@ -33,25 +39,45 @@ const RegisterScreen = (props) => {
 
   const handleSubmitButton = () => {
     setErrortext('');
-    if (!userName) {
-      alert('Please fill Name');
+    if (!mem_userid) {
+      alert('Please fill id');
       return;
     }
-    if (!userEmail) {
-      alert('Please fill Email');
+    if (!mem_email) {
+      alert('Please fill email');
       return;
     }
-    if (!userAge) {
-      alert('Please fill Age');
+    if (!mem_nickname) {
+      alert('Please fill nickname');
       return;
     }
-    if (!userPassword) {
-      alert('Please fill Password');
+    if (!mem_sex) {
+      alert('Please check sex');
+      return;
+    }
+    if (!mem_birthday) {
+      alert('Please fill birth');
+      return;
+    }
+    if (!mem_password) {
+      alert('Please fill password');
+      return;
+    }
+    if (!mem_username) {
+      alert('Please fill name');
+      return;
+    }
+    if (!mem_autologin) {
+      alert('Please check userid');
+      return;
+    }
+    if (!mem_phone) {
+      alert('Please fill phone number');
       return;
     }
     //Show Loader
     setLoading(true);
-    var dataToSend = {
+    /*var dataToSend = {
       user_name: userName,
       user_email: userEmail,
       user_age: userAge,
@@ -64,14 +90,23 @@ const RegisterScreen = (props) => {
       formBody.push(encodedKey + '=' + encodedValue);
     }
     formBody = formBody.join('&');
-
-    fetch('http://3.35.217.247:8080/api/user/register', {
+    */
+    fetch('http://192.168.35.57:8080/user/register', {
 		method: 'POST',
 		body: JSON.stringify({
-			mem_name : userName,
-			mem_email : userEmail,
-			mem_age : userAge,
-			mem_password : userPassword
+			// mem_name : userName,
+			// mem_email : userEmail,
+			// mem_age : userAge,
+			// mem_password : userPassword,
+      mem_userid : mem_userid,
+      mem_email : mem_email,
+      mem_nickname : mem_nickname,
+      mem_sex : mem_sex,
+      mem_birthday : mem_birthday,
+      mem_password : mem_password,
+      mem_username : mem_username,
+      mem_autologin : mem_autologin,
+      mem_phone : mem_phone
 			}),
 		headers: {
 			//Header Defination
@@ -143,7 +178,7 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserName) => setUserName(UserName)}
+              onChangeText={(mem_username) => setMem_username(mem_username)}
               underlineColorAndroid="#f000"
               placeholder="Enter Name"
               placeholderTextColor="#8b9cb5"
@@ -158,7 +193,22 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserEmail) => setUserEmail(UserEmail)}
+              onChangeText={(mem_userid) => setMem_userid(mem_userid)}
+              underlineColorAndroid="#f000"
+              placeholder="Enter id"
+              placeholderTextColor="#8b9cb5"
+              autoCapitalize="sentences"
+              returnKeyType="next"
+              onSubmitEditing={() =>
+                emailInputRef.current && emailInputRef.current.focus()
+              }
+              blurOnSubmit={false}
+            />
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(UserEmail) => setMem_email(UserEmail)}
               underlineColorAndroid="#f000"
               placeholder="Enter Email"
               placeholderTextColor="#8b9cb5"
@@ -174,25 +224,79 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserAge) => setUserAge(UserAge)}
+              onChangeText={(UserPassword) => setMem_password(UserPassword)}
               underlineColorAndroid="#f000"
-              placeholder="Enter Age"
+              placeholder="Enter Password"
               placeholderTextColor="#8b9cb5"
-              keyboardType="numeric"
-              ref={ageInputRef}
+              autoCapitalize="sentences"
+              ref={passwordInputRef}
               returnKeyType="next"
-              onSubmitEditing={() =>
-                passwordInputRef.current && passwordInputRef.current.focus()
-              }
+              onSubmitEditing={Keyboard.dismiss}
               blurOnSubmit={false}
             />
           </View>
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserPassword) => setUserPassword(UserPassword)}
+              onChangeText={(Nickname) => setMem_nickname(Nickname)}
               underlineColorAndroid="#f000"
-              placeholder="Enter Password"
+              placeholder="Enter Nickname"
+              placeholderTextColor="#8b9cb5"
+              autoCapitalize="sentences"
+              ref={passwordInputRef}
+              returnKeyType="next"
+              onSubmitEditing={Keyboard.dismiss}
+              blurOnSubmit={false}
+            />
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(Sex) => setMem_sex(Sex)}
+              underlineColorAndroid="#f000"
+              placeholder="Enter Sex"
+              placeholderTextColor="#8b9cb5"
+              autoCapitalize="sentences"
+              ref={passwordInputRef}
+              returnKeyType="next"
+              onSubmitEditing={Keyboard.dismiss}
+              blurOnSubmit={false}
+            />
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(Birth) => setMem_birthday(Birth)}
+              underlineColorAndroid="#f000"
+              placeholder="Enter Birth"
+              placeholderTextColor="#8b9cb5"
+              autoCapitalize="sentences"
+              ref={passwordInputRef}
+              returnKeyType="next"
+              onSubmitEditing={Keyboard.dismiss}
+              blurOnSubmit={false}
+            />
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(phone) => setMem_phone(phone)}
+              underlineColorAndroid="#f000"
+              placeholder="Enter Phone number"
+              placeholderTextColor="#8b9cb5"
+              autoCapitalize="sentences"
+              ref={passwordInputRef}
+              returnKeyType="next"
+              onSubmitEditing={Keyboard.dismiss}
+              blurOnSubmit={false}
+            />
+          </View>
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(autologin) => setMem_autologin(autologin)}
+              underlineColorAndroid="#f000"
+              placeholder="autologin?"
               placeholderTextColor="#8b9cb5"
               autoCapitalize="sentences"
               ref={passwordInputRef}
