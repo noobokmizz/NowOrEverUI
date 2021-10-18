@@ -53,7 +53,7 @@ export const BucketList=({navigation})=>{
         setMem_idnum(result);
         console.log('result:',result);
       });
-      await fetch('http://3.35.217.247:8080/api/bucketlist/list',{
+      await fetch('http://3.35.217.247:8080/bucketlist/show',{
       method:'POST',
       headers: { // header에 로그인 후 서버로 부터 받은 토큰 저장(생략가능)
         'Content-Type': 'application/json',

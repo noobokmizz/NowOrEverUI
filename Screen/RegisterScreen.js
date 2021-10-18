@@ -176,6 +176,9 @@ const RegisterScreen = (props) => {
         </View>
         <KeyboardAvoidingView enabled>
           <View style={styles.SectionStyle}>
+          <Text style={styles.textStyle}>
+              Name
+            </Text>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(mem_username) => setMem_username(mem_username)}
@@ -191,6 +194,7 @@ const RegisterScreen = (props) => {
             />
           </View>
           <View style={styles.SectionStyle}>
+           
             <TextInput
               style={styles.inputStyle}
               onChangeText={(mem_userid) => setMem_userid(mem_userid)}
@@ -347,6 +351,19 @@ const styles = StyleSheet.create({
     color: 'blue',
     paddingVertical: 10,
     fontSize: 16,
+  },
+  textStyle:{
+    flex: 0.3,
+    color: 'black',
+    marginLeft:5,
+    marginRight:5,
+    marginTop:5,
+    fontWeight: 'bold',
+    //paddingLeft: 5,
+    //paddingRight: 5,
+    //borderWidth: 1,
+    //borderRadius: 30,
+    //borderColor: '#dadae8',
   },
   inputStyle: {
     flex: 1,
