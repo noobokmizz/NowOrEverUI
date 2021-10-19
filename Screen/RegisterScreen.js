@@ -14,18 +14,18 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-
+import { RadioButton } from 'react-native-paper';
 import Loader from './Components/Loader';
 
 const RegisterScreen = (props) => {
   const [mem_userid, setMem_userid] = useState('');
   const [mem_email, setMem_email] = useState('');
   const [mem_nickname, setMem_nickname] = useState('');
-  const [mem_sex, setMem_sex] = useState(0);
+  const [mem_sex, setMem_sex] = useState(-1);
   const [mem_birthday, setMem_birthday] = useState('');
   const [mem_password, setMem_password] = useState('');
   const [mem_username, setMem_username] = useState('');
-  const [mem_autologin, setMem_autologin] = useState(0);
+  const [mem_autologin, setMem_autologin] = useState(-1);
   const [mem_phone, setMem_phone] = useState('');
 
   const [loading, setLoading] = useState(false);
@@ -51,7 +51,7 @@ const RegisterScreen = (props) => {
       alert('Please fill nickname');
       return;
     }
-    if (!mem_sex) {
+    if (mem_sex==-1) {
       alert('Please check sex');
       return;
     }
@@ -67,8 +67,8 @@ const RegisterScreen = (props) => {
       alert('Please fill name');
       return;
     }
-    if (!mem_autologin) {
-      alert('Please check userid');
+    if (mem_autologin==-1) {
+      alert('Please check autologin');
       return;
     }
     if (!mem_phone) {
@@ -91,7 +91,7 @@ const RegisterScreen = (props) => {
     }
     formBody = formBody.join('&');
     */
-    fetch('http://192.168.35.57:8080/user/register', {
+    fetch('http://192.168.238.63:8080/user/register', {
 		method: 'POST',
 		body: JSON.stringify({
 			// mem_name : userName,
@@ -115,6 +115,15 @@ const RegisterScreen = (props) => {
 	})
       .then((response) => response.json())
       .then((responseJson) => {
+        console.log("mem_userid:"+mem_userid);
+        console.log("mem_email:"+ mem_email);
+        console.log("mem_nickname:"+mem_nickname);
+        console.log("mem_sex:"+mem_sex);
+        console.log("mem_birthday:"+mem_birthday);
+        console.log("mem_password:"+mem_password);
+        console.log("mem_username:"+mem_username);
+        console.log("mem_autologin:"+mem_autologin);
+        console.log("mem_phone:"+mem_phone);
         //Hide Loader
         setLoading(false);
         console.log(responseJson);
@@ -176,7 +185,7 @@ const RegisterScreen = (props) => {
         </View>
         <KeyboardAvoidingView enabled>
           <View style={styles.SectionStyle}>
-          <Text style={styles.textStyle}>
+            <Text style={styles.textStyle}>
               Name
             </Text>
             <TextInput
@@ -194,7 +203,9 @@ const RegisterScreen = (props) => {
             />
           </View>
           <View style={styles.SectionStyle}>
-           
+          <Text style={styles.textStyle}>
+              ID
+            </Text>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(mem_userid) => setMem_userid(mem_userid)}
@@ -210,6 +221,9 @@ const RegisterScreen = (props) => {
             />
           </View>
           <View style={styles.SectionStyle}>
+          <Text style={styles.textStyle}>
+              Email
+            </Text>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(UserEmail) => setMem_email(UserEmail)}
@@ -226,6 +240,9 @@ const RegisterScreen = (props) => {
             />
           </View>
           <View style={styles.SectionStyle}>
+          <Text style={styles.textStyle}>
+              PW
+            </Text>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(UserPassword) => setMem_password(UserPassword)}
@@ -240,6 +257,9 @@ const RegisterScreen = (props) => {
             />
           </View>
           <View style={styles.SectionStyle}>
+          <Text style={styles.textStyle}>
+              Nickname
+            </Text>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(Nickname) => setMem_nickname(Nickname)}
@@ -254,20 +274,9 @@ const RegisterScreen = (props) => {
             />
           </View>
           <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(Sex) => setMem_sex(Sex)}
-              underlineColorAndroid="#f000"
-              placeholder="Enter Sex"
-              placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              ref={passwordInputRef}
-              returnKeyType="next"
-              onSubmitEditing={Keyboard.dismiss}
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
+          <Text style={styles.textStyle}>
+              Birth
+            </Text>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(Birth) => setMem_birthday(Birth)}
@@ -282,6 +291,33 @@ const RegisterScreen = (props) => {
             />
           </View>
           <View style={styles.SectionStyle}>
+            <View style={styles.radioStyle}>
+              <Text style={styles.genderText}>
+                Male
+              </Text>
+              <RadioButton
+                value="male"
+                status={ mem_sex === 0 ? 'checked' : 'unchecked' }
+                onPress={() => setMem_sex(0)}
+              />
+            </View>
+              <View style={styles.radioStyle}>
+                <Text style={styles.genderText}>
+                  FeMale
+                </Text>
+                <RadioButton
+                  style={styles.radioStyle}
+                  value="female"
+                  status={ mem_sex === 1 ? 'checked' : 'unchecked' }
+                  onPress={() => setMem_sex(1)}
+                />
+              </View>
+          </View>
+         
+          <View style={styles.SectionStyle}>
+          <Text style={styles.textStyle}>
+              Phone
+            </Text>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(phone) => setMem_phone(phone)}
@@ -296,17 +332,24 @@ const RegisterScreen = (props) => {
             />
           </View>
           <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(autologin) => setMem_autologin(autologin)}
-              underlineColorAndroid="#f000"
-              placeholder="autologin?"
-              placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              ref={passwordInputRef}
-              returnKeyType="next"
-              onSubmitEditing={Keyboard.dismiss}
-              blurOnSubmit={false}
+            <Text style={styles.textStyle}>
+              Autologin
+            </Text>
+            <Text style={styles.genderText}>
+              Yes
+            </Text>
+            <RadioButton
+              value="yes"
+              status={ mem_autologin === 1 ? 'checked' : 'unchecked' }
+              onPress={() => setMem_autologin(1)}
+            />
+            <Text style={styles.genderText}>
+              No
+            </Text>
+            <RadioButton
+              value="no"
+              status={ mem_autologin === 0 ? 'checked' : 'unchecked' }
+              onPress={() => setMem_autologin(0)}
             />
           </View>
           {errortext != '' ? (
@@ -373,6 +416,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 30,
     borderColor: '#dadae8',
+  },
+  genderText:{
+    color: 'black',
+    marginLeft:5,
+    //marginRight:2,
+    marginTop:5,
+    fontWeight: 'bold',
+  },
+  radioStyle:{
+    flexDirection: 'row',
+    //flex:0.5,
+    marginLeft: 5,
+    //marginRight: 5,
+    //margin: 10,
   },
   errorTextStyle: {
     color: 'red',
