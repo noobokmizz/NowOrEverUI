@@ -32,74 +32,50 @@ const List = styled.ScrollView`
 
 export const BucketList=({navigation})=>{
     const width=Dimensions.get('window').width;
-    const [newList,setNewList]=useState('');
-    const [lists, setLists]=useState([]);
+
     const [mem_idnum,setMem_idnum]=useState('');
-    const [once,setOnce]=useState(0);
+    const [bk_id,setBk_id]=useState(0);
+    const [bucketlistContentsList,setBucketlistContentsList]=useState([]);
     const [category_list,setCategory_list]=useState([]);
-    //let category_list=[];
     const [location_list,setLocation_list]=useState([]);
-    //let location_list=[];
     const [tasks,setTasks]=useState([{text:'',id:''}]);
+
     const _deleteTask = id => {
       const currentTasks=Object.assign({},category_list);
       delete currentTasks[id];
       setTasks(currentTasks);
     };
+
     useEffect(async ()=>{
-      if(tasks==[])
-        return;
       AsyncStorage.getItem('mem_idnum',(err,result)=>{
         setMem_idnum(result);
         console.log('result:',result);
       });
-      await fetch('http://3.35.217.247:8080/bucketlist/show',{
+      AsyncStorage.getItem('bucketlist',(err,result)=>{
+        setBk_id(result.bk_id);
+        console.log('result:',result);
+      });
+
+      await fetch('http://192.168.238.63:8080/bucketlist/show',{
       method:'POST',
-      headers: { // header에 로그인 후 서버로 부터 받은 토큰 저장(생략가능)
+      headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        mem_idnum : mem_idnum
+        mem_idnum : mem_idnum,
+        bk_id:bk_id
         }),
       })
       .then((response) => response.json())
       .then((responseJson)=>{
-        if(mem_idnum!='' && once==0){
-          setOnce(1);
-        console.log('idnum:',mem_idnum);
-        const category= responseJson.only_category;
-        const location=responseJson.location;
-        //setCategory_list(category);
+        setBucketlistContentsList(responseJson.bucketlistContentsList);
         console.log('responseJson:',responseJson);
-        console.log('response:',responseJson.only_category);
-        
-      
-          //console.log('response:',responseJson.only_category);
-          console.log('category:',category);
-          let category_array=[];
-          let location_array=[];
-          let i;
-          console.log('category.length:',category.length);
-          for(i=0; i<category.length; i++){
-            category_array.push({text:category[i].cs_activity, id:category[i].cs_id});
-            //category_list.push({text:category[i].cs_activity, id:category[i].cs_id});
-          }
-          console.log('location.length:',location.length);
-          for(i=0; i<location.length; i++){
-            location_array.push({text:location[i].lc_name, id:location[i].lc_id});
-            //location_list.push({text:location[i].lc_name, id:location[i].lc_id});
-          }
-          console.log('location_array:',location_array);
-          setCategory_list(category_array);
-          setLocation_list(location_array);
-          console.log('category_list:',category_list);
-          console.log('location_list:',location_list);
-        }
+        console.log('response:',bucketlistContentsList);
         })
         .catch((error) => {
-        //console.error(error);
+          console.error(error);
       });
-    },[mem_idnum]);
+    });
     const _handleTextChange=text=>{
         setNewList(text);
     };
@@ -140,25 +116,14 @@ export const BucketList=({navigation})=>{
               </View>
               <View style={{height:200, marginLeft:20}}>
                 <List width={width}>
-                  {Object.values(category_list)
+                  {Object.values(bucketlistContentsList)
                   .reverse()
                   .map(item=>(
-                    <Task key={item.id} item={item} deleteTask={_deleteTask} />
+                    <Task key={item.id} name={item.category} item={item} deleteTask={_deleteTask} />
                   ))}
                 </List>
               </View>
-              <View style={{height:50}}>
-              <Text style={{margin:10, fontWeight: 'bold', fontSize:20}}>My place</Text>
-              </View>
-              <View style={{height:200, marginLeft:20}}>
-                <List width={width}>
-                  {Object.values(location_list)
-                  .reverse()
-                  .map(item=>(
-                    <Task key={item.id} item={item} deleteTask={_deleteTask} />
-                  ))}
-                </List>
-              </View>
+             
               
           </View>
           </Container>

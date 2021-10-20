@@ -39,7 +39,7 @@ const LoginScreen = ({navigation}) => {
     }
     setLoading(true);
 
-	fetch('http://192.168.35.57:8080/user/login', {
+	fetch('http://192.168.238.63:8080/user/login', {
 		method: 'POST',
 		body: JSON.stringify({
 			mem_userid : mem_userid,
@@ -64,8 +64,8 @@ const LoginScreen = ({navigation}) => {
           AsyncStorage.setItem('age', responseJson.data.age);
           AsyncStorage.setItem('email', responseJson.data.email);
           AsyncStorage.setItem('password', responseJson.data.password);
-          AsyncStorage.setItem('bucketList',responseJson.data.bucketlist);
-          console.log(responseJson.data.user_id);
+          AsyncStorage.setItem('bucketlist',responseJson.data.bucketlist);
+          console.log(responseJson.data);
           navigation.replace('TabNavigation');
         } else {
           setErrortext('Please check your email id or password');

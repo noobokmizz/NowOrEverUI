@@ -22,7 +22,7 @@ const Contents=styled.Text`
 const Task=({item,deleteTask})=>{
     return(
         <Container>
-            <Contents style={{marginLeft:10}}>{item.text}</Contents>
+            <Contents style={{marginLeft:10}}>{item.category}</Contents>
             <IconButton type={images.search}/>
             <IconButton type={images.delete} id={item.id} onPressOut={deleteTask}/>
         </Container>
