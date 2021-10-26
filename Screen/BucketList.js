@@ -7,6 +7,8 @@ import {Button, View, Text, StyleSheet,TouchableOpacity} from 'react-native';
 import {StatusBar,Dimensions} from 'react-native';
 import Task from './Components/Task';
 import AsyncStorage from '@react-native-community/async-storage';
+
+import {localhost} from '../App';
 /*
 const Container=styled.SafeAreaView `
     flex:1;
@@ -36,27 +38,37 @@ export const BucketList=({navigation})=>{
     const [mem_idnum,setMem_idnum]=useState('');
     const [bk_id,setBk_id]=useState(0);
     const [bucketlistContentsList,setBucketlistContentsList]=useState([]);
-    const [category_list,setCategory_list]=useState([]);
-    const [location_list,setLocation_list]=useState([]);
+    //const [category_list,setCategory_list]=useState([]);
+    //const [location_list,setLocation_list]=useState([]);
     const [tasks,setTasks]=useState([{text:'',id:''}]);
-
+    const [loading, setLoading] = useState(false);
+  
     const _deleteTask = id => {
       const currentTasks=Object.assign({},category_list);
       delete currentTasks[id];
       setTasks(currentTasks);
     };
-
-    useEffect(async ()=>{
-      AsyncStorage.getItem('mem_idnum',(err,result)=>{
-        setMem_idnum(result);
-        console.log('result:',result);
+    useEffect(()=>{
+      AsyncStorage.getItem('userInfo',(err,result)=>{
+        const userInfo=JSON.parse(result);
+        setMem_idnum(userInfo.mem_idnum);
+        setBk_id(userInfo.bucketlist.bk_id);
       });
-      AsyncStorage.getItem('bucketlist',(err,result)=>{
-        setBk_id(result.bk_id);
-        console.log('result:',result);
-      });
+    });
 
-      await fetch('http://192.168.238.63:8080/bucketlist/show',{
+    useEffect(()=>{
+        setLoading(true);
+     
+
+      /*
+      AsyncStorage.getItem('userInfo',(err,result)=>{
+        const userInfo=JSON.parse(result);
+        setMem_idnum(userInfo.mem_idnum);
+        setBk_id(userInfo.bucketlist.bk_id);
+      });
+      */
+      console.log('mem_idnum:'+mem_idnum); console.log('bk_id:'+bk_id);
+      fetch('http://'+localhost+':8080/bucketlist/show',{
       method:'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,14 +80,16 @@ export const BucketList=({navigation})=>{
       })
       .then((response) => response.json())
       .then((responseJson)=>{
+        setLoading(false);
         setBucketlistContentsList(responseJson.bucketlistContentsList);
-        console.log('responseJson:',responseJson);
-        console.log('response:',bucketlistContentsList);
+        console.log('responseJson.bucketlistContentsList:',responseJson.bucketlistContentsList);
         })
         .catch((error) => {
           console.error(error);
-      });
-    });
+        })
+      //});
+    },[mem_idnum,bk_id]);
+
     const _handleTextChange=text=>{
         setNewList(text);
     };
@@ -119,7 +133,7 @@ export const BucketList=({navigation})=>{
                   {Object.values(bucketlistContentsList)
                   .reverse()
                   .map(item=>(
-                    <Task key={item.id} name={item.category} item={item} deleteTask={_deleteTask} />
+                    <Task key={item.id} name={item.category_id} item={item} deleteTask={_deleteTask} />
                   ))}
                 </List>
               </View>

@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import Loader from './Components/Loader';
+import {localhost} from '../App';
 
 const RegisterScreen = (props) => {
   const [mem_userid, setMem_userid] = useState('');
@@ -91,7 +92,7 @@ const RegisterScreen = (props) => {
     }
     formBody = formBody.join('&');
     */
-    fetch('http://192.168.238.63:8080/user/register', {
+    fetch('http://'+localhost+':8080/user/register', {
 		method: 'POST',
 		body: JSON.stringify({
 			// mem_name : userName,

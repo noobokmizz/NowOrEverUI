@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "357571790466",
+    "project_id": "noworever-dbd9c",
+    "storage_bucket": "noworever-dbd9c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357571790466:android:915f338f2bd9ea9af8569b",
+        "android_client_info": {
+          "package_name": "com.noworeverui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "357571790466-lghke4ln4d920nmpmldt6ioppl89lknd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noworeverui",
+            "certificate_hash": "86ea49f5e9458ce823dd19955d22de4a83a04a0b"
+          }
+        },
+        {
+          "client_id": "357571790466-s4qifahohlssq8ttvghlv1a4bkvt3co1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-lUYBxTXE4nTiBpntYEjAVuEt5TTWWmM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "357571790466-s4qifahohlssq8ttvghlv1a4bkvt3co1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -14,14 +14,16 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
-
+import CheckBox from '@react-native-community/checkbox';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import { RadioButton } from 'react-native-paper';
 import Loader from './Components/Loader';
+import {localhost} from '../App';
 
 const LoginScreen = ({navigation}) => {
   const [mem_userid, setMem_userid] = useState('');
   const [mem_password, setMem_password] = useState('');
+  const [autologin,setAutologin]=useState(false);
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
 
@@ -38,8 +40,13 @@ const LoginScreen = ({navigation}) => {
       return;
     }
     setLoading(true);
-
-	fetch('http://192.168.238.63:8080/user/login', {
+    
+    if(autologin)
+      AsyncStorage.setItem("autologin",'1');
+    else
+      AsyncStorage.setItem("autologin",'0');
+    console.log('http://'+localhost+':8080/user/login');
+    fetch('http://'+localhost+':8080/user/login', {
 		method: 'POST',
 		body: JSON.stringify({
 			mem_userid : mem_userid,
@@ -55,17 +62,21 @@ const LoginScreen = ({navigation}) => {
       .then((responseJson) => {
         //Hide Loader
         setLoading(false);
-        console.log(responseJson);
+        //console.log(responseJson);
         // If server response message same as Data Matched
         if (responseJson.status == 1) {
           //AsyncStorage.setItem('user_id', responseJson.data.user_id);
+          /*
           AsyncStorage.setItem('mem_idnum', responseJson.data.mem_idnum);
           AsyncStorage.setItem('name', responseJson.data.name);
           AsyncStorage.setItem('age', responseJson.data.age);
           AsyncStorage.setItem('email', responseJson.data.email);
           AsyncStorage.setItem('password', responseJson.data.password);
-          AsyncStorage.setItem('bucketlist',responseJson.data.bucketlist);
-          console.log(responseJson.data);
+          AsyncStorage.setItem('bk_id',responseJson.data.bucketlist.bk_id);
+          AsyncStorage.setItem('bk_name',responseJson.data.bucketlist.bk_name);
+          */
+         AsyncStorage.setItem('userInfo',JSON.stringify(responseJson.data));
+          console.log("userInfo:"+JSON.stringify(responseJson.data));
           navigation.replace('TabNavigation');
         } else {
           setErrortext('Please check your email id or password');
@@ -78,7 +89,6 @@ const LoginScreen = ({navigation}) => {
         console.error(error);
       });
   };
-
   return (
     <View style={styles.mainBody}>
       <Loader loading={loading} />
@@ -111,9 +121,7 @@ const LoginScreen = ({navigation}) => {
                 autoCapitalize="none"
                 //keyboardType="email-address"
                 returnKeyType="next"
-                onSubmitEditing={() =>
-                  passwordInputRef.current && passwordInputRef.current.focus()
-                }
+                //onSubmitEditing={() => passwordInputRef.current && passwordInputRef.current.focus()}
                 underlineColorAndroid="#f000"
                 blurOnSubmit={false}
               />
@@ -125,12 +133,23 @@ const LoginScreen = ({navigation}) => {
                 placeholder="Enter Password" //12345
                 placeholderTextColor="#8b9cb5"
                 keyboardType="default"
-                ref={passwordInputRef}
+                //ref={passwordInputRef}
                 onSubmitEditing={Keyboard.dismiss}
                 blurOnSubmit={false}
                 secureTextEntry={true}
                 underlineColorAndroid="#f000"
                 returnKeyType="next"
+              />
+            </View>
+            <View style={styles.SectionStyle}>
+              <Text>
+                Autologin
+                </Text>
+              <CheckBox
+                style={styles.checkStyle}
+               disabled={false}
+               value={autologin}
+               onValueChange={(newValue) => setAutologin(newValue)}
               />
             </View>
             {errortext != '' ? (
@@ -196,6 +215,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 30,
     borderColor: '#dadae8',
+  },
+  checkStyle:{
+    marginLeft:10
   },
   registerTextStyle: {
     color: 'blue',

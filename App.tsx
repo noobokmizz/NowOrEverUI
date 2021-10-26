@@ -3,12 +3,13 @@
 import 'react-native-gesture-handler';
 
 // Import React and Component
-import React from 'react';
-
+import React, {useEffect, useState} from 'react';
+import {Provider as ReduxProvider} from 'react-redux'
+import {makeStore} from './Screen/src/store'
 // Import Navigators from React Navigation
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-
+import AsyncStorage from '@react-native-community/async-storage';
 // Import Screens
 import SplashScreen from './Screen/SplashScreen';
 import LoginScreen from './Screen/LoginScreen';
@@ -17,6 +18,8 @@ import DrawerNavigationRoutes from './Screen/DrawerNavigationRoutes';
 import TabNavigation from './Screen/Tab';
 
 const Stack = createStackNavigator();
+const store=makeStore();
+export const localhost='192.168.238.63';
 
 const Auth = () => {
   // Stack Navigator for Login and Sign up Screen
@@ -48,7 +51,25 @@ const Auth = () => {
 /* Switch Navigator for those screens which needs to be switched only once
   and we don't want to switch back once we switch from them to the next one */
 const App = () => {
-  return (
+  /*const [autologin,setAutologin]=useState(false);
+
+  useEffect(()=>{
+    AsyncStorage.getItem('autologin',(err,result)=>{
+      console.log('result(autologin):',result);
+      if(result=='0'){
+        setAutologin(false);
+      }
+      else{
+        setAutologin(true);
+      }
+    });
+    setAutologin(false);
+  },[])
+
+  console.log('autologin : '+autologin);
+  */
+ return (
+    <ReduxProvider store={store}>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SplashScreen">
         
@@ -78,6 +99,7 @@ const App = () => {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    </ReduxProvider>
   );
 };
 
