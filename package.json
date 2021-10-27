@@ -16,6 +16,7 @@
     "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-community/picker": "^1.8.1",
     "@react-native-firebase/app": "^12.9.2",
     "@react-native-firebase/auth": "^12.9.2",
     "@react-native-firebase/firestore": "^12.9.2",

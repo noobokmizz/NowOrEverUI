@@ -11,7 +11,7 @@ const Icon=styled.Image`
   margin:10px;
 `;
 
-const IconButton = ({type, onPressOut})=>{
+const IconButton = ({type,id, onPressOut})=>{
     const _onPressOut=()=>{
         onPressOut(id);
     };
