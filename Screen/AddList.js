@@ -17,6 +17,7 @@
     Text,
     TouchableOpacity,
     TextInput,
+    Alert,
     Modal,
   } from 'react-native';
  import AsyncStorage from '@react-native-community/async-storage';
@@ -184,7 +185,7 @@
       body: JSON.stringify({
         mem_idnum : mem_idnum,
         bk_id:bk_id,
-        bucketlistContentsList:add_list,
+        bucketlistContents:add_list,
         }),
       })
       .then((response) => response.json())
@@ -192,9 +193,12 @@
         console.log(JSON.stringify({
           mem_idnum : mem_idnum,
           bk_id:bk_id,
-          bucketlistContentsList:add_list,
+          bucketlistContents:add_list,
           }));
         console.log('add response:'+JSON.stringify(responseJson));
+        /*if(responseJson.status==1){
+          Alert.alert(추가 완료)
+        }*/
         })
         .catch((error) => {
           console.error(error);
