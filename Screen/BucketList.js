@@ -3,7 +3,14 @@ import styled, {ThemeProvider} from 'styled-components/native';
 import {theme} from './src/theme';
 import {Input,ContextInput} from './src/components/Input';
 //import ContextInput from './src/components/Input';
-import {Button, View, Text, StyleSheet,TouchableOpacity} from 'react-native';
+import {
+  Button,
+   View,
+    Text, 
+    StyleSheet,
+    TouchableOpacity,
+    Alert,
+  } from 'react-native';
 import {StatusBar,Dimensions} from 'react-native';
 import Task from './Components/Task';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -45,27 +52,65 @@ export const BucketList=({navigation})=>{
     const [loading, setLoading] = useState(false);
   
     const _deleteTask = id => {
-      /*
-      const currentTasks=Object.assign({},category_list);
-      delete currentTasks[id];
-      setTasks(currentTasks);
-      */
+      console.log("id:"+id);
      let deleteList=[];
      var task=new Object();
      let list;
+     let taskId=0;
+     let deletename;
+     if(id>=0){
+       for(var i=0; i<bucketlistContentsList.length; i++){
+         if(i==(id-1)){
+           console.log("delete category:"+bucketlistContentsList[i].category);
+          taskId=bucketlistContentsList[i].category_id;
+          console.log("taskId:"+taskId);
+          break;
+         }
+       }
+     }
+     else{
+      for(var i=0; i<bucketlistContentsList.length; i++){
+        if(i==((-id)-1)){
+          console.log("delete location:"+bucketlistContentsList[i].lc_name);
+         taskId=bucketlistContentsList[i].lc_id;
+         console.log("taskId:"+taskId);
+         break;
+        }
+      }
+     }
+     if(id>0){
      for(var i=0; i<category_list.length; i++){
-      if(category_list[i].category_id==id){
+      if(category_list[i].category_id==taskId){
         task.category_id=category_list[i].category_id;
         task.category=category_list[i].category;
         task.lc_id=category_list[i].lc_id;
         task.lc_name=category_list[i].lc_name;
         console.log("delete category i"+i);
         deleteList.push(task);
-        setCategory_list(category_list.filter(category=>category.id!==id));
+        deletename=task.category;
+        setCategory_list(category_list.filter(category=>category.category_id!==taskId));
         //list=category_list;
         //list.splice(i,1);
         break;
       }
+     }
+    }
+     else{
+      for(var i=0; i<location_list.length; i++){
+        if(location_list[i].lc_id==taskId){
+          task.category_id=location_list[i].category_id;
+          task.category=location_list[i].category;
+          task.lc_id=location_list[i].lc_id;
+          task.lc_name=location_list[i].lc_name;
+          console.log("delete location"+task.lc_name);
+          deleteList.push(task);
+        deletename=task.lc_name;
+          setLocation_list(location_list.filter(location=>location.lc_id!==taskId));
+          //list=category_list;
+          //list.splice(i,1);
+          break;
+        }
+       }
      }
      console.log("After delete");
      /*for(var i=0; i<list.length; i++){
@@ -87,14 +132,16 @@ export const BucketList=({navigation})=>{
       })
       .then((response) => response.json())
       .then((responseJson)=>{
-        console.log("mem_idnum:"+mem_idnum);
-        console.log("bk_id:"+bk_id);
-        //console.log("mem_idnum:"+mem_idnum);
-        console.log(JSON.stringify({
-          mem_idnum : mem_idnum,
-          bk_id:bk_id,
-          bucketlistContentsList:deleteList,
-          }));
+        Alert.alert(
+          deletename,
+          "success",
+          [
+            {
+              text: "OK",
+              onPress: () => console.log("OK Pressed") 
+            }
+          ]
+          );
         console.log('Delete response:'+JSON.stringify(responseJson));
         
       })
@@ -102,41 +149,7 @@ export const BucketList=({navigation})=>{
           console.error(error);
         })
   }
-  /*
-  useEffect(()=>{
-    console.log("print category_list");
-    for(var i=0; i<category_list.length; i++){
-      console.log("category:"+category_list[i].category);
-    }
-  },[category_list])
-  
-    useEffect(()=>{
-     fetch('http://'+localhost+':8080/bucketlist/delete',{
-      method:'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        mem_idnum : mem_idnum,
-        bk_id:bk_id,
-        bucketlistContentsList:delete_list,
-        }),
-      })
-      .then((response) => response.json())
-      .then((responseJson)=>{
-        console.log(JSON.stringify({
-          mem_idnum : mem_idnum,
-          bk_id:bk_id,
-          bucketlistContentsList:delete_list,
-          }));
-        console.log('Delete response:'+JSON.stringify(responseJson));
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-    
-  },[delete_list]);
-  */
+
 
     useEffect(()=>{
       AsyncStorage.getItem('userInfo',(err,result)=>{
@@ -168,6 +181,7 @@ export const BucketList=({navigation})=>{
         setLoading(false);
         setBucketlistContentsList(responseJson.bucketlistContentsList);
         console.log('responseJson.bucketlistContentsList:',responseJson.bucketlistContentsList);
+        
         })
         .catch((error) => {
           console.error(error);
@@ -185,7 +199,7 @@ export const BucketList=({navigation})=>{
           task.category_id=bucketlistContentsList[i].category_id;
           task.lc_name=bucketlistContentsList[i].lc_name;
           task.lc_id=bucketlistContentsList[i].lc_id;
-          task.id=i;
+          task.id=i+1;
           cg_list.push(task);
         }
         else{
@@ -193,7 +207,7 @@ export const BucketList=({navigation})=>{
           task.category_id=bucketlistContentsList[i].category_id;
           task.lc_name=bucketlistContentsList[i].lc_name;
           task.lc_id=bucketlistContentsList[i].lc_id;
-          task.id=i;  
+          task.id=-1*(i+1);  
           lc_list.push(task);
         }
       }
@@ -237,7 +251,7 @@ export const BucketList=({navigation})=>{
                   </TouchableOpacity>
               </View>
               <View style={{height:50}}>
-              <Text style={{margin:10, fontWeight: 'bold', fontSize:20}}>My list</Text>
+              <Text style={{margin:10, fontWeight: 'bold', fontSize:20}}>My Category list</Text>
               </View>
               <View style={{height:200, marginLeft:20}}>
                 <List width={width}>
@@ -246,7 +260,24 @@ export const BucketList=({navigation})=>{
                   Object.values(category_list)
                   .reverse()
                   .map((item)=>(
-                    <Task id={item.category_id} key={item.id} name={item.category}  deleteTask={_deleteTask} />
+                    <Task id={item.id} key={item.id} name={item.category}  deleteTask={_deleteTask} />
+                  ))
+               // */
+                }
+                </List>
+              </View>
+
+              <View style={{height:50}}>
+              <Text style={{margin:10, fontWeight: 'bold', fontSize:20}}>My Place list</Text>
+              </View>
+              <View style={{height:200, marginLeft:20}}>
+                <List width={width}>
+                  {
+                   // /*
+                  Object.values(location_list)
+                  .reverse()
+                  .map((item)=>(
+                    <Task id={item.id} key={item.id} name={item.lc_name}  deleteTask={_deleteTask} />
                   ))
                // */
                 }
