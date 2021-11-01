@@ -196,9 +196,30 @@
           bucketlistContents:add_list,
           }));
         console.log('add response:'+JSON.stringify(responseJson));
-        /*if(responseJson.status==1){
-          Alert.alert(추가 완료)
-        }*/
+        if(responseJson.status==1){
+          Alert.alert(
+            add_list.category,
+            "success",
+            [
+              {
+                text: "OK",
+                onPress: () => console.log("OK Pressed") 
+              }
+            ]
+            );
+        }
+        else{
+          Alert.alert(
+            "이미 있는 카테고리입니다.",
+            "fail",
+            [
+              {
+                text: "OK",
+                onPress: () => console.log("OK Pressed") 
+              }
+            ]
+            );
+        }
         })
         .catch((error) => {
           console.error(error);
