@@ -34,14 +34,14 @@ const List = styled.ScrollView`
 
 export const BucketList=({navigation})=>{
     const width=Dimensions.get('window').width;
-
-    const [mem_idnum,setMem_idnum]=useState('');
-    const [bk_id,setBk_id]=useState(0);
+    const [bk_key,setBk_key]=useState({});
+    //const [mem_idnum,setMem_idnum]=useState(0);
+    //const [bk_id,setBk_id]=useState(0);
     const [bucketlistContentsList,setBucketlistContentsList]=useState([]);
     const [category_list,setCategory_list]=useState([]);
     const [location_list,setLocation_list]=useState([]);
     const [delete_list,setDelete_list]=useState([]);
-    const [tasks,setTasks]=useState([{text:'',id:''}]);
+    //const [tasks,setTasks]=useState([{text:'',id:''}]);
     const [loading, setLoading] = useState(false);
   
     const _deleteTask = id => {
@@ -52,35 +52,84 @@ export const BucketList=({navigation})=>{
       */
      let deleteList=[];
      var task=new Object();
+     console.log("id:"+id);
      for(var i=0; i<category_list.length; i++){
-       if(category_list[i].lc_id==id){
+      if(category_list[i].category_id==id){
+        task.category_id=category_list[i].category_id;
+        task.category=category_list[i].category;
+        task.lc_id=category_list[i].lc_id;
+        task.lc_name=category_list[i].lc_name;
+        console.log("delete category i"+i);
+        deleteList.push(task);
+        let list=category_list;
+        list.splice(i,1);
+        setCategory_list(list);
+        break;
+      }
+     }
+     /*
+     for(var i=0; i<category_list.length; i++){
+       if(category_list[i].category_id==id){
           task.category_id=category_list[i].category_id;
           task.category=category_list[i].category;
           task.lc_id=category_list[i].lc_id;
           task.lc_name=category_list[i].lc_name;
-          task.id=i;
+          //task.id=i;
           deleteList.push(task);
           console.log("delete "+task.category);
           setCategory_list(category_list.splice(i,1));
-          setDelete_list(deleteList);
+          //setDelete_list(deleteList);
+          check=1;
           break;
        }
      }
+     if(check==0)
      for(var i=0; i<location_list.length; i++){
       if(location_list[i].lc_id==id){
          task.category_id=location_list[i].category_id;
          task.category=location_list[i].category;
          task.lc_id=location_list[i].lc_id;
          task.lc_name=location_list[i].lc_name;
-         task.id=i;
+         //task.id=i;
          deleteList.push(task);
          console.log("delete "+task.lc_name);  
          setLocation_list(location_list.splice(i,1));
-         setDelete_list(deleteList);
+         //setDelete_list(deleteList);
          break;
+        }
       }
-    }
+      */
+      let mem_idnum=bk_key.mem_idnum;
+      let bk_id=bk_key.bk_id;
+      fetch('http://'+localhost+':8080/bucketlist/delete',{
+      method:'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        mem_idnum : mem_idnum,
+        bk_id:bk_id,
+        bucketlistContentsList:deleteList,
+        }),
+      })
+      .then((response) => response.json())
+      .then((responseJson)=>{
+        console.log("mem_idnum:"+mem_idnum);
+        console.log("bk_id:"+bk_id);
+        //console.log("mem_idnum:"+mem_idnum);
+        console.log(JSON.stringify({
+          mem_idnum : mem_idnum,
+          bk_id:bk_id,
+          bucketlistContentsList:deleteList,
+          }));
+        console.log('Delete response:'+JSON.stringify(responseJson));
+        
+      })
+        .catch((error) => {
+          console.error(error);
+        })
   }
+  /*
     useEffect(()=>{
      fetch('http://'+localhost+':8080/bucketlist/delete',{
       method:'POST',
@@ -100,25 +149,30 @@ export const BucketList=({navigation})=>{
           bk_id:bk_id,
           bucketlistContentsList:delete_list,
           }));
-        console.log('Delete response:'+responseJson);
+        console.log('Delete response:'+JSON.stringify(responseJson));
         })
         .catch((error) => {
           console.error(error);
         })
     
   },[delete_list]);
+  */
 
     useEffect(()=>{
       AsyncStorage.getItem('userInfo',(err,result)=>{
         const userInfo=JSON.parse(result);
-        setMem_idnum(userInfo.mem_idnum);
-        setBk_id(userInfo.bucketlist.bk_id);
+        setBk_key({mem_idnum:userInfo.mem_idnum,bk_id:userInfo.bucketlist.bk_id});
+        //setMem_idnum(userInfo.mem_idnum);
+        //setBk_id(userInfo.bucketlist.bk_id);
       });
-    });
+    },[]);
 
     useEffect(()=>{
       setLoading(true);
-      console.log('mem_idnum:'+mem_idnum); console.log('bk_id:'+bk_id);
+      let mem_idnum=bk_key.mem_idnum;
+      let bk_id=bk_key.bk_id;
+      console.log('mem_idnum:'+mem_idnum);
+      console.log('bk_id:'+bk_id);
       fetch('http://'+localhost+':8080/bucketlist/show',{
       method:'POST',
       headers: {
@@ -139,22 +193,34 @@ export const BucketList=({navigation})=>{
           console.error(error);
         })
       //});
-    },[mem_idnum,bk_id]);
+    },[bk_key]);
 
     useEffect(()=>{
       let lc_list=[];
       let cg_list=[];
       for(var i=0; i<bucketlistContentsList.length; i++){
-        if(bucketlistContentsList[i].lc_id>0){
-          lc_list.push(bucketlistContentsList[i]);
+        var task=new Object();
+        if(bucketlistContentsList[i].lc_id[0]=='-'){
+          task.category=bucketlistContentsList[i].category;
+          task.category_id=bucketlistContentsList[i].category_id;
+          task.lc_name=bucketlistContentsList[i].lc_name;
+          task.lc_id=bucketlistContentsList[i].lc_id;
+          task.id=i;
+          cg_list.push(task);
         }
         else{
-          cg_list.push(bucketlistContentsList[i]);  
+          task.category=bucketlistContentsList[i].category;
+          task.category_id=bucketlistContentsList[i].category_id;
+          task.lc_name=bucketlistContentsList[i].lc_name;
+          task.lc_id=bucketlistContentsList[i].lc_id;
+          task.id=i;  
+          lc_list.push(task);
         }
       }
       setCategory_list(cg_list);
       setLocation_list(lc_list);
     },[bucketlistContentsList])
+    
     const _handleTextChange=text=>{
         setNewList(text);
     };
@@ -195,11 +261,15 @@ export const BucketList=({navigation})=>{
               </View>
               <View style={{height:200, marginLeft:20}}>
                 <List width={width}>
-                  {Object.values(location_list)
+                  {
+                   // /*
+                  Object.values(category_list)
                   .reverse()
                   .map((item)=>(
-                    <Task id={item.lc_id} key={item.id} name={item.lc_name}  deleteTask={_deleteTask} />
-                  ))}
+                    <Task id={item.category_id} key={item.id} name={item.category}  deleteTask={_deleteTask} />
+                  ))
+               // */
+                }
                 </List>
               </View>
              

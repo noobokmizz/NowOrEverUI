@@ -19,8 +19,8 @@ import TabNavigation from './Screen/Tab';
 
 const Stack = createStackNavigator();
 const store=makeStore();
-export const localhost='192.168.238.63'; //학교
-//export const localhost='192.168.35.57'; //집
+//export const localhost='192.168.238.63'; //학교
+export const localhost='192.168.35.57'; //집
 
 const Auth = () => {
   // Stack Navigator for Login and Sign up Screen

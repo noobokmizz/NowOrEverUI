@@ -1,0 +1,26 @@
+//real
+{
+    "mem_idnum": 160,
+    "bk_id": 160,
+    "bucketlistContentsList": [
+        {
+            "category_id": 2,
+            "category" : " 섬(내륙)",
+            "lc_id": "10069717",
+            "lc_name" : null
+        }
+    ]
+}
+//example
+{
+     "mem_idnum":398,
+     "bk_id":201,
+     "bucketlistContentsList":[
+         {
+             "category_id":5,
+             "category":" 낚시용품",
+             "lc_id":"10432327",
+             "lc_name":"바다낚시여행"
+        }
+     ]
+}

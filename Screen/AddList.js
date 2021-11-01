@@ -38,15 +38,18 @@
    const [largeitem, setLargeitem]=useState('');
    const [middleitem, setMiddleitem]=useState('');
    const [smallitem, setSmallitem]=useState('');
+   const [bk_id,setBk_id]=useState(0);
    const [cs_id,setCs_id]=useState('');
-   const [lc_id,setLc_id]=useState('');
+   const [lc_id,setLc_id]=useState('-');
    const [lc_name,setLc_name]=useState('');
+   const [add_list,setAdd_list]=useState({});
    const [category_list,setCategory_list]=useState([]);
    const [location_list,setLocation_list]=useState([]);
    const [mem_idnum,setMem_idnum]=useState('');
    const [checktext, setChecktext] = useState('');
    const [recommend_location,setRecommend_location]=useState([]);
-
+   //const [addlist,setAddlist]=useState([]);
+   const [category,setCategory]=useState({category_id:0,category:"",lc_id:"-",lc_name:""});
    const [category_info,setCategory_info]=useState([]);
    const [location_info,setLocation_info]=useState([]);
 
@@ -58,6 +61,11 @@
      setLc_name(text);
    }
    useEffect(()=>{
+    AsyncStorage.getItem('userInfo',(err,result)=>{
+      const userInfo=JSON.parse(result);
+      setMem_idnum(userInfo.mem_idnum);
+      setBk_id(userInfo.bucketlist.bk_id);
+    });
      fetch('http://'+localhost+':8080/categorylist',{
        method:'GET',
        headers: { // header에 로그인 후 서버로 부터 받은 토큰 저장(생략가능)
@@ -84,7 +92,7 @@
       // console.log('set i:'+i);
       // console.log('value:'+category_info[i].cl_activity);
       // console.log('id:'+category_info[i].category_id);
-      i=i+1;
+     
     }
     i=0;
     console.log('print distinct');
@@ -114,13 +122,8 @@
        list.push({value:item, label:item});
       console.log('i:'+i);
       console.log('value:'+item);
+      //console.log('length:'+item.length)
        i=i+1;
-      }
-
-      if(list[0]==list[2]){
-        console.log('same');
-        console.log('list[0]:'+list[0]);
-        console.log('list[2]:'+set[2]);
       }
     setMiddle_category(list);
    },[largeitem]);
@@ -142,8 +145,64 @@
      console.log('value:'+item);
       i=i+1;
      }
+     for(var i=0; i<category_info.length; i++){
+      if(category_info[i].cm_activity==middleitem){
+        category.category_id=category_info[i].category_id;
+        category.category=category_info[i].category;
+        category.lc_id="-";
+        category.lc_name=null;
+        setAdd_list(category);
+       break;
+       }
+    }
    setSmall_category(list);
   },[middleitem]);
+
+  useEffect(()=>{
+    console.log('smallItem:'+smallitem);
+   let list=[];
+   const set=new Set([]);
+   let category=new Object();
+   for(var i=0; i<category_info.length; i++){
+     if(category_info[i].cs_activity==smallitem){
+       category.category_id=category_info[i].category_id;
+       category.category=category_info[i].category;
+       category.lc_id="-";
+       category.lc_name=null;
+       setAdd_list(category);
+      break;
+      }
+   }
+  },[smallitem]);
+
+  const handleSubmitPress = () => {
+    fetch('http://'+localhost+':8080/bucketlist/add',{
+      method:'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        mem_idnum : mem_idnum,
+        bk_id:bk_id,
+        bucketlistContentsList:add_list,
+        }),
+      })
+      .then((response) => response.json())
+      .then((responseJson)=>{
+        console.log(JSON.stringify({
+          mem_idnum : mem_idnum,
+          bk_id:bk_id,
+          bucketlistContentsList:add_list,
+          }));
+        console.log('add response:'+JSON.stringify(responseJson));
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+    
+  };
+  
+  
   //  const change_middle=(value)=>{
   //    setLarge(value);
   //    let middle_array=[];
@@ -246,6 +305,8 @@
   //        console.error(error);
   //      });
   //  };
+
+
      return (
        <View style={StyleFriendlist.Container}>
          
@@ -342,6 +403,7 @@
            />
          }</View>
          </ThemeProvider>
+
          <View style={{alignItems:'center'}}>
            <TouchableOpacity
                style={StyleFriendlist.button}
@@ -352,7 +414,7 @@
            <Text style={{color:'red',  textAlign: 'center', fontSize: 14,}}> {checktext} </Text>
        
          </View>
-        <View>
+        {/* <View>
           <Modal
            visible={modalVisible}
            onRequestClose={() => {
@@ -398,7 +460,7 @@
               </List>
             </View>
           </Modal>
-        </View>
+        </View> */}
        </View>
    );
   };
