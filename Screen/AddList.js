@@ -160,13 +160,13 @@
 
   useEffect(()=>{
     console.log('smallItem:'+smallitem);
-   let list=[];
    const set=new Set([]);
    let category=new Object();
    for(var i=0; i<category_info.length; i++){
      if(category_info[i].cs_activity==smallitem){
        category.category_id=category_info[i].category_id;
        category.category=category_info[i].category;
+       //category.category="도보여행";
        category.lc_id="-";
        category.lc_name=null;
        setAdd_list(category);

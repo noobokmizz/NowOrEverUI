@@ -52,7 +52,7 @@ export const BucketList=({navigation})=>{
       */
      let deleteList=[];
      var task=new Object();
-     console.log("id:"+id);
+     let list;
      for(var i=0; i<category_list.length; i++){
       if(category_list[i].category_id==id){
         task.category_id=category_list[i].category_id;
@@ -61,44 +61,17 @@ export const BucketList=({navigation})=>{
         task.lc_name=category_list[i].lc_name;
         console.log("delete category i"+i);
         deleteList.push(task);
-        let list=category_list;
-        list.splice(i,1);
-        setCategory_list(list);
+        setCategory_list(category_list.filter(category=>category.id!==id));
+        //list=category_list;
+        //list.splice(i,1);
         break;
       }
      }
-     /*
-     for(var i=0; i<category_list.length; i++){
-       if(category_list[i].category_id==id){
-          task.category_id=category_list[i].category_id;
-          task.category=category_list[i].category;
-          task.lc_id=category_list[i].lc_id;
-          task.lc_name=category_list[i].lc_name;
-          //task.id=i;
-          deleteList.push(task);
-          console.log("delete "+task.category);
-          setCategory_list(category_list.splice(i,1));
-          //setDelete_list(deleteList);
-          check=1;
-          break;
-       }
-     }
-     if(check==0)
-     for(var i=0; i<location_list.length; i++){
-      if(location_list[i].lc_id==id){
-         task.category_id=location_list[i].category_id;
-         task.category=location_list[i].category;
-         task.lc_id=location_list[i].lc_id;
-         task.lc_name=location_list[i].lc_name;
-         //task.id=i;
-         deleteList.push(task);
-         console.log("delete "+task.lc_name);  
-         setLocation_list(location_list.splice(i,1));
-         //setDelete_list(deleteList);
-         break;
-        }
-      }
-      */
+     console.log("After delete");
+     /*for(var i=0; i<list.length; i++){
+       console.log("category:"+list[i].category);
+     }*/
+     //setCategory_list(list);
       let mem_idnum=bk_key.mem_idnum;
       let bk_id=bk_key.bk_id;
       fetch('http://'+localhost+':8080/bucketlist/delete',{
@@ -130,6 +103,13 @@ export const BucketList=({navigation})=>{
         })
   }
   /*
+  useEffect(()=>{
+    console.log("print category_list");
+    for(var i=0; i<category_list.length; i++){
+      console.log("category:"+category_list[i].category);
+    }
+  },[category_list])
+  
     useEffect(()=>{
      fetch('http://'+localhost+':8080/bucketlist/delete',{
       method:'POST',

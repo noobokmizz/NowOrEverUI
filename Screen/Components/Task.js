@@ -20,8 +20,6 @@ const Contents=styled.Text`
     `;
 
 const Task=({name,deleteTask,id})=>{
-    console.log("name:"+name);
-    console.log("id:"+id);
     return(
         <Container>
             <Contents style={{marginLeft:10}}>{name}</Contents>

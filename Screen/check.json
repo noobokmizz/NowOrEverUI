@@ -24,3 +24,14 @@
         }
      ]
 }
+
+{
+    "mem_idnum":1,
+    "bk_id":1,
+    "bucketlistContentsList":{
+        "category_id":20,
+        "category":"천문대",
+        "lc_id":"-",
+        "lc_name":null
+        }
+    }
