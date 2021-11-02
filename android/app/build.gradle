@@ -121,6 +121,17 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        // 네이버 지도 저장소
+        maven {
+            url 'https://naver.jfrog.io/artifactory/maven/'
+        }
+    }
+}
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 

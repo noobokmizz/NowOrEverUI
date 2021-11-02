@@ -230,9 +230,19 @@ export const BucketList=({navigation})=>{
                   </Text>
                   </View>
                   <Text style={StyleList.profileHeaderText}>admin</Text>
+                  <TouchableOpacity
+                      style={StyleList.button}
+                      onPress={() => {
+                        AsyncStorage.setItem('autologin','0');
+                        navigation.navigate('Auth')
+                      }} // Details로 화면 이동    
+                  >
+                     <Text style={StyleList.ButtonText}>Logout</Text>
+                  </TouchableOpacity>
               </View>
+              
               <View>
-                
+             
               </View>
               <View style={{flexDirection:'row', borderBottomColor:'gray',borderBottomWidth: 1, borderBottomLeftRadius:12,
             borderBottomRightRadius:12}}>

@@ -22,7 +22,15 @@ const SplashScreen = ({navigation}) => {
         navigation.replace(value === '0' ? 'Auth' : "TabNavigation");
       );
       */
-      navigation.replace('Auth');
+      AsyncStorage.getItem('autologin',(err,result)=>{
+        if(result=='0')
+        navigation.replace('Auth');
+        else
+        navigation.replace('TabNavigation');
+        //setMem_idnum(userInfo.mem_idnum);
+        //setBk_id(userInfo.bucketlist.bk_id);
+      });
+      //navigation.replace('Auth');
     }, 2000);
   }, []);
 

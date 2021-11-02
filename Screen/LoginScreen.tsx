@@ -41,10 +41,6 @@ const LoginScreen = ({navigation}) => {
     }
     setLoading(true);
     
-    if(autologin)
-      AsyncStorage.setItem("autologin",'1');
-    else
-      AsyncStorage.setItem("autologin",'0');
     console.log('http://'+localhost+':8080/user/login');
     fetch('http://'+localhost+':8080/user/login', {
 		method: 'POST',
@@ -77,6 +73,10 @@ const LoginScreen = ({navigation}) => {
           */
          AsyncStorage.setItem('userInfo',JSON.stringify(responseJson.data));
           console.log("userInfo:"+JSON.stringify(responseJson.data));
+          if(autologin)
+            AsyncStorage.setItem("autologin",'1');
+          else
+            AsyncStorage.setItem("autologin",'0');
           navigation.replace('TabNavigation');
         } else {
           setErrortext('Please check your email id or password');
