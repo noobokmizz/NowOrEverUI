@@ -3,7 +3,8 @@
  */
 
 import {AppRegistry} from 'react-native';
-import App from './App';
+//import App from './App';
+import App from './Screen/practice/NaverMap';
 import RadioButtonExam from './Screen/practice/RadioButtonExam';
 import todos from './Screen/practice/todos';
 import NaverMap from './Screen/practice/NaverMap';

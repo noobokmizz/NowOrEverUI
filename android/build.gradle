@@ -44,5 +44,10 @@ allprojects {
         }
         jcenter()
         maven { url 'https://www.jitpack.io' }
+
+          google()
+         jcenter()
+         maven { url 'https://navercorp.bintray.com/maps' }
+
     }
 }
