@@ -23,13 +23,16 @@ const Task=({name,deleteTask,id})=>{
     return(
         <Container>
             <Contents style={{marginLeft:10}}>{name}</Contents>
-            <IconButton type={images.search}/>
+            {
+                //<IconButton type={images.search}/>
+            }
             <IconButton type={images.delete}  id={id} onPressOut={deleteTask}/>
         </Container>
     );
 };
 
 Task.propTypes={
+    name:PropTypes.string.isRequired,
     text:PropTypes.string.isRequired,
     deleteTask:PropTypes.func.isRequired,
 };

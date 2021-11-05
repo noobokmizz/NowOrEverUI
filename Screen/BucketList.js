@@ -51,7 +51,23 @@ export const BucketList=({navigation})=>{
     //const [tasks,setTasks]=useState([{text:'',id:''}]);
     const [loading, setLoading] = useState(false);
   
-    const _deleteTask = id => {
+    const _deleteAlert = (id) =>{
+      Alert.alert(
+          "정말로",
+          "삭제하시겠습니까?",
+          [
+            {
+              text: "Yes",
+              onPress: () => {deleteTask(id);} 
+            },
+            {
+              text: "No",
+            }
+          ]
+          );
+    }
+
+    const deleteTask = id => {
       console.log("id:"+id);
      let deleteList=[];
      var task=new Object();
@@ -132,16 +148,7 @@ export const BucketList=({navigation})=>{
       })
       .then((response) => response.json())
       .then((responseJson)=>{
-        Alert.alert(
-          deletename,
-          "success",
-          [
-            {
-              text: "OK",
-              onPress: () => console.log("OK Pressed") 
-            }
-          ]
-          );
+        
         console.log('Delete response:'+JSON.stringify(responseJson));
         
       })
@@ -270,7 +277,7 @@ export const BucketList=({navigation})=>{
                   Object.values(category_list)
                   .reverse()
                   .map((item)=>(
-                    <Task id={item.id} key={item.id} name={item.category}  deleteTask={_deleteTask} />
+                    <Task id={item.id} key={item.id} name={item.category}  deleteTask={_deleteAlert} />
                   ))
                // */
                 }
@@ -287,7 +294,7 @@ export const BucketList=({navigation})=>{
                   Object.values(location_list)
                   .reverse()
                   .map((item)=>(
-                    <Task id={item.id} key={item.id} name={item.lc_name}  deleteTask={_deleteTask} />
+                    <Task id={item.id} key={item.id} name={item.lc_name}  deleteTask={_deleteAlert} />
                   ))
                // */
                 }
