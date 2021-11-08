@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
 import { ImageSourcePropType, StyleProp, ViewStyle } from 'react-native';
+
 declare const RNNaverMapView: any;
+
 export interface Coord {
     latitude: number;
     longitude: number;
 }
+
 export interface Region extends Coord {
     latitudeDelta: number;
     longitudeDelta: number;
 }
+
 export declare enum TrackingMode {
     None = 0,
     NoFollow = 1,
     Follow = 2,
     Face = 3
 }
+
 export declare enum MapType {
     Basic = 0,
     Navi = 1,
@@ -22,6 +27,7 @@ export declare enum MapType {
     Hybrid = 3,
     Terrain = 4
 }
+
 export declare enum LayerGroup {
     LAYER_GROUP_BUILDING = "building",
     LAYER_GROUP_TRANSIT = "transit",
@@ -30,6 +36,7 @@ export declare enum LayerGroup {
     LAYER_GROUP_CADASTRAL = "landparcel",
     LAYER_GROUP_MOUNTAIN = "mountain"
 }
+
 export declare enum Gravity {
     NO_GRAVITY = 0,
     AXIS_SPECIFIED = 1,
@@ -44,6 +51,7 @@ export declare enum Gravity {
     CENTER_VERTICAL = 16,
     CENTER_HORIZONTAL = 1
 }
+
 export declare enum Align {
     Center = 0,
     Left = 1,
@@ -55,12 +63,14 @@ export declare enum Align {
     BottomRight = 7,
     BottomLeft = 8
 }
+
 export interface Rect {
     left?: number;
     top?: number;
     right?: number;
     bottom?: number;
 }
+
 export interface NaverMapViewProps {
     style?: StyleProp<ViewStyle>;
     center?: Coord & {
@@ -105,6 +115,7 @@ export interface NaverMapViewProps {
     liteModeEnabled?: boolean;
     useTextureView?: boolean;
 }
+
 export default class NaverMapView extends Component<NaverMapViewProps, {}> {
     ref?: RNNaverMapView;
     nodeHandle?: null | number;
@@ -139,10 +150,12 @@ export default class NaverMapView extends Component<NaverMapViewProps, {}> {
 }
 interface RNNaverMapView extends React.Component<{}, any> {
 }
+
 export interface MapOverlay {
     coordinate: Coord;
     onClick?: () => void;
 }
+
 export interface MarkerProps extends MapOverlay {
     anchor?: {
         x: number;
@@ -229,7 +242,9 @@ export interface PathProps extends Omit<MapOverlay, "coordinate"> {
     progress?: number;
     zIndex?: number;
 }
+
 export declare class Path extends Component<PathProps> {
     render(): JSX.Element;
 }
+
 export {};
