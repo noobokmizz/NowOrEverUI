@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import {images} from '../src/images';
 
 const Icon=styled.Image`
-  tint-color:${({theme})=>theme.text};
   width:30px;
   height:30px;
   margin:10px;
 `;
+//tint-color:${({theme})=>theme.text};
 
 const IconButton = ({type,id, onPressOut})=>{
     const _onPressOut=()=>{
@@ -17,7 +17,9 @@ const IconButton = ({type,id, onPressOut})=>{
     };
     return(
         <TouchableOpacity onPressOut={_onPressOut}>
-            <Icon source={type}/>
+            <Icon source={type}
+                style={{width:25, height:25}}
+            />
         </TouchableOpacity>
     );
 };

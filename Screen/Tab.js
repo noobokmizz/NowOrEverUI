@@ -6,6 +6,8 @@ import {FriendList} from './FriendList';
 import {BucketList} from './BucketList';
 import AddList from './AddList';
 import Suggest from './Suggest';
+import SearchDetailScreen from './SearchDetailScreen';
+import RecommendScreen from './RecommendScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 //import { MaterialCommunityIcons } from '@expo/vector-icons';
 //import Icon from "react-native-vector-icons/FontAwesome";
@@ -44,10 +46,24 @@ const Bucket = () => {
           }}
         />
          <Stack.Screen
-          name="Suggest"
-          component={Suggest}
+          name="SearchDetailScreen"
+          component={SearchDetailScreen}
           options={{
-            title: 'Suggest List', //Set Header Title
+            title: 'Detail', //Set Header Title
+            headerStyle: {
+              backgroundColor: 'aqua', //Set Header color
+            },
+            headerTintColor: 'blue', //Set Header text color
+            headerTitleStyle: {
+              fontWeight: 'bold', //Set Header text style
+            },
+          }}
+        />
+        <Stack.Screen
+          name="RecommendScreen"
+          component={RecommendScreen}
+          options={{
+            title: 'Recommend', //Set Header Title
             headerStyle: {
               backgroundColor: 'aqua', //Set Header color
             },

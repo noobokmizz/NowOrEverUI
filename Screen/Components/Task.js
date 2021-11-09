@@ -2,31 +2,49 @@ import React from 'react';
 import styled from 'styled-components/native';
 import PropTypes from 'prop-types';
 import IconButton from './IconButton';
-import {images} from '../src/images';
+import {images,soccer} from '../src/images';
+import Emoticon  from './Emoticon';
+import Icon from 'react-native-vector-icons'
+import image from '../assets/icons/emoticons/tmp_soccer.png';
+import {Image, View, Text} from 'react-native';
 
 const Container=styled.View`
     flex-direction:row;
     align-items:center;
-    background-color:${({theme})=>theme.itemBackground};
     border-radius:10px;
     padding:5px;
     margin:3px 0px;
 `;
 
+//background-color:steelblue;
+//background-color:${({theme})=>theme.itemBackground};
+    
 const Contents=styled.Text`
     flex:1;
     font-size:24px;
-    color: ${({theme})=>theme.text};
+    color:black;
+    font-weight:bold;
     `;
-
-const Task=({name,deleteTask,id})=>{
+//color: ${({theme})=>theme.text};
+const Task=({name,deleteTask,searchTask,id,category})=>{
     return(
         <Container>
+            <View>
+            <Image
+                source={require('../assets/icons/emoticons/tmp_soccer.png')}
+                style={{width:25, height:25}}
+            />
+            </View>
+            <View style={{width:230}}>
             <Contents style={{marginLeft:10}}>{name}</Contents>
-            {
-                //<IconButton type={images.search}/>
-            }
-            <IconButton type={images.delete}  id={id} onPressOut={deleteTask}/>
+            <Text style={{marginLeft:10}}>{id<0?category:''}</Text>
+            </View>
+            <View>
+            <IconButton type={require('../assets/icons/delete_and_search/search.png')}  id={id} onPressOut={searchTask}/>
+            </View>
+            <View>
+                <IconButton type={require('../assets/icons/delete_and_search/delete.png')}  id={id} onPressOut={deleteTask}/>
+           </View>
         </Container>
     );
 };

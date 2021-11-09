@@ -10,28 +10,14 @@ import {
     StyleSheet,
     TouchableOpacity,
     Alert,
+    Image
   } from 'react-native';
 import {StatusBar,Dimensions} from 'react-native';
 import Task from './Components/Task';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import {localhost} from '../App';
-/*
-const Container=styled.SafeAreaView `
-    flex:1;
-    background-color: ${({theme})=>theme.background};
-    align-items:center;
-    justify-content:flex-start;
-`;
 
-const Title = styled.Text `
-    font-size:40px;
-    font-weight:600;
-    color:${({theme})=>theme.main};
-    align-self:flex-start;
-    margin:0px 20px;
-    `;
-*/
 
 const List = styled.ScrollView`
   flex:1;
@@ -42,6 +28,7 @@ const List = styled.ScrollView`
 export const BucketList=({navigation})=>{
     const width=Dimensions.get('window').width;
     const [bk_key,setBk_key]=useState({});
+    const [nickname,setNickname]=useState('');
     //const [mem_idnum,setMem_idnum]=useState(0);
     //const [bk_id,setBk_id]=useState(0);
     const [bucketlistContentsList,setBucketlistContentsList]=useState([]);
@@ -65,6 +52,36 @@ export const BucketList=({navigation})=>{
             }
           ]
           );
+    }
+
+    const _LookDetails = (id) =>{
+      let lc_id;
+      for(var i=0; i<bucketlistContentsList.length; i++){
+        if(i==((-id)-1)){
+          console.log("delete location:"+bucketlistContentsList[i].lc_name);
+         lc_id=bucketlistContentsList[i].lc_id;
+         console.log("taskId:"+taskId);
+         break;
+        }
+      }
+      let mem_idnum=bk_key.mem_idnum;
+      let bk_id=bk_key.bk_id;
+      fetch('http://'+localhost+':8080/bucketlist/path?mem_idnum='+mem_idnum+
+      '&bk_id='+bk_id+'&lc_id'+lc_id,{
+      method:'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+      })
+      .then((response) => response.json())
+      .then((responseJson)=>{
+        
+      navigation.navigate('SearchDetailScreen',{json:responseJson});
+        
+      })
+        .catch((error) => {
+          console.error(error);
+        })
     }
 
     const deleteTask = id => {
@@ -101,6 +118,7 @@ export const BucketList=({navigation})=>{
         task.category=category_list[i].category;
         task.lc_id=category_list[i].lc_id;
         task.lc_name=category_list[i].lc_name;
+
         console.log("delete category i"+i);
         deleteList.push(task);
         deletename=task.category;
@@ -162,9 +180,12 @@ export const BucketList=({navigation})=>{
       AsyncStorage.getItem('userInfo',(err,result)=>{
         const userInfo=JSON.parse(result);
         setBk_key({mem_idnum:userInfo.mem_idnum,bk_id:userInfo.bucketlist.bk_id});
+        setNickname(userInfo.nickname);
         //setMem_idnum(userInfo.mem_idnum);
         //setBk_id(userInfo.bucketlist.bk_id);
+
       });
+
     },[]);
 
     useEffect(()=>{
@@ -231,44 +252,56 @@ export const BucketList=({navigation})=>{
           <Container>
           <View style={StyleList.Container}>
               <View style={StyleList.profileHeader}>
+                <View style={{flexDirection:'row'}}>
                   <View style={StyleList.profileHeaderPicCircle}>
-                  <Text style={{fontSize: 25, color: 'aquamarine'}}>
-                      {'About React'.charAt(0)}   
-                  </Text>
+                    <Text style={{fontSize: 25, color: 'aquamarine'}}>
+                        {'About React'.charAt(0)}   
+                    </Text>
                   </View>
-                  <Text style={StyleList.profileHeaderText}>admin</Text>
+                  <Text style={StyleList.profileHeaderText}>{nickname}</Text>
+                  </View>
+                  <View>
                   <TouchableOpacity
                       style={StyleList.button}
                       onPress={() => {
                         AsyncStorage.setItem('autologin','0');
                         navigation.navigate('Auth')
                       }} // Details로 화면 이동    
+                      
                   >
-                     <Text style={StyleList.ButtonText}>Logout</Text>
-                  </TouchableOpacity>
+                        <Image source={require('./assets/icons/bucketlistImage/logout.png')}
+                          style={{width:25, height:25}}
+                        />
+                     
+                    </TouchableOpacity>
+                    </View>
               </View>
               
-              <View>
-             
-              </View>
+              
               <View style={{flexDirection:'row', borderBottomColor:'gray',borderBottomWidth: 1, borderBottomLeftRadius:12,
-            borderBottomRightRadius:12}}>
+            borderBottomRightRadius:12,justifyContent: 'space-between',}}>
                   <Text style={{margin:10, fontWeight: 'bold', fontSize:25}}>Bucket List</Text>
+                  <View style={{flexDirection:'row'}}>
                   <TouchableOpacity
                       style={StyleList.button}
-                      onPress={() => navigation.navigate('AddList')} // Details로 화면 이동    
+                      onPress={() => navigation.navigate('AddList')} // Addlist로 화면 이동    
                   >
-                    <Text style={StyleList.ButtonText}>Add</Text>
+                    <Image source={require('./assets/icons/bucketlistImage/plus.png')}
+                          style={{width:25, height:25}}
+                        />
                   </TouchableOpacity>
                   <TouchableOpacity
                       style={StyleList.button}
-                      onPress={() => navigation.navigate('Suggest')} // Details로 화면 이동    
+                      onPress={() => navigation.navigate('Recommend')} // Details로 화면 이동    
                   >
-                    <Text style={StyleList.ButtonText}>Suggest</Text>
+                    <Image source={require('./assets/icons/bucketlistImage/recommend.png')}
+                          style={{width:25, height:25}}
+                        />
                   </TouchableOpacity>
+                  </View>
               </View>
               <View style={{height:50}}>
-              <Text style={{margin:10, fontWeight: 'bold', fontSize:20}}>My Category list</Text>
+              <Text style={{margin:10, fontWeight: 'bold', fontSize:20}}>My Category</Text>
               </View>
               <View style={{height:200, marginLeft:20}}>
                 <List width={width}>
@@ -285,7 +318,7 @@ export const BucketList=({navigation})=>{
               </View>
 
               <View style={{height:50}}>
-              <Text style={{margin:10, fontWeight: 'bold', fontSize:20}}>My Place list</Text>
+              <Text style={{margin:10, fontWeight: 'bold', fontSize:20}}>My Place</Text>
               </View>
               <View style={{height:200, marginLeft:20}}>
                 <List width={width}>
@@ -294,7 +327,7 @@ export const BucketList=({navigation})=>{
                   Object.values(location_list)
                   .reverse()
                   .map((item)=>(
-                    <Task id={item.id} key={item.id} name={item.lc_name}  deleteTask={_deleteAlert} />
+                    <Task id={item.id} key={item.id} name={item.lc_name} category={item.category}  deleteTask={_deleteAlert} searchTask={_LookDetails} />
                   ))
                // */
                 }
@@ -327,14 +360,15 @@ const StyleList= StyleSheet.create({
         backgroundColor: 'skyblue',
         padding: 20,
         textAlign: 'center',
-        height:100,
+        height:80,
         borderBottomColor:'black',
-        borderBottomWidth:1
+        borderBottomWidth:1,
+        justifyContent: 'space-between',
       },
       profileHeaderPicCircle: {
-        width: 60,
-        height: 60,
-        borderRadius: 60 / 2,
+        width: 48,
+        height: 48,
+        borderRadius: 48 / 2,
         color: 'white',
         backgroundColor: '#ffffff',
         textAlign: 'center',
@@ -365,11 +399,13 @@ const StyleList= StyleSheet.create({
       button:{
         alignItems:"center",
         justifyContent:'center',
-        backgroundColor:"#DDDDDD",
+        //backgroundColor:"#DDDDDD",
+        flexDirection: 'row',
         margin:15,
         //padding:10,
-        width:80,
+        //width:80,
         height:25,
+        marginBottom:20,
       },
       ButtonText:{
         fontSize:15
