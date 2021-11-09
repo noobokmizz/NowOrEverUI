@@ -16,11 +16,12 @@ import LoginScreen from './Screen/LoginScreen';
 import RegisterScreen from './Screen/RegisterScreen';
 import DrawerNavigationRoutes from './Screen/DrawerNavigationRoutes';
 import TabNavigation from './Screen/Tab';
+import Bucket from './Screen/Bucket';
 
 const Stack = createStackNavigator();
 const store=makeStore();
-export const localhost='192.168.238.63'; //학교
-//export const localhost='192.168.35.57'; //집
+//export const localhost='192.168.238.63'; //학교
+export const localhost='192.168.35.57'; //집
 
 const Auth = () => {
   // Stack Navigator for Login and Sign up Screen
@@ -52,23 +53,7 @@ const Auth = () => {
 /* Switch Navigator for those screens which needs to be switched only once
   and we don't want to switch back once we switch from them to the next one */
 const App = () => {
-  /*const [autologin,setAutologin]=useState(false);
 
-  useEffect(()=>{
-    AsyncStorage.getItem('autologin',(err,result)=>{
-      console.log('result(autologin):',result);
-      if(result=='0'){
-        setAutologin(false);
-      }
-      else{
-        setAutologin(true);
-      }
-    });
-    setAutologin(false);
-  },[])
-
-  console.log('autologin : '+autologin);
-  */
  return (
     <ReduxProvider store={store}>
     <NavigationContainer>
