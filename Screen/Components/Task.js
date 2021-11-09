@@ -39,10 +39,12 @@ const Task=({name,deleteTask,searchTask,id,category})=>{
             <Contents style={{marginLeft:10}}>{name}</Contents>
             <Text style={{marginLeft:10}}>{id<0?category:''}</Text>
             </View>
-            <View>
-            <IconButton type={require('../assets/icons/delete_and_search/search.png')}  id={id} onPressOut={searchTask}/>
+            <View style={{width:15}}>
+            {
+              (id<0)&&<IconButton type={require('../assets/icons/delete_and_search/search.png')}  id={id} onPressOut={searchTask}/>
+            }
             </View>
-            <View>
+            <View style={{width:15, marginLeft:15}}>
                 <IconButton type={require('../assets/icons/delete_and_search/delete.png')}  id={id} onPressOut={deleteTask}/>
            </View>
         </Container>

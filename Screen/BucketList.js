@@ -56,17 +56,20 @@ export const BucketList=({navigation})=>{
 
     const _LookDetails = (id) =>{
       let lc_id;
+      let category;
       for(var i=0; i<bucketlistContentsList.length; i++){
         if(i==((-id)-1)){
           console.log("delete location:"+bucketlistContentsList[i].lc_name);
          lc_id=bucketlistContentsList[i].lc_id;
-         console.log("taskId:"+taskId);
+         category=bucketlistContentsList[i].category;
          break;
         }
       }
+      navigation.navigate('SearchDetailScreen',{lc_id,category});
       let mem_idnum=bk_key.mem_idnum;
       let bk_id=bk_key.bk_id;
-      fetch('http://'+localhost+':8080/bucketlist/path?mem_idnum='+mem_idnum+
+      
+      /*fetch('http://'+localhost+':8080/bucketlist/path?mem_idnum='+mem_idnum+
       '&bk_id='+bk_id+'&lc_id'+lc_id,{
       method:'GET',
       headers: {
@@ -81,7 +84,7 @@ export const BucketList=({navigation})=>{
       })
         .catch((error) => {
           console.error(error);
-        })
+        })*/
     }
 
     const deleteTask = id => {
