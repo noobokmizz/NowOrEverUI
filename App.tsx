@@ -9,7 +9,8 @@ import {makeStore} from './Screen/src/store'
 // Import Navigators from React Navigation
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import AsyncStorage from '@react-native-community/async-storage';
+import messaging from '@react-native-firebase/messaging';
+import { Alert } from 'react-native';
 // Import Screens
 import SplashScreen from './Screen/SplashScreen';
 import LoginScreen from './Screen/LoginScreen';
@@ -25,6 +26,7 @@ export const localhost='192.168.35.57'; //집
 
 const Auth = () => {
   // Stack Navigator for Login and Sign up Screen
+
   return (
     <Stack.Navigator initialRouteName="LoginScreen">
       <Stack.Screen
@@ -54,8 +56,17 @@ const Auth = () => {
   and we don't want to switch back once we switch from them to the next one */
 const App = () => {
 
+  useEffect(() => {
+    console.log('waiting firebase message');
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      console.log("arrive message!");
+    });
+
+    return unsubscribe;
+  }, []);
+  
  return (
-    <ReduxProvider store={store}>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SplashScreen">
         
@@ -85,7 +96,6 @@ const App = () => {
         />
       </Stack.Navigator>
     </NavigationContainer>
-    </ReduxProvider>
   );
 };
 

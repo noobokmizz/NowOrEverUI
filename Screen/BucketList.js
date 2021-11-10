@@ -57,15 +57,17 @@ export const BucketList=({navigation})=>{
     const _LookDetails = (id) =>{
       let lc_id;
       let category;
+      let category_id;
       for(var i=0; i<bucketlistContentsList.length; i++){
         if(i==((-id)-1)){
           console.log("delete location:"+bucketlistContentsList[i].lc_name);
          lc_id=bucketlistContentsList[i].lc_id;
          category=bucketlistContentsList[i].category;
+         category_id=bucketlistContentsList[i].category_id;
          break;
         }
       }
-      navigation.navigate('SearchDetailScreen',{lc_id,category});
+      navigation.navigate('SearchDetailScreen',{lc_id,category,category_id});
       let mem_idnum=bk_key.mem_idnum;
       let bk_id=bk_key.bk_id;
       
@@ -313,7 +315,9 @@ export const BucketList=({navigation})=>{
                   Object.values(category_list)
                   .reverse()
                   .map((item)=>(
-                    <Task id={item.id} key={item.id} name={item.category}  deleteTask={_deleteAlert} />
+                    <Task id={item.id} key={item.id} 
+                    name={item.category} categoryId={item.category_id}  
+                    deleteTask={_deleteAlert} />
                   ))
                // */
                 }
@@ -330,7 +334,9 @@ export const BucketList=({navigation})=>{
                   Object.values(location_list)
                   .reverse()
                   .map((item)=>(
-                    <Task id={item.id} key={item.id} name={item.lc_name} category={item.category}  deleteTask={_deleteAlert} searchTask={_LookDetails} />
+                    <Task id={item.id} key={item.id}
+                     name={item.lc_name} category={item.category} categoryId={item.category_id} 
+                     deleteTask={_deleteAlert} searchTask={_LookDetails} />
                   ))
                // */
                 }

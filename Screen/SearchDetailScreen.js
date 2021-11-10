@@ -3,6 +3,7 @@ import HTML from "react-native-render-html";
 import Geolocation from '@react-native-community/geolocation';
 import { 
     Text, 
+    StatusBar,
     ScrollView, 
     useWindowDimensions,
     Linking, 
@@ -14,6 +15,10 @@ import {localhost} from '../App';
 import { Gravity } from 'react-native-nmap';
 import NaverMapView, {Align, Circle, Marker, Path, Polygon, Polyline} from "./practice/map";
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import category_images from './assets/icons/category_images';
+import {
+    sqrt,abs,round
+  } from 'mathjs'
 //import Geolocation from 'react-native-geolocation-service';
 
 const SearchDetailScreen = ({route}) => {
@@ -21,7 +26,10 @@ const SearchDetailScreen = ({route}) => {
     const [information,setInformation]=useState({name:'',address:'',call_number:'',url:'',star:0})
     const [startLocation,setStartLocation]=useState({latitude: 37.564362, longitude: 126.977011})
     const [endLocation,setEndLocation]=useState({latitude: 37.564362, longitude: 126.977011})
-    
+    const [center,setCenter]=useState({latitude: 37.564362, longitude: 126.977011})
+    const [zoom,setZoom]=useState(5);
+    let categoryId=route.params.category_id.toString();
+
     useEffect(()=>{
         AsyncStorage.getItem('userInfo',(err,result)=>{
           const userInfo=JSON.parse(result);
@@ -61,33 +69,46 @@ const SearchDetailScreen = ({route}) => {
         })
       },[bk_key]);
 
+      useEffect(()=>{
+          setCenter({latitude:(startLocation.latitude+endLocation.latitude)/2,longitude:(startLocation.longitude+endLocation.longitude)/2});
+          let latitude=abs(startLocation.latitude-endLocation.latitude)*1000;
+          let longitude=abs(startLocation.longitude+endLocation.longitude)*1000;
+          let zoom=sqrt(latitude*latitude+longitude*longitude)/34000;
+          zoom=round(zoom);
+          setZoom(zoom);
+        console.log('zoom:'+zoom);
+      },[startLocation,endLocation]);
+
     return(
         <View style={{
             //justifyContent: "center",
+            height:'100%',
             alignItems: "center"}}>
-            <View style={{width:300, borderBottomWidth:2, borderBottomColor:'gray', alignItems: "center"}}>
-            <View style={{flexDirection:'row'}}>
-                <Text style={{fontWeight:'bold',fontSize:50}}>{information.name}</Text>
+                <StatusBar backgroundColor='pink'  />
+
+            <View style={{width:350, borderBottomWidth:2, borderBottomColor:'gray', alignItems: "center"}}>
+                <View style={{flexDirection:'row', marginRight:30}}>
+                    <Image
+                        source={category_images[categoryId]}
+                        style={{width:60, height:60, borderRadius:30}}
+                    />
+                    <Text style={{fontWeight:'bold',fontSize:50}}>{information.name}</Text>
+                </View>
+                <View style={{flexDirection:'row'}}>
+                    <Text style={{fontSize:20}}>{route.params.category+' > '}</Text>
+                    <Icon name='star' size={25} color={'orange'}/>
+                    <Text style={{fontSize:20}}>{information.star}</Text>
+                </View>
             </View>
-            <View>
-                <Text>{route.params.category}</Text>
-            </View>
-            </View>
-            <View style={{borderBottomWidth:2,borderBottomColor:'gray',height:130, marginTop:10}}>
-            <View style={{flexDirection:'row',justifyContent: "center",width:300}}>
-                <Icon name='star' size={30} color={'orange'}/>
-                <Text style={{fontSize:25}}>{information.star}</Text>
-            </View>
-            <View>
+
+            <View style={{borderBottomWidth:2,borderBottomColor:'gray',height:100, marginTop:10,width:350,}}>
+            <View style={{height:30}}>
                 <Text style={{fontSize:20}}>주소:{information.address}</Text>
             </View>
-            <View>
+            <View style={{height:30}}>
                 <Text style={{fontSize:20}}>전화번호:{information.call_number}</Text>
             </View>
-            <View style={{flexDirection:'row'}}>
-                <Text style={{fontSize: 15}}>
-                    링크:
-                </Text>    
+            <View style={{flexDirection:'row', height:30, alignItems: "center"}}>
                 {/*
                     <Text style={{color: 'blue', fontSize:15}}
                     onPress={() => Linking.openURL(information.url)}>
@@ -96,10 +117,13 @@ const SearchDetailScreen = ({route}) => {
                 */}
                 <TouchableOpacity onPress={() => Linking.openURL(information.url)}>
                 <Image source={require('./assets/icons/kakaomap.png')}
-                          style={{width:200, height:40}}
+                          style={{width:30, height:30}}
                           
                         />
-                        </TouchableOpacity>
+                </TouchableOpacity>
+                <Text style={{fontSize:20, marginLeft:5, fontFamily: 'sans-serif-medium',}}>
+                    Kakaomap으로 보기
+                </Text>
             </View>
             </View>
             <View style={{marginTop:10}}>
@@ -107,12 +131,19 @@ const SearchDetailScreen = ({route}) => {
                         width: 350, height: 350
                     }}
                          showsMyLocationButton={true}
-                         center={{...endLocation, zoom: 10}}
-                         onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
-                         onCameraChange={e => console.warn('onCameraChange', JSON.stringify(e))}
-                         onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}>
-        <Marker coordinate={startLocation} onClick={() => console.warn('onClick! start')}/>
-        <Marker coordinate={endLocation} pinColor="blue" onClick={() => console.warn('onClick! end')}/>
+                         center={{...center, zoom: zoom}}
+                         //onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
+                         //onCameraChange={e => console.warn('onCameraChange', JSON.stringify(e))}
+                         //</View>onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
+                         >
+        <Marker coordinate={startLocation} onClick={() => {
+            console.warn('latitude'+startLocation.latitude);
+            console.warn('longitude'+startLocation.longitude);
+            }}/>
+        <Marker coordinate={endLocation} pinColor="blue" onClick={() => {
+            console.warn('latitude'+endLocation.latitude);
+            console.warn('longitude'+endLocation.longitude);
+            }}/>
     
     </NaverMapView>
             </View>
