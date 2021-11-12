@@ -177,7 +177,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: 'aqua',
+    //backgroundColor: 'aqua',
+    backgroundColor: 'lightskyblue',
     borderWidth: 0,
     color: '#FFFFFF',
     borderColor: '#7DE24E',

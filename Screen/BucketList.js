@@ -1,8 +1,6 @@
 import React, {useState, createRef,useEffect} from 'react';
 import styled, {ThemeProvider} from 'styled-components/native';
 import {theme} from './src/theme';
-import {Input,ContextInput} from './src/components/Input';
-//import ContextInput from './src/components/Input';
 import {
   Button,
    View,
@@ -285,7 +283,7 @@ export const BucketList=({navigation})=>{
               
               <View style={{flexDirection:'row', borderBottomColor:'gray',borderBottomWidth: 1, borderBottomLeftRadius:12,
             borderBottomRightRadius:12,justifyContent: 'space-between',}}>
-                  <Text style={{margin:10, fontWeight: 'bold', fontSize:25}}>Bucket List</Text>
+                  <Text style={{margin:10, fontWeight: 'bold', fontSize:25}}>나의 버킷리스트</Text>
                   <View style={{flexDirection:'row'}}>
                   <TouchableOpacity
                       style={StyleList.button}
@@ -297,7 +295,7 @@ export const BucketList=({navigation})=>{
                   </TouchableOpacity>
                   <TouchableOpacity
                       style={StyleList.button}
-                      onPress={() => navigation.navigate('Recommend')} // Details로 화면 이동    
+                      onPress={() => navigation.navigate('RecommendScreen')} // Details로 화면 이동    
                   >
                     <Image source={require('./assets/icons/bucketlistImage/recommend.png')}
                           style={{width:25, height:25}}
@@ -305,27 +303,9 @@ export const BucketList=({navigation})=>{
                   </TouchableOpacity>
                   </View>
               </View>
-              <View style={{height:50}}>
-              <Text style={{margin:10, fontWeight: 'bold', fontSize:20}}>My Category</Text>
-              </View>
-              <View style={{height:200, marginLeft:20}}>
-                <List width={width}>
-                  {
-                   // /*
-                  Object.values(category_list)
-                  .reverse()
-                  .map((item)=>(
-                    <Task id={item.id} key={item.id} 
-                    name={item.category} categoryId={item.category_id}  
-                    deleteTask={_deleteAlert} />
-                  ))
-               // */
-                }
-                </List>
-              </View>
 
               <View style={{height:50}}>
-              <Text style={{margin:10, fontWeight: 'bold', fontSize:20}}>My Place</Text>
+              <Text style={{margin:10, fontWeight: 'bold', fontSize:20}}>가고 싶은 장소</Text>
               </View>
               <View style={{height:200, marginLeft:20}}>
                 <List width={width}>
@@ -337,6 +317,25 @@ export const BucketList=({navigation})=>{
                     <Task id={item.id} key={item.id}
                      name={item.lc_name} category={item.category} categoryId={item.category_id} 
                      deleteTask={_deleteAlert} searchTask={_LookDetails} />
+                  ))
+               // */
+                }
+                </List>
+              </View>
+
+              <View style={{height:50}}>
+              <Text style={{margin:10, fontWeight: 'bold', fontSize:20}}>가고 싶은 곳</Text>
+              </View>
+              <View style={{height:200, marginLeft:20}}>
+                <List width={width}>
+                  {
+                   // /*
+                  Object.values(category_list)
+                  .reverse()
+                  .map((item)=>(
+                    <Task id={item.id} key={item.id} 
+                    name={item.category} categoryId={item.category_id}  
+                    deleteTask={_deleteAlert} />
                   ))
                // */
                 }
@@ -361,12 +360,14 @@ const StyleList= StyleSheet.create({
     Container: {
         width: '100%',
         height: '100%',
-        backgroundColor: 'lightsteelblue',
+        //backgroundColor: 'lightsteelblue',
+        backgroundColor: 'aliceblue',
         color: 'black',
       },
       profileHeader: {      //프로필 있는 부분 박스 
         flexDirection: 'row',
-        backgroundColor: 'skyblue',
+        //backgroundColor: 'skyblue',
+        backgroundColor: 'lightskyblue',
         padding: 20,
         textAlign: 'center',
         height:80,

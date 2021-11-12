@@ -5,7 +5,6 @@ import { Meet, Settings} from './TabScreens';
 import {FriendList} from './FriendList';
 import {BucketList} from './BucketList';
 import AddList from './AddList';
-import Suggest from './Suggest';
 import SearchDetailScreen from './SearchDetailScreen';
 import RecommendScreen from './RecommendScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -27,9 +26,9 @@ const Bucket = () => {
           name="AddList"
           component={AddList}
           options={{
-            title: 'Add to Bucket List', //Set Header Title
+            title: '리스트에 추가', //Set Header Title
             headerStyle: {
-              backgroundColor: 'aqua', //Set Header color
+              backgroundColor: 'lightskyblue', //Set Header color
             },
             headerTintColor: 'blue', //Set Header text color
             headerTitleStyle: {
@@ -41,9 +40,9 @@ const Bucket = () => {
           name="SearchDetailScreen"
           component={SearchDetailScreen}
           options={{
-            title: 'Detail', //Set Header Title
+            title: '상세 정보', //Set Header Title
             headerStyle: {
-              backgroundColor: 'aqua', //Set Header color
+              backgroundColor: 'lightskyblue', //Set Header color
             },
             headerTintColor: 'blue', //Set Header text color
             headerTitleStyle: {
@@ -55,9 +54,9 @@ const Bucket = () => {
           name="RecommendScreen"
           component={RecommendScreen}
           options={{
-            title: 'Recommend', //Set Header Title
+            title: '추천', //Set Header Title
             headerStyle: {
-              backgroundColor: 'aqua', //Set Header color
+              backgroundColor: 'lightskyblue', //Set Header color
             },
             headerTintColor: 'blue', //Set Header text color
             headerTitleStyle: {

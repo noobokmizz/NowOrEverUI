@@ -4,8 +4,6 @@ import 'react-native-gesture-handler';
 
 // Import React and Component
 import React, {useEffect, useState} from 'react';
-import {Provider as ReduxProvider} from 'react-redux'
-import {makeStore} from './Screen/src/store'
 // Import Navigators from React Navigation
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -15,14 +13,12 @@ import { Alert } from 'react-native';
 import SplashScreen from './Screen/SplashScreen';
 import LoginScreen from './Screen/LoginScreen';
 import RegisterScreen from './Screen/RegisterScreen';
-import DrawerNavigationRoutes from './Screen/DrawerNavigationRoutes';
 import TabNavigation from './Screen/Tab';
-import Bucket from './Screen/Bucket';
+//import Bucket from './Screen/Bucket';
 
 const Stack = createStackNavigator();
-const store=makeStore();
-//export const localhost='192.168.238.63'; //학교
-export const localhost='192.168.35.57'; //집
+export const localhost='192.168.238.63'; //학교
+//export const localhost='192.168.35.57'; //집
 
 const Auth = () => {
   // Stack Navigator for Login and Sign up Screen
@@ -38,9 +34,9 @@ const Auth = () => {
         name="RegisterScreen"
         component={RegisterScreen}
         options={{
-          title: 'Register', //Set Header Title
+          title: '회원가입', //Set Header Title
           headerStyle: {
-            backgroundColor: 'aqua', //Set Header color
+            backgroundColor: 'lightskyblue', //Set Header color
           },
           headerTintColor: 'blue', //Set Header text color
           headerTitleStyle: {
@@ -88,12 +84,7 @@ const App = () => {
          options={{headerShown: false}}
          component={TabNavigation} />
         {/* Navigation Drawer as a landing page */}
-        <Stack.Screen
-          name="DrawerNavigationRoutes"
-          component={DrawerNavigationRoutes}
-          // Hiding header for Navigation Drawer as we will use our custom header
-          options={{headerShown: false}}
-        />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

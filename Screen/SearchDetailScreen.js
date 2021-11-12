@@ -1,11 +1,13 @@
 import React, {useState,useEffect} from 'react';
 import HTML from "react-native-render-html";
 import Geolocation from '@react-native-community/geolocation';
+import {theme} from './src/theme';
 import { 
     Text, 
     StatusBar,
     ScrollView, 
     useWindowDimensions,
+    StyleSheet,
     Linking, 
     View,
     Image } from "react-native";
@@ -19,6 +21,7 @@ import category_images from './assets/icons/category_images';
 import {
     sqrt,abs,round
   } from 'mathjs'
+  import styled, {ThemeProvider} from 'styled-components/native';
 //import Geolocation from 'react-native-geolocation-service';
 
 const SearchDetailScreen = ({route}) => {
@@ -36,7 +39,7 @@ const SearchDetailScreen = ({route}) => {
           setBk_key({mem_idnum:userInfo.mem_idnum,bk_id:userInfo.bucketlist.bk_id});
         });
         console.log('route.params.lc_id:'+route.params.lc_id);
-        console.log('category:'+route.params.category)
+        //console.log('category:'+route.params.category)
       },[]);
 
       useEffect(()=>{
@@ -60,7 +63,8 @@ const SearchDetailScreen = ({route}) => {
                 address:responseJson[0].location.lc_addr, 
                 call_number:responseJson[0].location.lc_call_number, 
                 url:responseJson[0].location.lc_url, 
-                star:responseJson[0].rv_starrate
+                star:responseJson[0].rv_starrate,
+                category:responseJson[0].category
             })
             setEndLocation({latitude:parseFloat(responseJson[0].location.lc_y),longitude:parseFloat(responseJson[0].location.lc_x)})
         })
@@ -80,11 +84,12 @@ const SearchDetailScreen = ({route}) => {
       },[startLocation,endLocation]);
 
     return(
+        <ThemeProvider theme={theme}>
+        <Container>
         <View style={{
             //justifyContent: "center",
             height:'100%',
             alignItems: "center"}}>
-                <StatusBar backgroundColor='pink'  />
 
             <View style={{width:350, borderBottomWidth:2, borderBottomColor:'gray', alignItems: "center"}}>
                 <View style={{flexDirection:'row', marginRight:30}}>
@@ -95,7 +100,7 @@ const SearchDetailScreen = ({route}) => {
                     <Text style={{fontWeight:'bold',fontSize:50}}>{information.name}</Text>
                 </View>
                 <View style={{flexDirection:'row'}}>
-                    <Text style={{fontSize:20}}>{route.params.category+' > '}</Text>
+                    <Text style={{fontSize:20}}>{information.category+' > '}</Text>
                     <Icon name='star' size={25} color={'orange'}/>
                     <Text style={{fontSize:20}}>{information.star}</Text>
                 </View>
@@ -148,7 +153,28 @@ const SearchDetailScreen = ({route}) => {
     </NaverMapView>
             </View>
         </View>
+        </Container>
+        </ThemeProvider>
     );
 };
+
+
+const Container=styled.SafeAreaView`
+  flex:1;
+  background-color:aliceblue;
+  align-items:center;
+  justify-content:flex-start;
+`;
+
+const StyleList= StyleSheet.create({
+Container: {
+  flex:1,
+  width: '100%',
+  height: '100%',
+  //backgroundColor: 'lightsteelblue',
+  backgroundColor: 'aliceblue',
+  color: 'black',
+},
+});
 
 export default SearchDetailScreen;

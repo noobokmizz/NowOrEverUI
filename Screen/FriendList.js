@@ -102,13 +102,13 @@ const StyleFriendlist= StyleSheet.create({
     Container: {
         width: '100%',
         height: '100%',
-        backgroundColor: 'lightsteelblue',
+        backgroundColor: 'aliceblue',
         paddingTop: 40,
         color: 'black',
       },
       profileHeader: {      //프로필 있는 부분 박스 
         flexDirection: 'row',
-        backgroundColor: 'lightsteelblue',
+        backgroundColor: 'lightskyblue',
         padding: 15,
         textAlign: 'center',
       },

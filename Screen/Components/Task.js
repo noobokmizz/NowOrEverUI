@@ -7,15 +7,17 @@ import Icon from 'react-native-vector-icons'
 import image from '../assets/icons/emoticons/tmp_soccer.png';
 import {Image, View, Text} from 'react-native';
 import category_images from '../assets/icons/category_images';
+import CheckBox from '@react-native-community/checkbox';
 
 const Container=styled.View`
     flex-direction:row;
     align-items:center;
-    border-radius:10px;
+    border-bottom-color:gray;
+    border-bottom-width:1;
     padding:5px;
     margin:3px 0px;
 `;
-
+//border-radius:10px;
 //background-color:steelblue;
 //background-color:${({theme})=>theme.itemBackground};
     
@@ -30,17 +32,17 @@ const Task=({name,deleteTask,searchTask,id,category,categoryId})=>{
     return(
         <Container>
             <View>
-            <Image
-                //source={{uri:'../assets/icons/category_images/category_${categoryId.toString()}.png'}}
-                //source={{uri:'../assets/icons/category_images/category_'+categoryId.toString()+'.png'}}
-                //source={require('../assets/icons/category_images/category_${categoryId.toString()}.png').default}
-                source={category_images[categoryId.toString()]}
-                style={{width:35, height:35, borderRadius:17}}
-            />
+                <Image
+                    //source={{uri:'../assets/icons/category_images/category_${categoryId.toString()}.png'}}
+                    //source={{uri:'../assets/icons/category_images/category_'+categoryId.toString()+'.png'}}
+                    //source={require('../assets/icons/category_images/category_${categoryId.toString()}.png').default}
+                    source={category_images[categoryId.toString()]}
+                    style={{width:35, height:35, borderRadius:17}}
+                />
             </View>
             <View style={{width:230}}>
-            <Contents style={{marginLeft:10}}>{name}</Contents>
-            <Text style={{marginLeft:10}}>{id<0?category:''}</Text>
+                <Contents style={{marginLeft:10}}>{name}</Contents>
+                <Text style={{marginLeft:10}}>{id<0?category:''}</Text>
             </View>
             {
                 (id<0)&&<View style={{width:15}}>
@@ -50,7 +52,9 @@ const Task=({name,deleteTask,searchTask,id,category,categoryId})=>{
             </View>
             }<View style={{width:15, marginLeft:15}}>
                 <IconButton type={require('../assets/icons/delete_and_search/delete.png')}  id={id} onPressOut={deleteTask}/>
-           </View>
+                
+            </View>
+           
         </Container>
     );
 };
