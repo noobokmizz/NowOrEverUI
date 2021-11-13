@@ -23,10 +23,10 @@ const SplashScreen = ({navigation}) => {
       );
       */
       AsyncStorage.getItem('autologin',(err,result)=>{
-        if(result=='0')
+        //if(result=='0')
         navigation.replace('Auth');
-        else
-        navigation.replace('TabNavigation');
+        //else
+        //navigation.replace('TabNavigation');
         //setMem_idnum(userInfo.mem_idnum);
         //setBk_id(userInfo.bucketlist.bk_id);
       });
