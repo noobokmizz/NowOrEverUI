@@ -17,14 +17,10 @@ import TabNavigation from './Screen/Tab';
 //import Bucket from './Screen/Bucket';
 
 const Stack = createStackNavigator();
-<<<<<<< HEAD
 const store=makeStore();
 //export const localhost='192.168.238.63'; //학교
-=======
-//export const localhost='192.168.238.63'; //학교
->>>>>>> d968cc1dad106eb95ec83c131eb344d7371ba74e
-export const localhost='192.168.35.57'; //집
-
+//export const localhost='192.168.35.57'; //집
+export const localhost='192.168.0.9'; // 민혁 집
 const Auth = () => {
   // Stack Navigator for Login and Sign up Screen
 
