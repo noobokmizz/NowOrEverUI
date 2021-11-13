@@ -56,21 +56,8 @@ const LoginScreen = ({navigation}) => {
 	})
       .then((response) => response.json())
       .then((responseJson) => {
-        //Hide Loader
         setLoading(false);
-        //console.log(responseJson);
-        // If server response message same as Data Matched
         if (responseJson.status == 1) {
-          //AsyncStorage.setItem('user_id', responseJson.data.user_id);
-          /*
-          AsyncStorage.setItem('mem_idnum', responseJson.data.mem_idnum);
-          AsyncStorage.setItem('name', responseJson.data.name);
-          AsyncStorage.setItem('age', responseJson.data.age);
-          AsyncStorage.setItem('email', responseJson.data.email);
-          AsyncStorage.setItem('password', responseJson.data.password);
-          AsyncStorage.setItem('bk_id',responseJson.data.bucketlist.bk_id);
-          AsyncStorage.setItem('bk_name',responseJson.data.bucketlist.bk_name);
-          */
          AsyncStorage.setItem('userInfo',JSON.stringify(responseJson.data));
           console.log("userInfo:"+JSON.stringify(responseJson.data));
           if(autologin)
@@ -190,7 +177,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: 'aqua',
+    //backgroundColor: 'aqua',
+    backgroundColor: 'lightskyblue',
     borderWidth: 0,
     color: '#FFFFFF',
     borderColor: '#7DE24E',

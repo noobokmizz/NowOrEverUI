@@ -4,7 +4,6 @@
 // Import React and Component
 import React, {useState, useEffect} from 'react';
 import {ActivityIndicator, View, StyleSheet, Image} from 'react-native';
-
 import AsyncStorage from '@react-native-community/async-storage';
 
 const SplashScreen = ({navigation}) => {
@@ -14,21 +13,14 @@ const SplashScreen = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
       setAnimating(false);
-      //Check if user_id is set or not
-      //If not then send for Authentication
-      //else send to Home Screen
-      /*
-      AsyncStorage.getItem('autologin').then((value) =>
-        navigation.replace(value === '0' ? 'Auth' : "TabNavigation");
-      );
-      */
       AsyncStorage.getItem('autologin',(err,result)=>{
-        //if(result=='0')
+<<<<<<< HEAD
+=======
+        if(result=='1')
+        navigation.replace('TabNavigation');
+        else
         navigation.replace('Auth');
-        //else
-        //navigation.replace('TabNavigation');
-        //setMem_idnum(userInfo.mem_idnum);
-        //setBk_id(userInfo.bucketlist.bk_id);
+>>>>>>> d968cc1dad106eb95ec83c131eb344d7371ba74e
       });
       //navigation.replace('Auth');
     }, 2000);

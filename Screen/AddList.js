@@ -9,7 +9,6 @@
   import RNPickerSelect from 'react-native-picker-select';
   import styled, {ThemeProvider} from 'styled-components/native';
   import {theme} from './src/theme';
- import Input from './src/components/Input';
   import {
     StyleSheet,
     View,
@@ -226,130 +225,34 @@
         })
     
   };
-  
-  
-  //  const change_middle=(value)=>{
-  //    setLarge(value);
-  //    let middle_array=[];
-  //    let i;
-  //    console.log('large value:',value);
-  //    for(i=0; i<category_list.length; i++){
-  //      console.log("i:",i);
-  //      if(category_list[i].cl_activity==value){
-  //        middle_array.push(category_list[i].cm_activity);
-  //        console.log('add ',i);
-  //      }
-  //    }
-  //    const middleitem_tmp=middle_array.map(obr=>({
-  //      label:obr,
-  //      value:obr,
-  //    }));
-  //    const newset=[...new Set(middleitem_tmp.map(JSON.stringify))].map(JSON.parse);
-  //    setMiddleitem(newset);
-  //    console.log('middle newset:',newset);
-  //  }
-  //  const change_small=(value)=>{
-  //    setMiddle(value);
-  //    let small_array=[];
-  //    let i;
-  //    console.log('middle value:',value);
-  //    for(i=0; i<category_list.length; i++){
-  //      console.log("i:",i);
-  //      if(category_list[i].cm_activity==value){
-  //        small_array.push(category_list[i].cs_activity);
-  //        console.log('add ',i);
-  //      }
-  //    }
-  //    const smallitem_tmp=small_array.map(obr=>({
-  //      label:obr,
-  //      value:obr,
-  //    }));
-  //    const newset=[...new Set(smallitem_tmp.map(JSON.stringify))].map(JSON.parse);
-  //    setSmallitem(newset);
-  //    console.log('small newset:',newset);
-  //  }
-  //  const handleSubmitPress = () => {
-  //    //let dataToSend = {name: name, large: large, middle:middle, small:small};
-  //    //let formBody = [];
-  //    //if(value!=''){ setLc_id(value.lc_id);}
-  //    let i;
-  //    console.log('small:',small);
-  //    for(i=0; i<category_list.length; i++){
-  //      console.log('cs_activity',category_list[i].cs_activity,'small:',small);
-  //      if(category_list[i].cs_activity==small){
-  //        console.log('i:',i,'cs_id:',cs_id, 'small:',small, 'category_list[i].cs_id:',category_list[i].cs_id);
-  //        setCs_id(category_list[i].cs_id);
-  //        console.log('after cs_id:',cs_id,'category_list[i].cs_id:',category_list[i].cs_id );
-  //        break;
-  //      }
-  //    }
-  //    if(lc_name!=''){
-  //      let location_array=[];
-  //      for(i=0; i<location_list.length; i++){
-  //        if(levenshtein(location_list[i].lc_name,lc_name)>=3){
-  //          location_array.push({cs_name:location_list[i].cs_activity, addr:location_list[i].lc_addr, name:location_list[i].lc_name,
-  //            call_number:location_list[i].lc_call_number, lc_id:location_list[i].lc_id
-  //          });
-  //        }
-  //      }
-  //      setRecommend_location(location_array);
-  //      setModalVisible(true);
-  //    }
-  //    console.log('SendToData cs_id:',cs_id,' lc_id:',lc_id);
-     
-  //  fetch('http://3.35.217.247:8080/api/bucketlist/add', { //link 수정
-  //  method: 'POST',
-  //  headers: { // header에 로그인 후 서버로 부터 받은 토큰 저장(생략가능)
-  //    'Content-Type': 'application/json',
-  //  },
-  //    body: JSON.stringify({
-  //      mem_idnum : mem_idnum,
-  //      cs_id:cs_id,
-  //      lc_id:lc_id,
-  //      }),
-  //  })
-  //      .then((response) => response.json())
-  //      .then((responseJson) => {
-  //        //Hide Loader
-  //        console.log(responseJson);
-  //        // If server response message same as Data Matched
-  //        if (responseJson.status == 1) {
-  //          setChecktext('Add success');
-  //        } else if(responseJson.status!=-1){
-  //          setChecktext('error');
-  //          console.log('error');
-  //        }
-  //        else {
-  //          setChecktext('');
-  //        }
- 
-  //      })
-  //      .catch((error) => {
-  //        //Hide Loader
-  //        //setLoading(false);
-  //        console.error(error);
-  //      });
-  //  };
-
 
      return (
        <View style={StyleFriendlist.Container}>
          
-         <View style={{backgroundColor:'white', width: 300, margin:10, marginLeft:30,
-           height:50, flexDirection:'row'
-        }}>
-           
+         <View style={{
+           width: 300, 
+           margin:10,
+           backgroundColor:'white',
+           height:50, 
+           flexDirection:'row', 
+           borderColor:'#a1a1a1', 
+           borderWidth:2,
+         }}>
            <RNPickerSelect
                style = {{
                  margin:30,
                  inputAndroid : {color : 'black'},
-                 borderColor:'black',
-                 borderRadius: 4,
-                 borderWidth:1,
+                 //borderColor:'black',
+                 //borderRadius: 4,
+                 //borderWidth:5,
+                 borderColor: '#a1a1a1',
+                 borderTopWidth: 1.5,
+                 borderRightWidth: 1.5,
                }}
-               placeholderTextColor="black"
+               placeholderTextColor="blue"
                placeholder={{
-                   label: 'Select a Large Category',
+                label: '대분류를 고르시오',
+                color: 'black',
                    value: null,
                }}
              
@@ -361,8 +264,14 @@
            
          </View>
 
-         <View style={{backgroundColor:'white', width: 300, margin:10, marginLeft:30,
-           height:50, flexDirection:'row'
+         <View style={{ 
+           width: 300, 
+           margin:10,
+           backgroundColor:'white',
+           height:50, 
+           flexDirection:'row', 
+           borderColor:'#a1a1a1', 
+           borderWidth:2,
         }}>
            
            <RNPickerSelect
@@ -373,9 +282,10 @@
                  borderRadius: 4,
                  borderWidth:1,
                }}
-               placeholderTextColor="black"
+               //placeholderTextColor="black"
                placeholder={{
-                   label: 'Select a Middle Category',
+                label: '중분류를 고르시오',
+                color: 'black',
                    value: null,
                }}
              
@@ -388,9 +298,13 @@
          </View>
 
          <View style={{
-           backgroundColor:'white',
-            width: 300, margin:10, marginLeft:30,
-           height:50, flexDirection:'row'
+            width: 300, 
+            margin:10,
+            backgroundColor:'white',
+            height:50, 
+            flexDirection:'row', 
+            borderColor:'#a1a1a1', 
+            borderWidth:2,
         }}>
            
            <RNPickerSelect
@@ -403,7 +317,8 @@
                }}
                placeholderTextColor="black"
                placeholder={{
-                   label: 'Select a Small Category',
+                   label: '소분류를 고르시오',
+                   color: 'black',
                    value: null,
                }}
              
@@ -414,78 +329,38 @@
            />
            
          </View>
-        
            
-         <ThemeProvider theme={theme}>
-         <View style={{backgroundColor:'white', width: 300, margin:10, marginLeft:30}}>{ 
+         <View style={{
+            width: 300, 
+            margin:10,
+            backgroundColor:'white',
+            height:50, 
+            flexDirection:'row', 
+            borderColor:'#a1a1a1', 
+            borderWidth:2,
+         }}>{ 
            <TextInput 
              style={{
-               marginLeft:20,
-               fontSize:20
+               //marginLeft:20,
+               fontSize:15
              }}
+             placeholderTextColor="gray"
+            placeholder="장소를 입력하시오"
              onChangeText={(value) => setLc_name(value)}
              value={lc_name}
            />
          }</View>
-         </ThemeProvider>
 
          <View style={{alignItems:'center'}}>
            <TouchableOpacity
                style={StyleFriendlist.button}
                onPress={()=>handleSubmitPress()} // Details로 화면 이동    
            >
-             <Text style={StyleFriendlist.ButtonText}>Add to BucketList</Text>
+             <Text style={StyleFriendlist.ButtonText}>추가</Text>
            </TouchableOpacity>
-           <Text style={{color:'red',  textAlign: 'center', fontSize: 14,}}> {checktext} </Text>
        
          </View>
-        {/* <View>
-          <Modal
-           visible={modalVisible}
-           onRequestClose={() => {
-             Alert.alert("Modal has been closed.");
-             setModalVisible(!modalVisible);
-           }}
-          >
-            <View>
-              <List>
-                 {Object.values(recommend_location)
-                       .map(item=>(
-                         <View style={{height:30, flexDirection:'row'}}>
-                             <View>
-                               <Text>
-                                 {item.name}
-                               </Text>
-                               <Text>
-                               {item.cs_name}
-                               </Text>
-                             </View>
-                             <View>
-                               <View>
-                               <Text>
-                               {item.addr}
-                               </Text>
-                               </View>
-                               <View>
-                               <Text>
-                               {item.call_num}
-                               </Text>
-                               </View>
-                               <View>
-                               <TouchableOpacity
-                                   style={StyleFriendlist.button}
-                                   onPress={() => setModalVisible(false)} // 안보이게   
-                               >
-                                 <Text style={StyleFriendlist.ButtonText}>Choose</Text>
-                               </TouchableOpacity>
-                               </View>
-                             </View> 
-                         </View>
-                       ))}
-              </List>
-            </View>
-          </Modal>
-        </View> */}
+        
        </View>
    );
   };
@@ -498,6 +373,15 @@
       //backgroundColor: "blue",
       color:'black'
       //flexDirection: 'row'
+    },
+    pickerStyle:{
+      width: 300, 
+      margin:10,
+      backgroundColor:'white',
+      height:50, 
+      flexDirection:'row', 
+      borderColor:'#a1a1a1', 
+      borderWidth:2
     },
     title:{         //Format 2
      
@@ -514,8 +398,9 @@
    Container: {
        //width: '100%',
        height: '100%',
-       backgroundColor: 'lightsteelblue',
-      // alignItems:'center',
+       backgroundColor: 'aliceblue',
+       alignItems:'center',
+       justifyContent: 'center',
        //paddingTop: 40,
        color: 'black',
      },
@@ -564,7 +449,7 @@
      button:{
        alignItems:"center",
        justifyContent:'center',
-       backgroundColor:"purple",
+       backgroundColor:"lightskyblue",
        //color:'purple',
        margin:15,
        width:150,

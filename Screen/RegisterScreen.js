@@ -187,7 +187,7 @@ const RegisterScreen = (props) => {
         <KeyboardAvoidingView enabled>
           <View style={styles.SectionStyle}>
             <Text style={styles.textStyle}>
-              Name
+              이름
             </Text>
             <TextInput
               style={styles.inputStyle}
@@ -205,7 +205,7 @@ const RegisterScreen = (props) => {
           </View>
           <View style={styles.SectionStyle}>
           <Text style={styles.textStyle}>
-              ID
+              아이디
             </Text>
             <TextInput
               style={styles.inputStyle}
@@ -242,7 +242,7 @@ const RegisterScreen = (props) => {
           </View>
           <View style={styles.SectionStyle}>
           <Text style={styles.textStyle}>
-              PW
+              비밀번호
             </Text>
             <TextInput
               style={styles.inputStyle}
@@ -259,7 +259,7 @@ const RegisterScreen = (props) => {
           </View>
           <View style={styles.SectionStyle}>
           <Text style={styles.textStyle}>
-              Nickname
+              닉네임
             </Text>
             <TextInput
               style={styles.inputStyle}
@@ -276,7 +276,7 @@ const RegisterScreen = (props) => {
           </View>
           <View style={styles.SectionStyle}>
           <Text style={styles.textStyle}>
-              Birth
+              생년월일
             </Text>
             <TextInput
               style={styles.inputStyle}
@@ -294,7 +294,7 @@ const RegisterScreen = (props) => {
           <View style={styles.SectionStyle}>
             <View style={styles.radioStyle}>
               <Text style={styles.genderText}>
-                Male
+                남자
               </Text>
               <RadioButton
                 value="male"
@@ -304,7 +304,7 @@ const RegisterScreen = (props) => {
             </View>
               <View style={styles.radioStyle}>
                 <Text style={styles.genderText}>
-                  FeMale
+                  여자
                 </Text>
                 <RadioButton
                   style={styles.radioStyle}
@@ -317,7 +317,7 @@ const RegisterScreen = (props) => {
          
           <View style={styles.SectionStyle}>
           <Text style={styles.textStyle}>
-              Phone
+              전화번호
             </Text>
             <TextInput
               style={styles.inputStyle}
@@ -332,12 +332,12 @@ const RegisterScreen = (props) => {
               blurOnSubmit={false}
             />
           </View>
-          <View style={styles.SectionStyle}>
+          {/*<View style={styles.SectionStyle}>
             <Text style={styles.textStyle}>
-              Autologin
+              자동로그인
             </Text>
             <Text style={styles.genderText}>
-              Yes
+              예
             </Text>
             <RadioButton
               value="yes"
@@ -345,14 +345,14 @@ const RegisterScreen = (props) => {
               onPress={() => setMem_autologin(1)}
             />
             <Text style={styles.genderText}>
-              No
+              아니오
             </Text>
             <RadioButton
               value="no"
               status={ mem_autologin === 0 ? 'checked' : 'unchecked' }
               onPress={() => setMem_autologin(0)}
             />
-          </View>
+          </View>*/}
           {errortext != '' ? (
             <Text style={styles.errorTextStyle}> {errortext} </Text>
           ) : null}
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: 'aqua',
+    backgroundColor: 'lightskyblue',
     borderWidth: 0,
     color: '#FFFFFF',
     borderColor: '#7DE24E',

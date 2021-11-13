@@ -5,17 +5,10 @@ import { Meet, Settings} from './TabScreens';
 import {FriendList} from './FriendList';
 import {BucketList} from './BucketList';
 import AddList from './AddList';
-import Suggest from './Suggest';
+import SearchDetailScreen from './SearchDetailScreen';
+import RecommendScreen from './RecommendScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-//import { MaterialCommunityIcons } from '@expo/vector-icons';
-//import Icon from "react-native-vector-icons/FontAwesome";
-
-/*
-const TabIcon=({name, size, color})=>{
-    return <MaterialCommunityIcons name={name} size={size} color={color}/>;
-};
-*/
-
+import Icon from 'react-native-vector-icons/Ionicons';
 const Stack = createStackNavigator();
 const Tab=createBottomTabNavigator();
 
@@ -33,9 +26,9 @@ const Bucket = () => {
           name="AddList"
           component={AddList}
           options={{
-            title: 'Add to Bucket List', //Set Header Title
+            title: '리스트에 추가', //Set Header Title
             headerStyle: {
-              backgroundColor: 'aqua', //Set Header color
+              backgroundColor: 'lightskyblue', //Set Header color
             },
             headerTintColor: 'blue', //Set Header text color
             headerTitleStyle: {
@@ -44,12 +37,26 @@ const Bucket = () => {
           }}
         />
          <Stack.Screen
-          name="Suggest"
-          component={Suggest}
+          name="SearchDetailScreen"
+          component={SearchDetailScreen}
           options={{
-            title: 'Suggest List', //Set Header Title
+            title: '상세 정보', //Set Header Title
             headerStyle: {
-              backgroundColor: 'aqua', //Set Header color
+              backgroundColor: 'lightskyblue', //Set Header color
+            },
+            headerTintColor: 'blue', //Set Header text color
+            headerTitleStyle: {
+              fontWeight: 'bold', //Set Header text style
+            },
+          }}
+        />
+        <Stack.Screen
+          name="RecommendScreen"
+          component={RecommendScreen}
+          options={{
+            title: '추천', //Set Header Title
+            headerStyle: {
+              backgroundColor: 'lightskyblue', //Set Header color
             },
             headerTintColor: 'blue', //Set Header text color
             headerTitleStyle: {
@@ -70,7 +77,7 @@ const TabNavigation=()=>{
              options={{
                 tabBarLabel: 'BucketList',
                 tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="video" color={color} size={size} />
+                      <Icon name='newspaper-outline' size={size} color={color}/>
                   ),
              }}
             />
@@ -80,7 +87,7 @@ const TabNavigation=()=>{
              options={{
                 tabBarLabel: 'Friends',
                 tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="home" color={color} size={size} />
+                  <Icon name='people-outline' size={size} color={color}/>
                   ),
              }}
              />
@@ -90,8 +97,8 @@ const TabNavigation=()=>{
             options={{
                 tabBarLabel: 'Settings',
                 tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="cog" color={color} size={size} />
-                  ),
+                  <Icon name='settings-outline' size={size} color={color}/>
+                   ),
              }}
             />
         </Tab.Navigator>
