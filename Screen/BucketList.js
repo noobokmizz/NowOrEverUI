@@ -1,6 +1,7 @@
 import React, {useState, createRef,useEffect} from 'react';
 import styled, {ThemeProvider} from 'styled-components/native';
 import {theme} from './src/theme';
+import { useIsFocused } from "@react-navigation/native";
 import {
   Button,
    View,
@@ -35,7 +36,8 @@ export const BucketList=({navigation})=>{
     const [delete_list,setDelete_list]=useState([]);
     //const [tasks,setTasks]=useState([{text:'',id:''}]);
     const [loading, setLoading] = useState(false);
-  
+    const isFocused = useIsFocused();
+
     const _deleteAlert = (id) =>{
       Alert.alert(
           "정말로",
@@ -189,7 +191,7 @@ export const BucketList=({navigation})=>{
 
       });
 
-    },[]);
+    },[isFocused]);
 
     useEffect(()=>{
       setLoading(true);

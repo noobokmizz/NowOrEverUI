@@ -17,6 +17,7 @@ import TabNavigation from './Screen/Tab';
 //import Bucket from './Screen/Bucket';
 
 const Stack = createStackNavigator();
+
 //export const localhost='192.168.238.63'; //학교
 //export const localhost='192.168.35.57'; //집
 export const localhost='15.164.123.22'; // public server ip 
