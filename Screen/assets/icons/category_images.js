@@ -145,5 +145,5 @@ export default category_images={
     "95":require('./category_images/category_95.png/'),
     "96":require('./category_images/category_96.png/'),
     "97":require('./category_images/category_97.png/'),
-    "98":require('./category_images/category_98.png/'),
+    "98":require('./category_images/category_98.png/')
  }

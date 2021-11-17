@@ -64,7 +64,9 @@ const SearchDetailScreen = ({route}) => {
                 call_number:responseJson[0].location.lc_call_number, 
                 url:responseJson[0].location.lc_url, 
                 star:responseJson[0].rv_starrate,
-                category:responseJson[0].category
+                category:responseJson[0].category,
+		recommendList:responseJson[0].recommendList,
+		length:responseJson[0].recommendList.length
             })
             setEndLocation({latitude:parseFloat(responseJson[0].location.lc_y),longitude:parseFloat(responseJson[0].location.lc_x)})
         })
@@ -84,6 +86,7 @@ const SearchDetailScreen = ({route}) => {
       },[startLocation,endLocation]);
 
     return(
+	<ScrollView>
         <ThemeProvider theme={theme}>
         <Container>
         <View style={{
@@ -151,10 +154,25 @@ const SearchDetailScreen = ({route}) => {
             }}/>
     
     </NaverMapView>
+	    </View>
+	     <View style={{height:30, marginTop:30,width:350,}}>
+	    <View style={{height:50}}>
+                <Text style={{fontWeight:'bold',fontSize:20}}>{"이런 장소는 어때요?"}</Text>
             </View>
-        </View>
-        </Container>
+	    </View>
+	    <View style={{}}>
+                <View style={{flexDirection:'row', marginRight:30}}>
+                    <Image
+                        source={category_images[information.recommendList[0].locationId.lc_category]}
+                        style={{width:30, height:30, borderRadius:30}}
+                    />
+                    <Text style={{fontSize:20}}>{information.name}</Text>
+                </View>
+	    </View>
+	    </View>
+	    </Container>
         </ThemeProvider>
+	</ScrollView>
     );
 };
 
