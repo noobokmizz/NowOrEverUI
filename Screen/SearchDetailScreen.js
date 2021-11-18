@@ -24,7 +24,7 @@ import {
   import styled, {ThemeProvider} from 'styled-components/native';
 //import Geolocation from 'react-native-geolocation-service';
 
-const SearchDetailScreen = ({route}) => {
+const SearchDetailScreen = ({navigation, route}) => {
     const [bk_key,setBk_key]=useState({mem_idnum:1,bk_id:1});
     const [information,setInformation]=useState({name:'',address:'',call_number:'',url:'',star:0,recommendList:[]})
     const [startLocation,setStartLocation]=useState({latitude: 37.564362, longitude: 126.977011})
@@ -243,21 +243,33 @@ else{
             </View>
 	    </View>
                 <View style={{flexDirection:'row', marginRight:30,}}>
+                    <TouchableOpacity onPress={() => navigation.navigate('SearchDetailScreen',{lc_id:recommendList[0].locationId.lc_id, category_id:recommendList[0].locationId.lc_category})}>
+                    <View>
                     <Image
                         source={category_images[recommendList[0].locationId.lc_category]}
                         style={{width:30, height:30, borderRadius:30}}
                     />
                     <Text style={{fontSize:15}}>{recommendList[0].lc_name}</Text>
+                    </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('SearchDetailScreen',{lc_id:recommendList[1].locationId.lc_id, category_id:recommendList[1].locationId.lc_category})}>
+                    <View>
                     <Image
                         source={category_images[recommendList[1].locationId.lc_category]}
                         style={{marginLeft:15, width:30, height:30, borderRadius:30}}
                     />
                     <Text style={{fontSize:15}}>{recommendList[1].lc_name}</Text>
+                    </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('SearchDetailScreen',{lc_id:recommendList[2].locationId.lc_id, category_id:recommendList[2].locationId.lc_category})}>
+                    <View>
                     <Image
                         source={category_images[recommendList[2].locationId.lc_category]}
                         style={{marginLeft:15, width:30, height:30, borderRadius:30}}
                     />
                     <Text style={{fontSize:15}}>{recommendList[2].lc_name}</Text>
+                    </View>
+                    </TouchableOpacity>
 	    </View>
 	    </View>
 	    </Container>
