@@ -205,7 +205,9 @@ const styles = StyleSheet.create({
     borderColor: '#dadae8',
   },
   checkStyle:{
-    marginLeft:10
+    marginLeft:10,
+    borderWidth: 10,
+    borderColor:'black'
   },
   registerTextStyle: {
     color: 'blue',

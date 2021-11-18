@@ -49,7 +49,7 @@ const Task=({name,deleteTask,searchTask,id,category,categoryId})=>{
             </View>
             <View style={{width:chartWidth-160, marginLeft:10}}>
                 <Contents>{name}</Contents>
-                <Text>{id<0?category:''}</Text>
+                <Text style={{color:'#000000'}}>{id<0?category:''}</Text>
             </View>
             {
                 (id<0)&&<View style={{width:15}}>

@@ -10,6 +10,7 @@ import {
     Linking, 
     View,
     Image,
+    Alert,
     Dimensions } from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -26,7 +27,7 @@ import Geolocation from 'react-native-geolocation-service';
 
 const chartWidth = Dimensions.get('window').width;
 
-const SearchDetailScreen = ({navigation, route}) => {
+const RecommendLocation = ({navigation, route}) => {
     const [bk_key,setBk_key]=useState({mem_idnum:1,bk_id:1});
 
     const [information,setInformation]=useState({name:'',address:'',call_number:'',url:'',star:0,recommendList:[]})
@@ -35,7 +36,68 @@ const SearchDetailScreen = ({navigation, route}) => {
     const [center,setCenter]=useState({latitude: 37.564362, longitude: 126.977011})
     const [zoom,setZoom]=useState(5)
     const [recommendList, setRecommendList] = useState([]);
-    let categoryId=route.params.category_id.toString();
+
+  
+  
+      const handleSubmitPress = () => {
+        let add_list=new Object();
+        let mem_idnum=bk_key.mem_idnum;
+        let bk_id=bk_key.bk_id;
+  
+        add_list.category_id=information.category_id;
+        add_list.category=information.category;
+        add_list.lc_id=information.lc_id;
+        add_list.lc_name=information.name;
+
+        fetch('http://'+localhost+':8080/bucketlist/add',{
+          method:'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            mem_idnum : mem_idnum,
+            bk_id:bk_id,
+            bucketlistContents:add_list,
+            }),
+          })
+          .then((response) => response.json())
+          .then((responseJson)=>{
+            console.log(JSON.stringify({
+              mem_idnum : mem_idnum,
+              bk_id:bk_id,
+              bucketlistContents:add_list,
+              }));
+            console.log('add response:'+JSON.stringify(responseJson));
+            if(responseJson.status==1){
+              Alert.alert(
+                add_list.category,
+                "success",
+                [
+                  {
+                    text: "OK",
+                    onPress: () => console.log("OK Pressed") 
+                  }
+                ]
+                );
+            }
+            else{
+              Alert.alert(
+                "이미 있는 카테고리입니다.",
+                "fail",
+                [
+                  {
+                    text: "OK",
+                    onPress: () => console.log("OK Pressed") 
+                  }
+                ]
+                );
+            }
+            })
+            .catch((error) => {
+              console.error(error);
+            })
+        
+      };
 
     useEffect(()=>{
         AsyncStorage.getItem('userInfo',(err,result)=>{
@@ -83,7 +145,9 @@ const SearchDetailScreen = ({navigation, route}) => {
                 call_number:responseJson[0].location.lc_call_number, 
                 url:responseJson[0].location.lc_url, 
                 star:responseJson[0].rv_starrate,
-                category:responseJson[0].category
+                category:responseJson[0].category,
+                category_id:responseJson[0].location.locationId.lc_category,
+                lc_id:responseJson[0].location.locationId.lc_id,
             })
             setEndLocation({latitude:parseFloat(responseJson[0].location.lc_y),longitude:parseFloat(responseJson[0].location.lc_x)})
             setRecommendList(responseJson[0].recommendList)
@@ -121,20 +185,19 @@ const SearchDetailScreen = ({navigation, route}) => {
         console.log('recommendList.length:'+recommendList.length);
       },[recommendList]);
 
-if(recommendList.length==0){
+
     return(
-	<ScrollView>
         <ThemeProvider theme={theme}>
         <Container>
         <View style={{
             //justifyContent: "center",
             height:'100%',
             alignItems: "center"}}>
-
-            <View style={{width:350, borderBottomWidth:2, borderBottomColor:'gray', alignItems: "center"}}>
+            <View style={{flexDirection:'row',borderBottomWidth:2, borderBottomColor:'gray',}}>
+            <View style={{marginLeft:30, width:300,  alignItems: "center"}}>
                 <View style={{flexDirection:'row', marginRight:30}}>
                     <Image
-                        source={category_images[categoryId]}
+                        source={category_images[information.category_id]}
                         style={{width:60, height:60, borderRadius:30}}
                     />
                     <Text style={{fontWeight:'bold',fontSize:50, color:'#000000'}}>{information.name}</Text>
@@ -145,7 +208,17 @@ if(recommendList.length==0){
                     <Text style={{fontSize:20, color:'#000000'}}>{information.star}</Text>
                 </View>
             </View>
-
+            <View>
+            <TouchableOpacity
+                      style={StyleList.button}
+                      onPress={()=>handleSubmitPress()} // Addlist로 화면 이동    
+                  >
+                    <Image source={require('./assets/icons/bucketlistImage/plus.png')}
+                          style={{width:25, height:25}}
+                        />
+                  </TouchableOpacity>
+            </View>
+            </View>
             <View style={{borderBottomWidth:2,borderBottomColor:'gray',height:100, marginTop:10,width:350,}}>
             <View style={{height:30}}>
                 <Text style={{fontSize:20, color:'#000000'}}>주소:{information.address}</Text>
@@ -195,136 +268,10 @@ if(recommendList.length==0){
 	    </View>
 	    </Container>
         </ThemeProvider>
-	</ScrollView>
     );
-}
-else{
-    return(
-	<ScrollView>
-        <ThemeProvider theme={theme}>
-        <Container>
-        <View style={{
-            //justifyContent: "center",
-            height:'100%',
-            alignItems: "center"}}>
 
-            <View style={{width:350, borderBottomWidth:2, borderBottomColor:'gray', alignItems: "center"}}>
-                <View style={{flexDirection:'row', marginRight:30}}>
-                    <Image
-                        source={category_images[categoryId]}
-                        style={{width:60, height:60, borderRadius:30}}
-                    />
-                    <Text style={{fontWeight:'bold',fontSize:50, color:'#000000'}}>{information.name}</Text>
-                </View>
-                <View style={{flexDirection:'row'}}>
-                    <Text style={{fontSize:20, color:'#000000'}}>{information.category+' > '}</Text>
-                    <Icon name='star' size={25} color={'orange'}/>
-                    <Text style={{fontSize:20, color:'#000000'}}>{information.star}</Text>
-                </View>
-            </View>
 
-            <View style={{borderBottomWidth:2,borderBottomColor:'gray',height:100, marginTop:10,width:350,}}>
-            <View style={{height:30}}>
-                <Text style={{fontSize:20, color:'#000000'}}>주소:{information.address}</Text>
-            </View>
-            <View style={{height:30}}>
-                <Text style={{fontSize:20, color:'#000000'}}>전화번호:{information.call_number}</Text>
-            </View>
-            <View style={{flexDirection:'row', height:30, alignItems: "center"}}>
-                {/*
-                    <Text style={{color: 'blue', fontSize:15}}
-                    onPress={() => Linking.openURL(information.url)}>
-                {information.url}
-                </Text>
-                */}
-                <TouchableOpacity onPress={() => Linking.openURL(information.url)}>
-                <Image source={require('./assets/icons/kakaomap.png')}
-                          style={{width:30, height:30}}
-                          
-                        />
-                </TouchableOpacity>
-                <Text style={{fontSize:20, marginLeft:5, fontFamily: 'sans-serif-medium', color:'#000000'}}>
-                    Kakaomap으로 보기
-                </Text>
-            </View>
-            </View>
-            <View style={{marginTop:10}}>
-            <NaverMapView style={{
-                        width: 350, height: 350
-                    }}
-                         showsMyLocationButton={true}
-                         center={{...center, zoom: zoom}}
-                         //onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
-                         //onCameraChange={e => console.warn('onCameraChange', JSON.stringify(e))}
-                         //</View>onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
-                         >
-        <Marker coordinate={startLocation} onClick={() => {
-            console.warn('latitude'+startLocation.latitude);
-            console.warn('longitude'+startLocation.longitude);
-            }}/>
-        <Marker coordinate={endLocation} pinColor="blue" onClick={() => {
-            console.warn('latitude'+endLocation.latitude);
-            console.warn('longitude'+endLocation.longitude);
-            }}/>
-    
-    </NaverMapView>
-	    </View>
-	     <View style={{height:30, marginTop:30,width:350,}}>
-	          <View>
-                <Text style={{fontWeight:'bold',fontSize:20, color:'#000000'}}>{"이런 장소는 어때요?"}</Text>
-            </View>
-	    </View>
-                <View style={{flexDirection:'row', width:chartWidth}}>
-                  <View style={{marginLeft:10,  width:80,justifyContent:'center'}}>
-                <TouchableOpacity onPress={() =>{
-                       console.log('for check on press');
-                       navigation.navigate('RecommendLocation',{lc_id:recommendList[0].locationId.lc_id, category_id:recommendList[0].locationId.lc_category});
 
-                    }}>
-                    <View style={{justifyContent:'center'}}>
-                    <Image
-                        source={category_images[recommendList[0].locationId.lc_category]}
-                        style={{width:50, height:50, borderRadius:25}}
-                    />
-                    <Text style={{fontSize:15, color:'#000000'}}>{recommendList[0].lc_name}</Text>
-                    </View>
-                    </TouchableOpacity>
-                    </View>
-
-                    <View style={{marginLeft:30,  width:80,justifyContent:'center'}}>
-                    <TouchableOpacity onPress={() =>{
-                       console.log('for check on press');
-                       navigation.navigate('RecommendLocation',{lc_id:recommendList[1].locationId.lc_id, category_id:recommendList[1].locationId.lc_category});
-                    
-                    }}>
-                    <View>
-                    <Image
-                        source={category_images[recommendList[1].locationId.lc_category]}
-                        style={{ width:50, height:50, borderRadius:25}}
-                    />
-                    <Text style={{fontSize:15, color:'#000000'}}>{recommendList[1].lc_name}</Text>
-                    </View>
-                    </TouchableOpacity>
-                    </View>
-
-                    <View style={{marginLeft:30,  width:80,justifyContent:'center'}}>
-                    <TouchableOpacity onPress={() => navigation.navigate('RecommendLocation',{lc_id:recommendList[2].locationId.lc_id, category_id:recommendList[2].locationId.lc_category})}>
-                    <View>
-                    <Image
-                        source={category_images[recommendList[2].locationId.lc_category]}
-                        style={{width:50, height:50, borderRadius:25}}
-                    />
-                    <Text style={{fontSize:15, color:'#000000'}}>{recommendList[2].lc_name}</Text>
-                    </View>
-                    </TouchableOpacity>
-                    </View>
-	    </View>
-	    </View>
-	    </Container>
-        </ThemeProvider>
-	</ScrollView>
-    );
-}
 };
 
 
@@ -346,4 +293,4 @@ Container: {
 },
 });
 
-export default SearchDetailScreen;
+export default RecommendLocation;

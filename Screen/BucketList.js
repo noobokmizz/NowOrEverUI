@@ -285,7 +285,7 @@ export const BucketList=({navigation})=>{
               
               <View style={{flexDirection:'row', borderBottomColor:'gray',borderBottomWidth: 1, borderBottomLeftRadius:12,
             borderBottomRightRadius:12,justifyContent: 'space-between',}}>
-                  <Text style={{margin:10, fontWeight: 'bold', fontSize:25}}>나의 버킷리스트</Text>
+                  <Text style={{margin:10, fontWeight: 'bold', fontSize:25, color:'#000000'}}>나의 버킷리스트</Text>
                   <View style={{flexDirection:'row'}}>
                   <TouchableOpacity
                       style={StyleList.button}
@@ -307,7 +307,7 @@ export const BucketList=({navigation})=>{
               </View>
 
               <View style={{height:50}}>
-              <Text style={{margin:10, fontWeight: 'bold', fontSize:20}}>가고 싶은 장소</Text>
+              <Text style={{margin:10, fontWeight: 'bold', fontSize:20, color:'#000000'}}>가고 싶은 장소</Text>
               </View>
               <View style={{height:200, marginLeft:20}}>
                 <List width={width}>
@@ -326,7 +326,7 @@ export const BucketList=({navigation})=>{
               </View>
 
               <View style={{height:50}}>
-              <Text style={{margin:10, fontWeight: 'bold', fontSize:20}}>가고 싶은 곳</Text>
+              <Text style={{margin:10, fontWeight: 'bold', fontSize:20, color:'#000000'}}>가고 싶은 곳</Text>
               </View>
               <View style={{height:200, marginLeft:20}}>
                 <List width={width}>

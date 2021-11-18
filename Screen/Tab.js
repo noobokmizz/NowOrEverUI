@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import { Meet, Settings} from './TabScreens';
 import {FriendList} from './FriendList';
 import {BucketList} from './BucketList';
+import RecommendLocation from'./RecommendLocation';
 import AddList from './AddList';
 import SearchDetailScreen from './SearchDetailScreen';
 import RecommendScreen from './RecommendScreen';
@@ -55,6 +56,20 @@ const Bucket = () => {
           component={RecommendScreen}
           options={{
             title: '추천', //Set Header Title
+            headerStyle: {
+              backgroundColor: 'lightskyblue', //Set Header color
+            },
+            headerTintColor: 'blue', //Set Header text color
+            headerTitleStyle: {
+              fontWeight: 'bold', //Set Header text style
+            },
+          }}
+        />
+         <Stack.Screen
+          name="RecommendLocation"
+          component={RecommendLocation}
+          options={{
+            title: '추천 장소', //Set Header Title
             headerStyle: {
               backgroundColor: 'lightskyblue', //Set Header color
             },

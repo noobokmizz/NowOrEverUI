@@ -10,6 +10,7 @@ import {
     CheckBox,
     Linking, 
     View,
+    Alert,
     Image } from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -34,6 +35,8 @@ const RecommendScreen = ({route}) => {
     const [zoom,setZoom]=useState(5);
     const [status,setStatus]=useState(0);
     //let categoryId=route.params.category_id.toString();
+
+    
 
     useEffect(()=>{
         AsyncStorage.getItem('userInfo',(err,result)=>{
@@ -100,6 +103,7 @@ const RecommendScreen = ({route}) => {
                   star:responseJson[0].rv_starrate,
                   category:responseJson[0].category,
                   category_id:responseJson[0].location.locationId.lc_category,
+                  lc_id:responseJson[0].location.locationId.lc_id,
               })
               setEndLocation({latitude:parseFloat(responseJson[0].location.lc_y),longitude:parseFloat(responseJson[0].location.lc_x)})
           }
@@ -176,8 +180,8 @@ const RecommendScreen = ({route}) => {
             alignItems: "center",
             backgroundColor:"aliceBlue"
             }}>
-
-            <View style={{width:350, borderBottomWidth:2, borderBottomColor:'gray', alignItems: "center"}}>
+            <View style={{flexDirection:'row',borderBottomWidth:2, borderBottomColor:'gray',}}>
+            <View style={{ width:300,  alignItems: "center"}}>
                 <View style={{flexDirection:'row', marginRight:30}}>
                     <Image
                         source={category_images[information.category_id]}
@@ -191,7 +195,8 @@ const RecommendScreen = ({route}) => {
                     <Text style={{fontSize:20}}>{information.star}</Text>
                 </View>
             </View>
-
+            
+            </View>
             <View style={{borderBottomWidth:2,borderBottomColor:'gray',height:100, marginTop:10,width:350,}}>
             <View style={{height:30}}>
                 <Text style={{fontSize:20}}>주소:{information.address}</Text>
@@ -280,6 +285,20 @@ Container: {
   backgroundColor: 'aliceblue',
   color: 'black',
 },
+button:{
+  alignItems:"center",
+  justifyContent:'center',
+  //backgroundColor:"#DDDDDD",
+  flexDirection: 'row',
+  margin:15,
+  //padding:10,
+  //width:80,
+  height:25,
+  marginBottom:20,
+},
+ButtonText:{
+  fontSize:15
+}
 });
 
 export default RecommendScreen;

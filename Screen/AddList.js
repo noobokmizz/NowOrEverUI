@@ -57,6 +57,7 @@
      alert(`Add:${lc_name}`);
      setLc_name('');
    };
+
    const _handleTextChange=text=>{
      setLc_name(text);
    }
@@ -364,18 +365,7 @@
            </TouchableOpacity>
        
          </View>
-         <View >
-         <RNPickerSelect
-            onValueChange={(value) => console.log(value)}
-            useNativeAndroidPickerStyle={false}
-            items={[
-                { label: 'Football', value: 'football' },
-                { label: 'Baseball', value: 'baseball' },
-                { label: 'Hockey', value: 'hockey' },
-            ]}
-        />
-           
-         </View>
+         
        </View>
 
        
