@@ -1,6 +1,5 @@
 import React, {useState,useEffect} from 'react';
 import HTML from "react-native-render-html";
-import Geolocation from '@react-native-community/geolocation';
 import {theme} from './src/theme';
 import { 
     Text, 
@@ -22,14 +21,14 @@ import {
     sqrt,abs,round
   } from 'mathjs'
   import styled, {ThemeProvider} from 'styled-components/native';
-//import Geolocation from 'react-native-geolocation-service';
+import Geolocation from 'react-native-geolocation-service';
 
 const SearchDetailScreen = ({route}) => {
     const [bk_key,setBk_key]=useState({mem_idnum:1,bk_id:1});
-    const [information,setInformation]=useState({name:'',address:'',call_number:'',url:'',star:0})
-    const [startLocation,setStartLocation]=useState({latitude: 37.564362, longitude: 126.977011})
-    const [endLocation,setEndLocation]=useState({latitude: 37.564362, longitude: 126.977011})
-    const [center,setCenter]=useState({latitude: 37.564362, longitude: 126.977011})
+    const [information,setInformation]=useState({name:'',address:'',call_number:'',url:'',star:0});
+    const [startLocation,setStartLocation]=useState({latitude: 37.564362, longitude: 126.977011});
+    const [endLocation,setEndLocation]=useState({latitude: 37.564362, longitude: 126.977011});
+    const [center,setCenter]=useState({latitude: 37.564362, longitude: 126.977011});
     const [zoom,setZoom]=useState(5);
     let categoryId=route.params.category_id.toString();
 
@@ -40,6 +39,21 @@ const SearchDetailScreen = ({route}) => {
         });
         console.log('route.params.lc_id:'+route.params.lc_id);
         //console.log('category:'+route.params.category)
+        Geolocation.getCurrentPosition(
+          position => {
+            const {latitude, longitude} = position.coords;
+            setStartLocation({
+              latitude:latitude,
+              longitude:longitude
+            });
+            console.log('현재 위치 받기 성공');
+          },
+          error => {
+            console.log('현재 위치 받기 실패');
+            console.log(error.code, error.message);
+          },
+          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        );
       },[]);
 
       useEffect(()=>{
@@ -71,16 +85,30 @@ const SearchDetailScreen = ({route}) => {
         .catch((error) => {
           console.error(error);
         })
-      },[bk_key]);
+      },[bk_key,startLocation]);
 
       useEffect(()=>{
-          setCenter({latitude:(startLocation.latitude+endLocation.latitude)/2,longitude:(startLocation.longitude+endLocation.longitude)/2});
-          let latitude=abs(startLocation.latitude-endLocation.latitude)*1000;
-          let longitude=abs(startLocation.longitude+endLocation.longitude)*1000;
-          let zoom=sqrt(latitude*latitude+longitude*longitude)/34000;
+        setCenter({latitude:(startLocation.latitude+endLocation.latitude)/2,longitude:(startLocation.longitude+endLocation.longitude)/2});
+          let latitude=abs(startLocation.latitude-endLocation.latitude)*16000;
+          let longitude=abs(startLocation.longitude-endLocation.longitude)*16000;
+          console.log('latitude:'+latitude+' longitude'+longitude);
+          let dist=sqrt(latitude*latitude+longitude*longitude);
+          console.log('dist:'+dist);
+          
+          let zoom;
+          if(dist==0)
+            zoom=14;
+          else
+            zoom=Math.log2(2000000/dist);
+          
+          console.log('before 반올림 zoom:'+zoom);
           zoom=round(zoom);
+          console.log('zoom:'+zoom);
           setZoom(zoom);
-        console.log('zoom:'+zoom);
+          console.log('startLocation');
+          console.log('latitude:'+startLocation.latitude+' longitude'+startLocation.longitude);
+          console.log('endLocation');
+          console.log('latitude:'+endLocation.latitude+' longitude'+endLocation.longitude);
       },[startLocation,endLocation]);
 
     return(

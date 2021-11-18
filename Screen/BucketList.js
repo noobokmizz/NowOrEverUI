@@ -9,9 +9,9 @@ import {
     StyleSheet,
     TouchableOpacity,
     Alert,
-    Image
+    Image,
+    Dimensions
   } from 'react-native';
-import {StatusBar,Dimensions} from 'react-native';
 import Task from './Components/Task';
 import AsyncStorage from '@react-native-community/async-storage';
 

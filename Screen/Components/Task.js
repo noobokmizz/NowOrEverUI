@@ -5,7 +5,12 @@ import IconButton from './IconButton';
 import {images,soccer} from '../src/images';
 import Icon from 'react-native-vector-icons'
 import image from '../assets/icons/emoticons/tmp_soccer.png';
-import {Image, View, Text} from 'react-native';
+import {
+    Image, 
+    View, 
+    Text,
+    Dimensions
+} from 'react-native';
 import category_images from '../assets/icons/category_images';
 import CheckBox from '@react-native-community/checkbox';
 
@@ -28,7 +33,9 @@ const Contents=styled.Text`
     font-weight:bold;
     `;
 //color: ${({theme})=>theme.text};
+
 const Task=({name,deleteTask,searchTask,id,category,categoryId})=>{
+    const chartWidth = Dimensions.get('window').width;
     return(
         <Container>
             <View>
@@ -40,9 +47,9 @@ const Task=({name,deleteTask,searchTask,id,category,categoryId})=>{
                     style={{width:35, height:35, borderRadius:17}}
                 />
             </View>
-            <View style={{width:230}}>
-                <Contents style={{marginLeft:10}}>{name}</Contents>
-                <Text style={{marginLeft:10}}>{id<0?category:''}</Text>
+            <View style={{width:chartWidth-160, marginLeft:10}}>
+                <Contents>{name}</Contents>
+                <Text>{id<0?category:''}</Text>
             </View>
             {
                 (id<0)&&<View style={{width:15}}>

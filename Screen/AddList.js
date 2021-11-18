@@ -232,20 +232,24 @@
          <View style={{
            width: 300, 
            margin:10,
-           backgroundColor:'white',
+           backgroundColor:'white', //picker 누르기 전 색상
            height:50, 
            flexDirection:'row', 
-           borderColor:'#a1a1a1', 
+           borderColor:'#a1a1a1', //picker border 
            borderWidth:2,
          }}>
            <RNPickerSelect
                style = {{
                  margin:30,
-                 inputAndroid : {color : 'black'},
+                 inputAndroid : {
+                   color : 'black',
+                    backgroundColor:'white', //누르기 전 색상
+                  }, //글자 색
                  //borderColor:'black',
                  //borderRadius: 4,
                  //borderWidth:5,
-                 borderColor: '#a1a1a1',
+                 backgroundColor:'red',
+                 borderColor: 'pink',
                  borderTopWidth: 1.5,
                  borderRightWidth: 1.5,
                }}
@@ -285,8 +289,8 @@
                //placeholderTextColor="black"
                placeholder={{
                 label: '중분류를 고르시오',
-                color: 'black',
-                   value: null,
+                //color: 'black',
+                value: null,
                }}
              
                useNativeAndroidPickerStyle={false}
@@ -360,8 +364,21 @@
            </TouchableOpacity>
        
          </View>
-        
+         <View >
+         <RNPickerSelect
+            onValueChange={(value) => console.log(value)}
+            useNativeAndroidPickerStyle={false}
+            items={[
+                { label: 'Football', value: 'football' },
+                { label: 'Baseball', value: 'baseball' },
+                { label: 'Hockey', value: 'hockey' },
+            ]}
+        />
+           
+         </View>
        </View>
+
+       
    );
   };
   
@@ -402,7 +419,7 @@
        alignItems:'center',
        justifyContent: 'center',
        //paddingTop: 40,
-       color: 'black',
+       //color: 'black',
      },
      profileHeader: {      //프로필 있는 부분 박스 
        flexDirection: 'row',

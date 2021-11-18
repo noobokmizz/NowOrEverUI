@@ -39,7 +39,7 @@ const RecommendScreen = ({route}) => {
           const userInfo=JSON.parse(result);
           setBk_key({mem_idnum:userInfo.mem_idnum,bk_id:userInfo.bucketlist.bk_id});
         });
-        /*
+        
         Geolocation.getCurrentPosition(
             position => {
               const {latitude, longitude} = position.coords;
@@ -47,12 +47,14 @@ const RecommendScreen = ({route}) => {
                 latitude:latitude,
                 longitude:longitude
               });
+              console.log('현재 위치 받기 성공');
             },
             error => {
+              console.log('현재 위치 받기 실패');
               console.log(error.code, error.message);
             },
             {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-          );*/
+          );
         //console.log('route.params.lc_id:'+route.params.lc_id);
         //console.log('category:'+route.params.category);
       },[]);
@@ -68,6 +70,7 @@ const RecommendScreen = ({route}) => {
         cur_y=(startLocation.latitude);
         console.log('mem_idnum:'+mem_idnum);
         console.log('bk_id:'+bk_id);
+        console.log('cur_x:'+cur_x+'cur_y:'+cur_y);
         fetch('http://'+localhost+':8080/bucketlist/recommendation?'+
         'mem_idnum='+mem_idnum+'&bk_id='+bk_id
         +'&cur_x='+cur_x+'&cur_y='+cur_y
@@ -103,17 +106,31 @@ const RecommendScreen = ({route}) => {
         .catch((error) => {
           console.error(error);
         })
-      },[bk_key]);
+      },[bk_key,startLocation]);
 
       useEffect(()=>{
-          setCenter({latitude:(startLocation.latitude+endLocation.latitude)/2,longitude:(startLocation.longitude+endLocation.longitude)/2});
-          let latitude=abs(startLocation.latitude-endLocation.latitude)*1000;
-          let longitude=abs(startLocation.longitude+endLocation.longitude)*1000;
-          let zoom=sqrt(latitude*latitude+longitude*longitude)/34000;
-          zoom=round(zoom);
-          setZoom(zoom);
+        setCenter({latitude:(startLocation.latitude+endLocation.latitude)/2,longitude:(startLocation.longitude+endLocation.longitude)/2});
+        let latitude=abs(startLocation.latitude-endLocation.latitude)*16000;
+        let longitude=abs(startLocation.longitude-endLocation.longitude)*16000;
+        console.log('latitude:'+latitude+' longitude'+longitude);
+        let dist=sqrt(latitude*latitude+longitude*longitude);
+        console.log('dist:'+dist);
+        
+        let zoom;
+        if(dist==0)
+          zoom=14;
+        else
+          zoom=Math.log2(2000000/dist);
+        
+        console.log('before 반올림 zoom:'+zoom);
+        zoom=round(zoom);
         console.log('zoom:'+zoom);
-      },[startLocation,endLocation]);
+        setZoom(zoom);
+        console.log('startLocation');
+        console.log('latitude:'+startLocation.latitude+' longitude'+startLocation.longitude);
+        console.log('endLocation');
+        console.log('latitude:'+endLocation.latitude+' longitude'+endLocation.longitude);
+      },[endLocation]);
 
     if(status==2){
       return(
