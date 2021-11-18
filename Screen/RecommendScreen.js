@@ -27,7 +27,8 @@ import {
 const RecommendScreen = ({route}) => {
     const [bk_key,setBk_key]=useState({mem_idnum:1,bk_id:1});
     const [information,setInformation]=useState({name:'',address:'',call_number:'',url:'',star:0})
-    const [startLocation,setStartLocation]=useState({latitude: 37.5715, longitude: 126.9050})
+    const [startLocation,setStartLocation]=useState({latitude: 37.564362, longitude: 126.977011}) // tmp code (임시 확인용)
+	//const [startLocation,setStartLocation]=useState({latitude: 37.5715, longitude: 126.9050}) // src code 
     const [endLocation,setEndLocation]=useState({latitude: 37.564362, longitude: 126.977011})
     const [center,setCenter]=useState({latitude: 37.564362, longitude: 126.977011})
     const [zoom,setZoom]=useState(5);
@@ -147,7 +148,7 @@ const RecommendScreen = ({route}) => {
            fontFamily:'sans-serif-light'
            }}>
         
-          500m내에 추천할만한 
+          1km내에 추천할만한 
         
       </Text>
       <Text style={{
@@ -155,7 +156,7 @@ const RecommendScreen = ({route}) => {
            fontFamily:'sans-serif-light'
            }}>
         
-          장소가 없어요 ㅠㅠ
+          장소가 없어요 ㅜ_ㅜ
         
       </Text>
 
@@ -166,6 +167,7 @@ const RecommendScreen = ({route}) => {
     }
     else if(status==1)
     return(
+	    <ScrollView>
       <ThemeProvider theme={theme}>
         <Container>
         <View style={{
@@ -239,6 +241,7 @@ const RecommendScreen = ({route}) => {
         </View>
         </Container>
         </ThemeProvider>
+	    </ScrollView>
     );
     else
             return(
