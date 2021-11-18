@@ -26,11 +26,12 @@ import {
 
 const SearchDetailScreen = ({route}) => {
     const [bk_key,setBk_key]=useState({mem_idnum:1,bk_id:1});
-    const [information,setInformation]=useState({name:'',address:'',call_number:'',url:'',star:0})
+    const [information,setInformation]=useState({name:'',address:'',call_number:'',url:'',star:0,recommendList:[]})
     const [startLocation,setStartLocation]=useState({latitude: 37.564362, longitude: 126.977011})
     const [endLocation,setEndLocation]=useState({latitude: 37.564362, longitude: 126.977011})
     const [center,setCenter]=useState({latitude: 37.564362, longitude: 126.977011})
-    const [zoom,setZoom]=useState(5);
+    const [zoom,setZoom]=useState(5)
+    const [recommendList, setRecommendList] = useState([]);
     let categoryId=route.params.category_id.toString();
 
     useEffect(()=>{
@@ -64,11 +65,10 @@ const SearchDetailScreen = ({route}) => {
                 call_number:responseJson[0].location.lc_call_number, 
                 url:responseJson[0].location.lc_url, 
                 star:responseJson[0].rv_starrate,
-                category:responseJson[0].category,
-		recommendList:responseJson[0].recommendList,
-		length:responseJson[0].recommendList.length
+                category:responseJson[0].category
             })
             setEndLocation({latitude:parseFloat(responseJson[0].location.lc_y),longitude:parseFloat(responseJson[0].location.lc_x)})
+            setRecommendList(responseJson[0].recommendList)
         })
         .catch((error) => {
           console.error(error);
@@ -85,6 +85,88 @@ const SearchDetailScreen = ({route}) => {
         console.log('zoom:'+zoom);
       },[startLocation,endLocation]);
 
+      useEffect(()=>{
+        console.log('recommendList.length:'+recommendList.length);
+      },[recommendList]);
+
+if(recommendList.length==0){
+    return(
+	<ScrollView>
+        <ThemeProvider theme={theme}>
+        <Container>
+        <View style={{
+            //justifyContent: "center",
+            height:'100%',
+            alignItems: "center"}}>
+
+            <View style={{width:350, borderBottomWidth:2, borderBottomColor:'gray', alignItems: "center"}}>
+                <View style={{flexDirection:'row', marginRight:30}}>
+                    <Image
+                        source={category_images[categoryId]}
+                        style={{width:60, height:60, borderRadius:30}}
+                    />
+                    <Text style={{fontWeight:'bold',fontSize:50}}>{information.name}</Text>
+                </View>
+                <View style={{flexDirection:'row'}}>
+                    <Text style={{fontSize:20}}>{information.category+' > '}</Text>
+                    <Icon name='star' size={25} color={'orange'}/>
+                    <Text style={{fontSize:20}}>{information.star}</Text>
+                </View>
+            </View>
+
+            <View style={{borderBottomWidth:2,borderBottomColor:'gray',height:100, marginTop:10,width:350,}}>
+            <View style={{height:30}}>
+                <Text style={{fontSize:20}}>주소:{information.address}</Text>
+            </View>
+            <View style={{height:30}}>
+                <Text style={{fontSize:20}}>전화번호:{information.call_number}</Text>
+            </View>
+            <View style={{flexDirection:'row', height:30, alignItems: "center"}}>
+                {/*
+                    <Text style={{color: 'blue', fontSize:15}}
+                    onPress={() => Linking.openURL(information.url)}>
+                {information.url}
+                </Text>
+                */}
+                <TouchableOpacity onPress={() => Linking.openURL(information.url)}>
+                <Image source={require('./assets/icons/kakaomap.png')}
+                          style={{width:30, height:30}}
+                          
+                        />
+                </TouchableOpacity>
+                <Text style={{fontSize:20, marginLeft:5, fontFamily: 'sans-serif-medium',}}>
+                    Kakaomap으로 보기
+                </Text>
+            </View>
+            </View>
+            <View style={{marginTop:10}}>
+            <NaverMapView style={{
+                        width: 350, height: 350
+                    }}
+                         showsMyLocationButton={true}
+                         center={{...center, zoom: zoom}}
+                         //onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
+                         //onCameraChange={e => console.warn('onCameraChange', JSON.stringify(e))}
+                         //</View>onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}
+                         >
+        <Marker coordinate={startLocation} onClick={() => {
+            console.warn('latitude'+startLocation.latitude);
+            console.warn('longitude'+startLocation.longitude);
+            }}/>
+        <Marker coordinate={endLocation} pinColor="blue" onClick={() => {
+            console.warn('latitude'+endLocation.latitude);
+            console.warn('longitude'+endLocation.longitude);
+            }}/>
+    
+    </NaverMapView>
+	    </View>
+	    </View>
+	    </Container>
+        </ThemeProvider>
+	</ScrollView>
+    );
+}
+else{
     return(
 	<ScrollView>
         <ThemeProvider theme={theme}>
@@ -160,20 +242,29 @@ const SearchDetailScreen = ({route}) => {
                 <Text style={{fontWeight:'bold',fontSize:20}}>{"이런 장소는 어때요?"}</Text>
             </View>
 	    </View>
-	    <View style={{}}>
-                <View style={{flexDirection:'row', marginRight:30}}>
+                <View style={{flexDirection:'row', marginRight:30,}}>
                     <Image
-                        source={category_images[information.recommendList[0].locationId.lc_category]}
+                        source={category_images[recommendList[0].locationId.lc_category]}
                         style={{width:30, height:30, borderRadius:30}}
                     />
-                    <Text style={{fontSize:20}}>{information.name}</Text>
-                </View>
+                    <Text style={{fontSize:15}}>{recommendList[0].lc_name}</Text>
+                    <Image
+                        source={category_images[recommendList[1].locationId.lc_category]}
+                        style={{marginLeft:15, width:30, height:30, borderRadius:30}}
+                    />
+                    <Text style={{fontSize:15}}>{recommendList[1].lc_name}</Text>
+                    <Image
+                        source={category_images[recommendList[2].locationId.lc_category]}
+                        style={{marginLeft:15, width:30, height:30, borderRadius:30}}
+                    />
+                    <Text style={{fontSize:15}}>{recommendList[2].lc_name}</Text>
 	    </View>
 	    </View>
 	    </Container>
         </ThemeProvider>
 	</ScrollView>
     );
+}
 };
 
 
