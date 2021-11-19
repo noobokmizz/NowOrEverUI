@@ -213,7 +213,7 @@ export const BucketList=({navigation})=>{
       .then((responseJson)=>{
         setLoading(false);
         setBucketlistContentsList(responseJson.bucketlistContentsList);
-        console.log('responseJson.bucketlistContentsList:',responseJson.bucketlistContentsList);
+        console.log('BucketList - bucketlistContentsList:',responseJson.bucketlistContentsList);
         
         })
         .catch((error) => {

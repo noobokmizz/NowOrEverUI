@@ -89,7 +89,7 @@ const RecommendScreen = ({route}) => {
           console.log('url:'+'http://'+localhost+':8080/bucketlist/recommendation?'+
           'mem_idnum='+mem_idnum+'&bk_id='+bk_id
           +'&cur_x='+startLocation.longitude+'&cur_y='+startLocation.latitude);
-        console.log('response:',responseJson);
+        console.log('RecommendScreen - ',responseJson);
             if(responseJson.length==0){
               setStatus(2);
             }
@@ -149,7 +149,7 @@ const RecommendScreen = ({route}) => {
         }}>
         <Text style={{
            fontSize:30, fontWeight:'bold',
-           fontFamily:'sans-serif-light'
+           fontFamily:'sans-serif-light', color:'#000000'
            }}>
         
           1km내에 추천할만한 
@@ -157,7 +157,7 @@ const RecommendScreen = ({route}) => {
       </Text>
       <Text style={{
            fontSize:30, fontWeight:'bold',
-           fontFamily:'sans-serif-light'
+           fontFamily:'sans-serif-light', color:'#000000'
            }}>
         
           장소가 없어요 ㅜ_ㅜ
@@ -180,29 +180,29 @@ const RecommendScreen = ({route}) => {
             alignItems: "center",
             backgroundColor:"aliceBlue"
             }}>
-            <View style={{flexDirection:'row',borderBottomWidth:2, borderBottomColor:'gray',}}>
+            <View style={{flexDirection:'row', borderBottomColor:'gray',}}>
             <View style={{ width:300,  alignItems: "center"}}>
                 <View style={{flexDirection:'row', marginRight:30}}>
                     <Image
                         source={category_images[information.category_id]}
                         style={{width:60, height:60, borderRadius:30}}
                     />
-                    <Text style={{fontWeight:'bold',fontSize:50}}>{information.name}</Text>
+                    <Text style={{fontWeight:'bold',fontSize:50, color:'#000000'}}>{information.name}</Text>
                 </View>
                 <View style={{flexDirection:'row'}}>
-                    <Text style={{fontSize:20}}>{information.category+' > '}</Text>
+                    <Text style={{fontSize:20, color:'#000000'}}>{information.category+' > '}</Text>
                     <Icon name='star' size={25} color={'orange'}/>
-                    <Text style={{fontSize:20}}>{information.star}</Text>
+                    <Text style={{fontSize:20, color:'#000000'}}>{information.star}</Text>
                 </View>
             </View>
             
             </View>
-            <View style={{borderBottomWidth:2,borderBottomColor:'gray',height:100, marginTop:10,width:350,}}>
+            <View style={{borderBottomColor:'gray',height:100, marginTop:10,width:350,}}>
             <View style={{height:30}}>
-                <Text style={{fontSize:20}}>주소:{information.address}</Text>
+                <Text style={{fontSize:20, color:'#000000'}}>주소:{information.address}</Text>
             </View>
             <View style={{height:30}}>
-                <Text style={{fontSize:20}}>전화번호:{information.call_number}</Text>
+                <Text style={{fontSize:20, color:'#000000'}}>전화번호:{information.call_number}</Text>
             </View>
             <View style={{flexDirection:'row', height:30, alignItems: "center"}}>
                 {/*
@@ -217,7 +217,7 @@ const RecommendScreen = ({route}) => {
                           
                         />
                 </TouchableOpacity>
-                <Text style={{fontSize:20, marginLeft:5, fontFamily: 'sans-serif-medium',}}>
+                <Text style={{fontSize:20, marginLeft:5, fontFamily: 'sans-serif-medium', color:'#000000'}}>
                     Kakaomap으로 보기
                 </Text>
             </View>
@@ -257,7 +257,7 @@ const RecommendScreen = ({route}) => {
                   height:'100%',
                   alignItems: "center",
                   backgroundColor:"aliceBlue"}}>
-                <Text style={{ fontSize:30, fontWeight:'bold', fontFamily:'sans-serif-light'}}>
+                <Text style={{ fontSize:30, fontWeight:'bold', fontFamily:'sans-serif-light', color:'#000000'}}>
                 {
                   'Loading중'
                 }
@@ -297,7 +297,7 @@ button:{
   marginBottom:20,
 },
 ButtonText:{
-  fontSize:15
+  fontSize:15, color:'#000000'
 }
 });
 
